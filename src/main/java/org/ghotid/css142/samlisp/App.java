@@ -61,10 +61,9 @@ public class App {
     private static void run(String source) {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.toTokens();
+        Parser parser = new Parser(tokens);
 
-        for (Token token : tokens) {
-            System.out.println(token);
-        }
+        System.out.println(parser.nextObject().inspect());
     }
 
     static void error(int line, String message) {

@@ -152,7 +152,7 @@ class Scanner {
      * the token list.
      */
     private void addNumber() {
-        while (Character.isDigit(peek())) advance();
+        while (Character.isDigit(peek()) && !isAtEnd()) advance();
         // Look for a fractional part.
         if (peek() == '.' && Character.isDigit(peekNext())) {
             // Consume the "."
@@ -170,7 +170,7 @@ class Scanner {
      * the token list.
      */
     private void addSymbol() {
-        while (isSymbolic(peek())) advance();
+        while (isSymbolic(peek()) && !isAtEnd()) advance();
         addToken(SYMBOL, source.substring(start, current));
     }
 
