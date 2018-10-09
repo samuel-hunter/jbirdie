@@ -19,6 +19,18 @@ public class Token {
         if (line == null) throw new NullPointerException();
     }
 
+    TokenType getType() {
+        return type;
+    }
+
+    Integer getLine() {
+        return line;
+    }
+
+    Object getLiteral() {
+        return literal;
+    }
+
     @Override
     public String toString() {
         return String.format("<%s:%d %s>", type.toString(), line, text);
