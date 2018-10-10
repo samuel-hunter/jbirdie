@@ -1,6 +1,10 @@
 package org.ghotid.css142.birdie.objects;
 
-public class ConsObject implements LispObject {
+import org.ghotid.css142.birdie.LispEnvironment;
+
+import java.util.Iterator;
+
+public class ConsObject implements LispObject, Iterable<LispObject> {
     private final LispObject car;
     private final LispObject cdr;
 
@@ -20,6 +24,15 @@ public class ConsObject implements LispObject {
     }
 
     @Override
+    public LispObject evaluate(LispEnvironment environment) {
+        LispObject func = car.evaluate(environment);
+        if (!(func instanceof FuncObject))
+            throw new UnsupportedOperationException();
+
+        return ((FuncObject) (func)).call(environment, cdr);
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append('(').append(car.toString());
@@ -36,5 +49,31 @@ public class ConsObject implements LispObject {
         }
 
         return sb.append(')').toString();
+    }
+
+    @Override
+    public Iterator<LispObject> iterator() {
+        final LispObject startingTail = this;
+
+        return new Iterator<LispObject>() {
+            private LispObject tail = startingTail;
+
+            @Override
+            public boolean hasNext() {
+                if (tail instanceof ConsObject)
+                    return true;
+                else if (tail instanceof NilObject)
+                    return false;
+                else
+                    throw new IllegalArgumentException();
+            }
+
+            @Override
+            public LispObject next() {
+                LispObject next = tail.getCar();
+                tail = tail.getCdr();
+                return next;
+            }
+        };
     }
 }

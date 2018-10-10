@@ -1,5 +1,7 @@
 package org.ghotid.css142.birdie.objects;
 
+import org.ghotid.css142.birdie.LispEnvironment;
+
 public class NilObject implements LispObject {
     private static NilObject nilObject = new NilObject();
 
