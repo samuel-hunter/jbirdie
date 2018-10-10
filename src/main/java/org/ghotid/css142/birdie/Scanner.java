@@ -1,9 +1,9 @@
-package org.ghotid.css142.samlisp;
+package org.ghotid.css142.birdie;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.ghotid.css142.samlisp.TokenType.*;
+import static org.ghotid.css142.birdie.TokenType.*;
 
 /**
  * Scanner for the code's source.

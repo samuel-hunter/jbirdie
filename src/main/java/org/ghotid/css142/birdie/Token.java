@@ -1,4 +1,4 @@
-package org.ghotid.css142.samlisp;
+package org.ghotid.css142.birdie;
 
 public class Token {
     private final TokenType type;

@@ -1,6 +1,6 @@
-package org.ghotid.css142.samlisp;
+package org.ghotid.css142.birdie;
 
-import org.ghotid.css142.samlisp.objects.*;
+import org.ghotid.css142.birdie.objects.*;
 
 import java.util.ArrayDeque;
 import java.util.List;
