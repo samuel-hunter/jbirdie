@@ -1,5 +1,8 @@
 package org.ghotid.css142.birdie;
 
+import org.ghotid.css142.birdie.libcore.FuncAdd;
+import org.ghotid.css142.birdie.libcore.FuncExit;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,11 +21,16 @@ public class App {
         if (args.length > 1) {
             System.out.println("Usage: samscript <FILE>");
             System.exit(1);
-        } else if (args.length == 1) {
-            runFile(args[0]);
-        } else {
-            runPrompt();
         }
+
+        LispEnvironment environment = new LispEnvironment();
+        environment.setVariable("+", new FuncAdd());
+        environment.setVariable("exit", new FuncExit());
+
+        if (args.length == 1)
+            runFile(args[0], environment);
+        else
+            runPrompt(environment);
 
         if (hadError) System.exit(1);
     }
@@ -33,9 +41,9 @@ public class App {
      * @param path path to the file.
      * @throws IOException if the file couldn't be read.
      */
-    private static void runFile(String path) throws IOException {
+    private static void runFile(String path, LispEnvironment environment) throws IOException {
         byte[] bytes = Files.readAllBytes(Paths.get(path));
-        run(new String(bytes, Charset.defaultCharset()));
+        run(new String(bytes, Charset.defaultCharset()), environment);
     }
 
     /**
@@ -43,13 +51,13 @@ public class App {
      *
      * @throws IOException if stdin can't be read.
      */
-    private static void runPrompt() throws IOException {
+    private static void runPrompt(LispEnvironment environment) throws IOException {
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 
         while (!hadError) {
             System.out.print("> ");
-            run(reader.readLine());
+            run(reader.readLine(), environment);
         }
     }
 
@@ -58,12 +66,12 @@ public class App {
      *
      * @param source raw source code.
      */
-    private static void run(String source) {
+    private static void run(String source, LispEnvironment environment) {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.toTokens();
         Parser parser = new Parser(tokens);
 
-        System.out.println(parser.nextObject());
+        System.out.println(parser.nextObject().evaluate(environment));
     }
 
     static void error(int line, String message) {
