@@ -24,9 +24,4 @@ public class NilObject implements LispObject {
     public String toString() {
         return "nil";
     }
-
-    @Override
-    public String inspect() {
-        return "nil";
-    }
 }

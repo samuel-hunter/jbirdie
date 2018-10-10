@@ -21,11 +21,20 @@ public class ConsObject implements LispObject {
 
     @Override
     public String toString() {
-        return "(" + car.toString() + " . " + cdr.toString() + ")";
-    }
+        StringBuilder sb = new StringBuilder();
+        sb.append('(').append(car.toString());
 
-    @Override
-    public String inspect() {
-        return "(" + car.inspect() + " . " + cdr.inspect() + ")";
+        LispObject tail = cdr;
+
+        while (tail instanceof ConsObject) {
+            sb.append(' ').append(tail.getCar().toString());
+            tail = tail.getCdr();
+        }
+
+        if (!(tail instanceof NilObject)) {
+            sb.append(" . ").append(tail.toString());
+        }
+
+        return sb.append(')').toString();
     }
 }

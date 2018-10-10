@@ -63,7 +63,7 @@ public class App {
         List<Token> tokens = scanner.toTokens();
         Parser parser = new Parser(tokens);
 
-        System.out.println(parser.nextObject().inspect());
+        System.out.println(parser.nextObject());
     }
 
     static void error(int line, String message) {

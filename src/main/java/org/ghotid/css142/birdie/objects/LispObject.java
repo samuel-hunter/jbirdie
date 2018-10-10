@@ -6,6 +6,4 @@ public interface LispObject {
     LispObject getCdr();
 
     String toString();
-
-    String inspect();
 }

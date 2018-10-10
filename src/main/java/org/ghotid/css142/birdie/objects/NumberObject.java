@@ -25,9 +25,4 @@ public class NumberObject implements LispObject {
     public String toString() {
         return value.toString();
     }
-
-    @Override
-    public String inspect() {
-        return toString();
-    }
 }

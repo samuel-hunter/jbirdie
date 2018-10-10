@@ -30,8 +30,7 @@ class Parser {
             case NUMBER:
                 return new NumberObject((Double) tok.getLiteral());
             case EOF:
-                App.error(tok.getLine(),
-                        "End of File.");
+                App.error(tok.getLine(), "End of file.");
                 break;
         }
 
@@ -42,11 +41,15 @@ class Parser {
         Token tok = tokens.peek();
         assert tok != null;
 
-        if (tok.getType() == TokenType.RIGHT_PAREN) {
-            tokens.remove();
-            return NilObject.getNilObject();
-        } else {
-            return new ConsObject(nextObject(), getCons());
+        switch (tok.getType()) {
+            case RIGHT_PAREN:
+                tokens.remove();
+                return NilObject.getNilObject();
+            case EOF:
+                App.error(tok.getLine(), "End of file.");
+                return NilObject.getNilObject();
+            default:
+                return new ConsObject(nextObject(), getCons());
         }
     }
 }
