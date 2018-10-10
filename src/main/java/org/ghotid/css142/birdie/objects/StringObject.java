@@ -26,10 +26,6 @@ public class StringObject implements LispObject {
     }
 
     public String toString() {
-        return value;
-    }
-
-    public String inspect() {
         return '"' + value + '"';
     }
 }

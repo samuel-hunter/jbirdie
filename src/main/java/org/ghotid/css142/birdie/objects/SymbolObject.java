@@ -29,9 +29,4 @@ public class SymbolObject implements LispObject {
     public String toString() {
         return symbol;
     }
-
-    @Override
-    public String inspect() {
-        return toString();
-    }
 }
