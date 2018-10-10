@@ -1,4 +1,4 @@
-package org.ghotid.css142.samlisp;
+package org.ghotid.css142.birdie;
 
 public enum TokenType {
     // Single-character tokens

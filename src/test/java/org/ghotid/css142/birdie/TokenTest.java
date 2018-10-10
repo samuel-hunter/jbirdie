@@ -1,6 +1,6 @@
-package org.ghotid.css142.samlisp;
+package org.ghotid.css142.birdie;
 
-import static org.ghotid.css142.samlisp.TokenType.*;
+import static org.ghotid.css142.birdie.TokenType.*;
 import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Test;
