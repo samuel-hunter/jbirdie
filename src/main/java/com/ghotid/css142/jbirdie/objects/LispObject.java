@@ -1,11 +1,16 @@
 package com.ghotid.css142.jbirdie.objects;
 
-import java.util.Iterator;
 import com.ghotid.css142.jbirdie.LispEnvironment;
+import com.ghotid.css142.jbirdie.exception.InvalidTypeException;
 
 public interface LispObject {
-    LispObject getCar();
-    LispObject getCdr();
+    default LispObject getCar() {
+        throw new InvalidTypeException("List", this);
+    }
+
+    default LispObject getCdr() {
+        throw new InvalidTypeException("List", this);
+    }
 
     default LispObject evaluate(LispEnvironment environment) {
         return this;

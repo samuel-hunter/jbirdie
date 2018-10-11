@@ -1,5 +1,6 @@
 package com.ghotid.css142.jbirdie;
 
+import com.ghotid.css142.jbirdie.exception.ReaderException;
 import com.ghotid.css142.jbirdie.objects.*;
 
 import java.util.ArrayDeque;
@@ -20,9 +21,9 @@ class Parser {
             case LEFT_PAREN:
                 return getCons();
             case RIGHT_PAREN:
-                App.error(tok.getLine(),
-                        "Unexpected token '" + tok + "'.");
-                break;
+                throw new ReaderException(
+                        tok.getLine(),
+                        String.format("Unexpected token %s.", tok));
             case SYMBOL:
                 return new SymbolObject((String) tok.getLiteral());
             case STRING:
@@ -30,8 +31,7 @@ class Parser {
             case NUMBER:
                 return new NumberObject((Double) tok.getLiteral());
             case EOF:
-                App.error(tok.getLine(), "End of file.");
-                break;
+                throw new ReaderException(tok.getLine(), "End of file.");
         }
 
         return nextObject();
@@ -44,10 +44,9 @@ class Parser {
         switch (tok.getType()) {
             case RIGHT_PAREN:
                 tokens.remove();
-                return NilObject.getNilObject();
+                return NilObject.getNIL();
             case EOF:
-                App.error(tok.getLine(), "End of file.");
-                return NilObject.getNilObject();
+                throw new ReaderException(tok.getLine(), "End of file.");
             default:
                 return new ConsObject(nextObject(), getCons());
         }

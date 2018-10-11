@@ -1,6 +1,7 @@
 package com.ghotid.css142.jbirdie.objects;
 
 import com.ghotid.css142.jbirdie.LispEnvironment;
+import com.ghotid.css142.jbirdie.exception.InvalidTypeException;
 
 public class ConsObject implements LispObject {
     private final LispObject car;
@@ -25,7 +26,7 @@ public class ConsObject implements LispObject {
     public LispObject evaluate(LispEnvironment environment) {
         LispObject func = car.evaluate(environment);
         if (!(func instanceof FuncObject))
-            throw new UnsupportedOperationException();
+            throw new InvalidTypeException(FuncObject.class, func);
 
         return ((FuncObject) (func)).call(environment, cdr);
     }

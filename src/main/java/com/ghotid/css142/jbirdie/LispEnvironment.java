@@ -1,5 +1,6 @@
 package com.ghotid.css142.jbirdie;
 
+import com.ghotid.css142.jbirdie.exception.UndefinedSymbolException;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
 import java.util.HashMap;
@@ -13,6 +14,9 @@ public class LispEnvironment {
     }
 
     public LispObject getVariable(String symbol) {
+        if (!env.containsKey(symbol))
+            throw new UndefinedSymbolException(symbol);
+
         return env.get(symbol);
     }
 }
