@@ -2,9 +2,7 @@ package com.ghotid.css142.jbirdie.objects;
 
 import com.ghotid.css142.jbirdie.LispEnvironment;
 
-import java.util.Iterator;
-
-public class ConsObject implements LispObject, Iterable<LispObject> {
+public class ConsObject implements LispObject {
     private final LispObject car;
     private final LispObject cdr;
 
@@ -49,31 +47,5 @@ public class ConsObject implements LispObject, Iterable<LispObject> {
         }
 
         return sb.append(')').toString();
-    }
-
-    @Override
-    public Iterator<LispObject> iterator() {
-        final LispObject startingTail = this;
-
-        return new Iterator<LispObject>() {
-            private LispObject tail = startingTail;
-
-            @Override
-            public boolean hasNext() {
-                if (tail instanceof ConsObject)
-                    return true;
-                else if (tail instanceof NilObject)
-                    return false;
-                else
-                    throw new IllegalArgumentException();
-            }
-
-            @Override
-            public LispObject next() {
-                LispObject next = tail.getCar();
-                tail = tail.getCdr();
-                return next;
-            }
-        };
     }
 }
