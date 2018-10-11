@@ -15,4 +15,12 @@ public interface LispObject {
     default LispObject evaluate(LispEnvironment environment) {
         return this;
     }
+
+    static <T extends LispObject> T cast(Class<? extends T> lispClass,
+                                         LispObject obj) {
+        if (lispClass.isInstance(obj))
+            return lispClass.cast(obj);
+
+        throw new InvalidTypeException(lispClass, obj);
+    }
 }

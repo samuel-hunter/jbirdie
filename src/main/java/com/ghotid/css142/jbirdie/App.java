@@ -3,8 +3,7 @@ package com.ghotid.css142.jbirdie;
 import com.ghotid.css142.jbirdie.exception.LispException;
 import com.ghotid.css142.jbirdie.exception.LispExitException;
 import com.ghotid.css142.jbirdie.exception.ReaderException;
-import com.ghotid.css142.jbirdie.libcore.FuncExit;
-import com.ghotid.css142.jbirdie.libcore.FuncAdd;
+import com.ghotid.css142.jbirdie.libcore.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,6 +28,9 @@ public class App {
 
         LispEnvironment environment = new LispEnvironment();
         environment.setVariable("+", new FuncAdd());
+        environment.setVariable("-", new FuncSubtract());
+        environment.setVariable("*", new FuncMultiply());
+        environment.setVariable("/", new FuncDivide());
         environment.setVariable("exit", new FuncExit());
 
         if (args.length == 1)

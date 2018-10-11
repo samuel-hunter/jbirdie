@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class LispList implements List<LispObject> {
+public class ConsList implements List<LispObject> {
     private final LispObject list;
 
-    public LispList(LispObject list) {
+    public ConsList(LispObject list) {
         this.list = list;
     }
 
