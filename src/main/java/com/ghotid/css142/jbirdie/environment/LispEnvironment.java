@@ -1,5 +1,6 @@
 package com.ghotid.css142.jbirdie.environment;
 
+import com.ghotid.css142.jbirdie.exception.UndefinedSymbolException;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
 import java.util.HashMap;
@@ -22,7 +23,12 @@ public class LispEnvironment implements Environment {
         if (parentEnvironment.contains(symbol))
             parentEnvironment.set(symbol, obj);
         else
-            symbolMap.put(symbol, obj);
+            setFlat(symbol, obj);
+    }
+
+    @Override
+    public void setFlat(String symbol, LispObject obj) {
+        symbolMap.put(symbol, obj);
     }
 
     @Override
@@ -42,13 +48,29 @@ public class LispEnvironment implements Environment {
     public LispObject get(String symbol) {
         if (parentEnvironment.contains(symbol))
             return parentEnvironment.get(symbol);
-        else
+        else if (symbolMap.containsKey(symbol))
             return symbolMap.get(symbol);
+        else
+            throw new UndefinedSymbolException(symbol);
     }
 
     @Override
     public boolean contains(String symbol) {
         return parentEnvironment.contains(symbol) ||
                 symbolMap.containsKey(symbol);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<LispEnvironment ");
+
+        for (String symbol : symbolMap.keySet())
+            sb.append(
+                    String.format("%s=>%s", symbol,
+                            symbolMap.get(symbol))
+            );
+
+        return sb.append('>').toString();
     }
 }

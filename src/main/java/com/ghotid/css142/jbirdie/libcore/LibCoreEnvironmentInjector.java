@@ -22,10 +22,13 @@ public class LibCoreEnvironmentInjector {
         env.set("car", new FuncCar());
         env.set("cdr", new FuncCdr());
 
+        env.set("lambda", new FuncLambda());
+
         env.set("t", new SymbolObject("t"));
         env.set("nil", NilObject.getNil());
 
         env.set("setq", new FuncSetq());
+        env.set("setdebug", new FuncSetdebug());
         env.set("exit", new FuncExit());
     }
 }

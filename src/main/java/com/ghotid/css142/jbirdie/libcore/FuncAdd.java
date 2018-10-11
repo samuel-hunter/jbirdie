@@ -7,7 +7,7 @@ import com.ghotid.css142.jbirdie.objects.LispObject;
 import com.ghotid.css142.jbirdie.objects.NumberObject;
 
 /**
- * "add" accepts 0 or more numbers and returns its sum.
+ * "setFlat" accepts 0 or more numbers and returns its sum.
  */
 public class FuncAdd implements FuncObject {
 

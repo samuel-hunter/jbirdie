@@ -19,6 +19,7 @@ import java.util.List;
  * Application to run a script file or prompt for source.
  */
 public class App {
+    private static Boolean isDebugging = false;
     private static Boolean isContinuing = true;
     private static Integer exitCode = 0;
 
@@ -37,6 +38,14 @@ public class App {
             runPrompt(environment);
 
         System.exit(exitCode);
+    }
+
+    public static Boolean getDebug() {
+        return isDebugging;
+    }
+
+    public static void setDebug(Boolean isDebugging) {
+        App.isDebugging = isDebugging;
     }
 
     /**
@@ -78,12 +87,16 @@ public class App {
             System.out.println(parser.nextObject().evaluate(environment));
         } catch (ReaderException e) {
             System.err.printf("[Line %d] %s\n", e.getLine(), e.getMessage());
+            if (isDebugging)
+                e.printStackTrace();
         } catch (LispExitException e) {
             isContinuing = false;
             exitCode = e.getExitCode();
         } catch (LispException e) {
             System.err.printf("%s: %s\n", e.getClass().getSimpleName(),
                     e.getMessage());
+            if (isDebugging)
+                e.printStackTrace();
         }
     }
 }
