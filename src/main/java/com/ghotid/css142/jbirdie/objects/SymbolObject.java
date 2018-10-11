@@ -14,16 +14,6 @@ public class SymbolObject implements LispObject {
     }
 
     @Override
-    public LispObject getCar() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public LispObject getCdr() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public LispObject evaluate(LispEnvironment environment) {
         return environment.getVariable(symbol);
     }

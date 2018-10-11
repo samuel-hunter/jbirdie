@@ -1,5 +1,8 @@
 package com.ghotid.css142.jbirdie;
 
+import com.ghotid.css142.jbirdie.exception.LispException;
+import com.ghotid.css142.jbirdie.exception.LispExitException;
+import com.ghotid.css142.jbirdie.exception.ReaderException;
 import com.ghotid.css142.jbirdie.libcore.FuncExit;
 import com.ghotid.css142.jbirdie.libcore.FuncAdd;
 
@@ -15,7 +18,8 @@ import java.util.List;
  * Application to run a script file or prompt for source.
  */
 public class App {
-    private static boolean hadError = false;
+    private static Boolean isContinuing = true;
+    private static Integer exitCode = 0;
 
     public static void main(String[] args) throws IOException {
         if (args.length > 1) {
@@ -32,7 +36,7 @@ public class App {
         else
             runPrompt(environment);
 
-        if (hadError) System.exit(1);
+        System.exit(exitCode);
     }
 
     /**
@@ -55,7 +59,7 @@ public class App {
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 
-        while (!hadError) {
+        while (isContinuing) {
             System.out.print("> ");
             run(reader.readLine(), environment);
         }
@@ -67,21 +71,19 @@ public class App {
      * @param source raw source code.
      */
     private static void run(String source, LispEnvironment environment) {
-        Scanner scanner = new Scanner(source);
-        List<Token> tokens = scanner.toTokens();
-        Parser parser = new Parser(tokens);
-
-        System.out.println(parser.nextObject().evaluate(environment));
-    }
-
-    static void error(int line, String message) {
-        report(line, "", message);
-    }
-
-    private static void report(int line, String where, String message) {
-        System.err.printf(
-                "[line %d] Error%s: %s", line, where, message
-        );
-        hadError = true;
+        try {
+            Scanner scanner = new Scanner(source);
+            List<Token> tokens = scanner.toTokens();
+            Parser parser = new Parser(tokens);
+            System.out.println(parser.nextObject().evaluate(environment));
+        } catch (ReaderException e) {
+            System.err.printf("[Line %d] %s\n", e.getLine(), e.getMessage());
+        } catch (LispExitException e) {
+            isContinuing = false;
+            exitCode = e.getExitCode();
+        } catch (LispException e) {
+            System.err.printf("%s: %s\n", e.getClass().getSimpleName(),
+                    e.getMessage());
+        }
     }
 }

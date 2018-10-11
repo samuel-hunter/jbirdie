@@ -12,16 +12,6 @@ public class StringObject implements LispObject {
     }
 
     @Override
-    public LispObject getCar() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public LispObject getCdr() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public String toString() {
         return '"' + value + '"';
     }

@@ -1,23 +1,23 @@
 package com.ghotid.css142.jbirdie.objects;
 
 public class NilObject implements LispObject {
-    private static NilObject nilObject = new NilObject();
+    private static NilObject NIL = new NilObject();
 
     private NilObject() {
     }
 
-    public static NilObject getNilObject() {
-        return nilObject;
+    public static NilObject getNIL() {
+        return NIL;
     }
 
     @Override
     public LispObject getCar() {
-        return nilObject;
+        return NIL;
     }
 
     @Override
     public LispObject getCdr() {
-        return nilObject;
+        return NIL;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.ghotid.css142.jbirdie;
 
+import com.ghotid.css142.jbirdie.exception.ReaderException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,10 +73,9 @@ class Scanner {
                 } else if (isSymbolic(c)) {
                     addSymbol();
                 } else {
-                    App.error(
+                    throw new ReaderException(
                             line,
-                            String.format("Unexpected character: '%c'.", c)
-                    );
+                            String.format("Unexpected character: '%c'.", c));
                 }
         }
     }
@@ -133,8 +134,7 @@ class Scanner {
 
         // Unterminated string.
         if (isAtEnd()) {
-            App.error(line, "Unterminated string.");
-            return;
+            throw new ReaderException(line, "Unterminated string.");
         }
 
         // Consume the closing "
