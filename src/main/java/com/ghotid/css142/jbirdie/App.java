@@ -82,6 +82,7 @@ public class App {
         } catch (LispException e) {
             System.err.printf("%s: %s\n", e.getClass().getSimpleName(),
                     e.getMessage());
+            e.printStackTrace();
         }
     }
 }

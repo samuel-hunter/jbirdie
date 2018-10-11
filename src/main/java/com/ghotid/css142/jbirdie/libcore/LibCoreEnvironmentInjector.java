@@ -15,6 +15,7 @@ public class LibCoreEnvironmentInjector {
                 .setVariable("*", new FuncMultiply())
                 .setVariable("/", new FuncDivide())
 
+                .setVariable("quote", new FuncQuote())
                 .setVariable("atom", new FuncAtom())
                 .setVariable("eq", new FuncEq())
                 .setVariable("cons", new FuncCons())
