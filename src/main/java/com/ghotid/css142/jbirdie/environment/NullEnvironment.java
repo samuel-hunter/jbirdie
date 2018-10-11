@@ -1,5 +1,6 @@
 package com.ghotid.css142.jbirdie.environment;
 
+import com.ghotid.css142.jbirdie.exception.UndefinedSymbolException;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
 /**
@@ -31,7 +32,7 @@ public class NullEnvironment implements Environment {
 
     @Override
     public LispObject get(String symbol) {
-        throw new UnsupportedOperationException();
+        throw new UndefinedSymbolException(symbol);
     }
 
     @Override
