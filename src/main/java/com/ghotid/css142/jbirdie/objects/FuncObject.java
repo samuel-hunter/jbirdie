@@ -1,9 +1,8 @@
 package com.ghotid.css142.jbirdie.objects;
 
-import com.ghotid.css142.jbirdie.LispEnvironment;
+import com.ghotid.css142.jbirdie.environment.Environment;
 
 public interface FuncObject extends LispObject {
 
-    LispObject call(LispEnvironment environment,
-                                    LispObject args);
+    LispObject call(Environment environment, LispObject args);
 }

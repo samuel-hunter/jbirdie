@@ -1,6 +1,6 @@
 package com.ghotid.css142.jbirdie.libcore;
 
-import com.ghotid.css142.jbirdie.LispEnvironment;
+import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.ArgumentNumberException;
 import com.ghotid.css142.jbirdie.objects.*;
 
@@ -12,7 +12,7 @@ import com.ghotid.css142.jbirdie.objects.*;
  */
 public class FuncAtom implements FuncObject {
     @Override
-    public LispObject call(LispEnvironment environment, LispObject args) {
+    public LispObject call(Environment environment, LispObject args) {
         int size = new ConsList(args).size();
         if (size != 1)
             throw new ArgumentNumberException(size, "1");
@@ -21,6 +21,6 @@ public class FuncAtom implements FuncObject {
         if (obj instanceof ConsObject || obj instanceof NilObject)
             return NilObject.getNil();
         else
-            return environment.getVariable("t");
+            return environment.get("t");
     }
 }

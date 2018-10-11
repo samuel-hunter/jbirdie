@@ -1,6 +1,6 @@
 package com.ghotid.css142.jbirdie.libcore;
 
-import com.ghotid.css142.jbirdie.LispEnvironment;
+import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.ArgumentNumberException;
 import com.ghotid.css142.jbirdie.objects.ConsList;
 import com.ghotid.css142.jbirdie.objects.FuncObject;
@@ -9,7 +9,7 @@ import com.ghotid.css142.jbirdie.objects.NumberObject;
 
 public class FuncDivide implements FuncObject {
     @Override
-    public LispObject call(LispEnvironment environment, LispObject args) {
+    public LispObject call(Environment environment, LispObject args) {
         int size = new ConsList(args).size();
 
         if (size == 0)

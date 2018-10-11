@@ -1,6 +1,6 @@
 package com.ghotid.css142.jbirdie.objects;
 
-import com.ghotid.css142.jbirdie.LispEnvironment;
+import com.ghotid.css142.jbirdie.environment.Environment;
 
 public class SymbolObject implements LispObject {
     private final String symbol;
@@ -14,8 +14,8 @@ public class SymbolObject implements LispObject {
     }
 
     @Override
-    public LispObject evaluate(LispEnvironment environment) {
-        return environment.getVariable(symbol);
+    public LispObject evaluate(Environment environment) {
+        return environment.get(symbol);
     }
 
     @Override

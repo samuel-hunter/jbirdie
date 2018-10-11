@@ -1,6 +1,6 @@
 package com.ghotid.css142.jbirdie.objects;
 
-import com.ghotid.css142.jbirdie.LispEnvironment;
+import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.InvalidTypeException;
 
 public interface LispObject {
@@ -12,7 +12,7 @@ public interface LispObject {
         throw new InvalidTypeException("List", this);
     }
 
-    default LispObject evaluate(LispEnvironment environment) {
+    default LispObject evaluate(Environment environment) {
         return this;
     }
 
