@@ -18,6 +18,7 @@ public class LibCoreEnvironmentInjector {
                 .setVariable("atom", new FuncAtom())
                 .setVariable("eq", new FuncEq())
                 .setVariable("cons", new FuncCons())
+                .setVariable("cond", new FuncCond())
                 .setVariable("car", new FuncCar())
                 .setVariable("cdr", new FuncCdr())
 

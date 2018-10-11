@@ -21,6 +21,11 @@ public class NilObject implements LispObject {
     }
 
     @Override
+    public boolean isTruthy() {
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "nil";
     }

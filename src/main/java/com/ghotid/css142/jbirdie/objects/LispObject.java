@@ -16,6 +16,14 @@ public interface LispObject {
         return this;
     }
 
+    default boolean isTruthy() {
+        return true;
+    }
+
+    default boolean equalsHard(LispObject o) {
+        return this == o;
+    }
+
     static <T extends LispObject> T cast(Class<? extends T> lispClass,
                                          LispObject obj) {
         if (lispClass.isInstance(obj))

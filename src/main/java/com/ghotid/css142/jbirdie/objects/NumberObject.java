@@ -13,6 +13,12 @@ public class NumberObject implements LispObject {
     }
 
     @Override
+    public boolean equalsHard(LispObject o) {
+        return (o instanceof NumberObject) &&
+                ((NumberObject) o).getValue().equals(value);
+    }
+
+    @Override
     public String toString() {
         return value.toString();
     }
