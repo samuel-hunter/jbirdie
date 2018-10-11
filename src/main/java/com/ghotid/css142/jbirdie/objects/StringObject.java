@@ -11,10 +11,6 @@ public class StringObject implements LispObject {
         return value;
     }
 
-    public SymbolObject toSymbolObject() {
-        return new SymbolObject(value);
-    }
-
     @Override
     public LispObject getCar() {
         throw new UnsupportedOperationException();

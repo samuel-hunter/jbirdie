@@ -13,10 +13,6 @@ public class SymbolObject implements LispObject {
         return symbol;
     }
 
-    public StringObject toStringObject() {
-        return new StringObject(symbol);
-    }
-
     @Override
     public LispObject getCar() {
         throw new UnsupportedOperationException();
