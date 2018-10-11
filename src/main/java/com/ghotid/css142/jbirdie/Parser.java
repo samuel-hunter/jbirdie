@@ -44,7 +44,7 @@ class Parser {
         switch (tok.getType()) {
             case RIGHT_PAREN:
                 tokens.remove();
-                return NilObject.getNIL();
+                return NilObject.getNil();
             case EOF:
                 throw new ReaderException(tok.getLine(), "End of file.");
             default:

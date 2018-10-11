@@ -6,7 +6,7 @@ public class NilObject implements LispObject {
     private NilObject() {
     }
 
-    public static NilObject getNIL() {
+    public static NilObject getNil() {
         return NIL;
     }
 
