@@ -1,4 +1,4 @@
-package org.ghotid.css142.birdie;
+package com.ghotid.css142.jbirdie;
 
 public class Token {
     private final TokenType type;

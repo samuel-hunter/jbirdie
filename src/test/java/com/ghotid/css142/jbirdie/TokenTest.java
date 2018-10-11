@@ -1,6 +1,5 @@
-package org.ghotid.css142.birdie;
+package com.ghotid.css142.jbirdie;
 
-import static org.ghotid.css142.birdie.TokenType.*;
 import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Test;
@@ -17,12 +16,12 @@ public class TokenTest {
     @Test
     public void testAdditionEquation() {
         Token[] tokens = {
-                new Token(LEFT_PAREN, "(", null, 1),
-                new Token(SYMBOL, "+", "+", 1),
-                new Token(NUMBER, "1", 1.0, 1),
-                new Token(NUMBER, "2", 2.0, 1),
-                new Token(RIGHT_PAREN, ")", null, 1),
-                new Token(EOF, "", null, 1)
+                new Token(TokenType.LEFT_PAREN, "(", null, 1),
+                new Token(TokenType.SYMBOL, "+", "+", 1),
+                new Token(TokenType.NUMBER, "1", 1.0, 1),
+                new Token(TokenType.NUMBER, "2", 2.0, 1),
+                new Token(TokenType.RIGHT_PAREN, ")", null, 1),
+                new Token(TokenType.EOF, "", null, 1)
         };
 
         assertArrayEquals(tokens, toTokens("(+ 1 2)"));
