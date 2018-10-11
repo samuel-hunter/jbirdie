@@ -1,9 +1,7 @@
-package org.ghotid.css142.birdie;
+package com.ghotid.css142.jbirdie;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.ghotid.css142.birdie.TokenType.*;
 
 /**
  * Scanner for the code's source.
@@ -32,7 +30,7 @@ class Scanner {
             scanToken();
         }
 
-        tokens.add(new Token(EOF, "", null, line));
+        tokens.add(new Token(TokenType.EOF, "", null, line));
         return tokens;
     }
 
@@ -47,10 +45,10 @@ class Scanner {
         Character c = advance();
         switch (c) {
             case '(':
-                addToken(LEFT_PAREN);
+                addToken(TokenType.LEFT_PAREN);
                 break;
             case ')':
-                addToken(RIGHT_PAREN);
+                addToken(TokenType.RIGHT_PAREN);
                 break;
 
             case ' ':
@@ -144,7 +142,7 @@ class Scanner {
 
         // Trim the surrounding quotes.
         String value = source.substring(start + 1, current - 1);
-        addToken(STRING, value);
+        addToken(TokenType.STRING, value);
     }
 
     /**
@@ -162,7 +160,7 @@ class Scanner {
         while (Character.isDigit(peek())) advance();
 
         Double value = Double.parseDouble(source.substring(start, current));
-        addToken(NUMBER, value);
+        addToken(TokenType.NUMBER, value);
     }
 
     /**
@@ -171,7 +169,7 @@ class Scanner {
      */
     private void addSymbol() {
         while (isSymbolic(peek()) && !isAtEnd()) advance();
-        addToken(SYMBOL, source.substring(start, current));
+        addToken(TokenType.SYMBOL, source.substring(start, current));
     }
 
     /**

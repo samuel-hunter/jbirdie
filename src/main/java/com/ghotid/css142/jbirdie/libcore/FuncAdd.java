@@ -1,10 +1,10 @@
-package org.ghotid.css142.birdie.libcore;
+package com.ghotid.css142.jbirdie.libcore;
 
-import org.ghotid.css142.birdie.LispEnvironment;
-import org.ghotid.css142.birdie.objects.ConsObject;
-import org.ghotid.css142.birdie.objects.FuncObject;
-import org.ghotid.css142.birdie.objects.LispObject;
-import org.ghotid.css142.birdie.objects.NumberObject;
+import com.ghotid.css142.jbirdie.objects.LispObject;
+import com.ghotid.css142.jbirdie.LispEnvironment;
+import com.ghotid.css142.jbirdie.objects.ConsObject;
+import com.ghotid.css142.jbirdie.objects.FuncObject;
+import com.ghotid.css142.jbirdie.objects.NumberObject;
 
 public class FuncAdd extends FuncObject {
 

@@ -1,6 +1,6 @@
-package org.ghotid.css142.birdie;
+package com.ghotid.css142.jbirdie;
 
-import org.ghotid.css142.birdie.objects.*;
+import com.ghotid.css142.jbirdie.objects.*;
 
 import java.util.ArrayDeque;
 import java.util.List;

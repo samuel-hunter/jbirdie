@@ -1,6 +1,6 @@
-package org.ghotid.css142.birdie.objects;
+package com.ghotid.css142.jbirdie.objects;
 
-import org.ghotid.css142.birdie.LispEnvironment;
+import com.ghotid.css142.jbirdie.LispEnvironment;
 
 import java.util.Iterator;
 

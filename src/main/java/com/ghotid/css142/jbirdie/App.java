@@ -1,7 +1,7 @@
-package org.ghotid.css142.birdie;
+package com.ghotid.css142.jbirdie;
 
-import org.ghotid.css142.birdie.libcore.FuncAdd;
-import org.ghotid.css142.birdie.libcore.FuncExit;
+import com.ghotid.css142.jbirdie.libcore.FuncExit;
+import com.ghotid.css142.jbirdie.libcore.FuncAdd;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,6 +1,4 @@
-package org.ghotid.css142.birdie.objects;
-
-import org.ghotid.css142.birdie.LispEnvironment;
+package com.ghotid.css142.jbirdie.objects;
 
 public class StringObject implements LispObject {
     private final String value;

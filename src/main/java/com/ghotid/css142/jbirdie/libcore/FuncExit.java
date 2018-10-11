@@ -1,7 +1,10 @@
-package org.ghotid.css142.birdie.libcore;
+package com.ghotid.css142.jbirdie.libcore;
 
-import org.ghotid.css142.birdie.LispEnvironment;
-import org.ghotid.css142.birdie.objects.*;
+import com.ghotid.css142.jbirdie.LispEnvironment;
+import com.ghotid.css142.jbirdie.objects.FuncObject;
+import com.ghotid.css142.jbirdie.objects.LispObject;
+import com.ghotid.css142.jbirdie.objects.NilObject;
+import com.ghotid.css142.jbirdie.objects.NumberObject;
 
 public class FuncExit extends FuncObject {
 
