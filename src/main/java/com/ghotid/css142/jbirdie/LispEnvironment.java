@@ -9,8 +9,10 @@ import java.util.Map;
 public class LispEnvironment {
     private final Map<String, LispObject> env = new HashMap<>();
 
-    void setVariable(String symbol, LispObject obj) {
+    public LispEnvironment setVariable(String symbol, LispObject obj) {
         env.put(symbol, obj);
+
+        return this;
     }
 
     public LispObject getVariable(String symbol) {

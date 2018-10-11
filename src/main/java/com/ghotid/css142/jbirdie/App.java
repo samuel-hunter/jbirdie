@@ -27,11 +27,7 @@ public class App {
         }
 
         LispEnvironment environment = new LispEnvironment();
-        environment.setVariable("+", new FuncAdd());
-        environment.setVariable("-", new FuncSubtract());
-        environment.setVariable("*", new FuncMultiply());
-        environment.setVariable("/", new FuncDivide());
-        environment.setVariable("exit", new FuncExit());
+        LibCoreEnvironmentInjector.injectInto(environment);
 
         if (args.length == 1)
             runFile(args[0], environment);

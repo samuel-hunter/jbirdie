@@ -1,7 +1,7 @@
 package com.ghotid.css142.jbirdie.libcore;
 
 import com.ghotid.css142.jbirdie.LispEnvironment;
-import com.ghotid.css142.jbirdie.exception.ArgumentNumberError;
+import com.ghotid.css142.jbirdie.exception.ArgumentNumberException;
 import com.ghotid.css142.jbirdie.objects.ConsList;
 import com.ghotid.css142.jbirdie.objects.FuncObject;
 import com.ghotid.css142.jbirdie.objects.LispObject;
@@ -13,7 +13,7 @@ public class FuncDivide implements FuncObject {
         int size = new ConsList(args).size();
 
         if (size == 0)
-            throw new ArgumentNumberError(0, "1+");
+            throw new ArgumentNumberException(0, "1+");
 
         Double quotient =
                 LispObject.cast(
