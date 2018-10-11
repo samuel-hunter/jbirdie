@@ -1,8 +1,10 @@
 package com.ghotid.css142.jbirdie;
 
+import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.LispException;
 import com.ghotid.css142.jbirdie.exception.LispExitException;
 import com.ghotid.css142.jbirdie.exception.ReaderException;
+import com.ghotid.css142.jbirdie.environment.LispEnvironment;
 import com.ghotid.css142.jbirdie.libcore.*;
 
 import java.io.BufferedReader;
@@ -43,7 +45,7 @@ public class App {
      * @param path path to the file.
      * @throws IOException if the file couldn't be read.
      */
-    private static void runFile(String path, LispEnvironment environment) throws IOException {
+    private static void runFile(String path, Environment environment) throws IOException {
         byte[] bytes = Files.readAllBytes(Paths.get(path));
         run(new String(bytes, Charset.defaultCharset()), environment);
     }
@@ -53,7 +55,7 @@ public class App {
      *
      * @throws IOException if stdin can't be read.
      */
-    private static void runPrompt(LispEnvironment environment) throws IOException {
+    private static void runPrompt(Environment environment) throws IOException {
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 
@@ -68,7 +70,7 @@ public class App {
      *
      * @param source raw source code.
      */
-    private static void run(String source, LispEnvironment environment) {
+    private static void run(String source, Environment environment) {
         try {
             Scanner scanner = new Scanner(source);
             List<Token> tokens = scanner.toTokens();
@@ -82,7 +84,6 @@ public class App {
         } catch (LispException e) {
             System.err.printf("%s: %s\n", e.getClass().getSimpleName(),
                     e.getMessage());
-            e.printStackTrace();
         }
     }
 }

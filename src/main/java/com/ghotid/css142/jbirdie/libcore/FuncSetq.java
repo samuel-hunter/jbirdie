@@ -5,26 +5,23 @@ import com.ghotid.css142.jbirdie.exception.ArgumentNumberException;
 import com.ghotid.css142.jbirdie.objects.*;
 
 /**
- * Third function required to implement a minimal lisp.
- * <p>
- * "eq" accepts two values. It returns the symbol "t" if they both point to the
- * same object; else, it returns nil.
+ * Take two functions: a symbol and a value. Define the symbol to the value.
  */
-public class FuncEq implements FuncObject {
+public class FuncSetq implements FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         ConsList argList = new ConsList(args);
         int size = argList.size();
-
         if (size != 2)
             throw new ArgumentNumberException(size, "2");
 
-        if (argList.get(0).evaluate(environment).equalsHard(
-                argList.get(1).evaluate(environment))) {
+        LispObject value = argList.get(1).evaluate(environment);
 
-            return environment.get("t");
-        } else {
-            return NilObject.getNil();
-        }
+        environment.set(
+                LispObject.cast(SymbolObject.class, argList.get(0)).getValue(),
+                value
+        );
+
+        return value;
     }
 }

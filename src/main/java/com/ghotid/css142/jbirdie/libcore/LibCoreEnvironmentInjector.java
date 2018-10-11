@@ -1,6 +1,6 @@
 package com.ghotid.css142.jbirdie.libcore;
 
-import com.ghotid.css142.jbirdie.LispEnvironment;
+import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.NilObject;
 import com.ghotid.css142.jbirdie.objects.SymbolObject;
 
@@ -8,24 +8,24 @@ public class LibCoreEnvironmentInjector {
     private LibCoreEnvironmentInjector() {
     }
 
-    public static void injectInto(LispEnvironment environment) {
-        environment
-                .setVariable("+", new FuncAdd())
-                .setVariable("-", new FuncSubtract())
-                .setVariable("*", new FuncMultiply())
-                .setVariable("/", new FuncDivide())
+    public static void injectInto(Environment env) {
+        env.set("+", new FuncAdd());
+        env.set("-", new FuncSubtract());
+        env.set("*", new FuncMultiply());
+        env.set("/", new FuncDivide());
 
-                .setVariable("quote", new FuncQuote())
-                .setVariable("atom", new FuncAtom())
-                .setVariable("eq", new FuncEq())
-                .setVariable("cons", new FuncCons())
-                .setVariable("cond", new FuncCond())
-                .setVariable("car", new FuncCar())
-                .setVariable("cdr", new FuncCdr())
+        env.set("quote", new FuncQuote());
+        env.set("atom", new FuncAtom());
+        env.set("eq", new FuncEq());
+        env.set("cons", new FuncCons());
+        env.set("cond", new FuncCond());
+        env.set("car", new FuncCar());
+        env.set("cdr", new FuncCdr());
 
-                .setVariable("t", new SymbolObject("t"))
-                .setVariable("nil", NilObject.getNil())
+        env.set("t", new SymbolObject("t"));
+        env.set("nil", NilObject.getNil());
 
-                .setVariable("exit", new FuncExit());
+        env.set("setq", new FuncSetq());
+        env.set("exit", new FuncExit());
     }
 }
