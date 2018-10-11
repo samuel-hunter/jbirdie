@@ -19,8 +19,8 @@ public class FuncEq implements FuncObject {
         if (size != 2)
             throw new ArgumentNumberException(size, "2");
 
-        if (argList.get(0).evaluate(environment) ==
-                argList.get(1).evaluate(environment)) {
+        if (argList.get(0).evaluate(environment).equalsHard(
+                argList.get(1).evaluate(environment))) {
 
             return environment.getVariable("t");
         } else {

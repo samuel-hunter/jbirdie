@@ -19,6 +19,12 @@ public class SymbolObject implements LispObject {
     }
 
     @Override
+    public boolean equalsHard(LispObject o) {
+        return o instanceof SymbolObject &&
+                ((SymbolObject) o).getValue().equals(symbol);
+    }
+
+    @Override
     public String toString() {
         return symbol;
     }
