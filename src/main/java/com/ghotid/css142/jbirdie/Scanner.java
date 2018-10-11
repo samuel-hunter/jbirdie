@@ -41,7 +41,7 @@ class Scanner {
     }
 
     /**
-     * Scan for the next token and add it to the token list.
+     * Scan for the next token and setFlat it to the token list.
      */
     private void scanToken() {
         Character c = advance();
@@ -123,7 +123,7 @@ class Scanner {
 
     /**
      * Assume the current character is the start of a quotation, parse the
-     * string, and add to the token list.
+     * string, and setFlat to the token list.
      */
     private void addString() {
         while (peek() != '"' && !isAtEnd()) {
@@ -146,7 +146,7 @@ class Scanner {
     }
 
     /**
-     * Assume the current character is a digit, parse the digit, and add to
+     * Assume the current character is a digit, parse the digit, and setFlat to
      * the token list.
      */
     private void addNumber() {
@@ -164,7 +164,7 @@ class Scanner {
     }
 
     /**
-     * Assume the current character is the start of a symbol and add it to
+     * Assume the current character is the start of a symbol and setFlat it to
      * the token list.
      */
     private void addSymbol() {

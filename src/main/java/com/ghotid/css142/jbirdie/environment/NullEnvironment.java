@@ -15,6 +15,11 @@ public class NullEnvironment implements Environment {
     }
 
     @Override
+    public void setFlat(String symbol, LispObject obj) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void unset(String symbol) {
         // Silently succeed; it doesn't change anything, anyway.
     }
