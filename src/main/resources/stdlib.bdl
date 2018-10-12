@@ -1,0 +1,17 @@
+(defconst null (lambda (x) (eq x nil)))
+
+(defconst assoc (lambda (key alist)
+    (cond
+        ((null alist) nil)
+        ((eq key (car (car alist))) (car alist))
+        (t (assoc key (cdr alist))))))
+
+;; Aliases for car, cdr
+(defconst first car)
+(defconst rest cdr)
+
+(defconst nth (lambda (index place)
+    (cond
+        ((null place) nil)
+        ((eq index 0) (car place))
+        (t (nth (- index 1) (cdr place))))))
