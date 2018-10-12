@@ -10,6 +10,7 @@ import com.ghotid.css142.jbirdie.objects.LispObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -32,6 +33,7 @@ public class App {
 
         LispEnvironment environment = new LispEnvironment();
         LibCoreEnvironmentInjector.injectInto(environment);
+        loadResource("/stdlib.bdl", environment);
 
         if (args.length == 1)
             runFile(args[0], environment);
@@ -39,6 +41,7 @@ public class App {
             runPrompt(environment);
 
         System.exit(exitCode);
+
     }
 
     public static Boolean getDebug() {
@@ -47,6 +50,15 @@ public class App {
 
     public static void setDebug(Boolean isDebugging) {
         App.isDebugging = isDebugging;
+    }
+
+    private static void loadResource(String path, Environment environment) {
+        InputStream is = App.class.getResourceAsStream(path);
+        if (is == null)
+            throw new RuntimeException("Resource doesn't exist.");
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        String source = s.hasNext() ? s.next() : "";
+        run(source, environment, false);
     }
 
     /**

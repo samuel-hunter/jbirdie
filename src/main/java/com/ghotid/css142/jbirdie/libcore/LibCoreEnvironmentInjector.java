@@ -25,6 +25,7 @@ public class LibCoreEnvironmentInjector {
         // Less important but still important lisp functions
         env.def("lambda", new FuncLambda(), true);
         env.def("macro", new FuncMacro(), true);
+        env.def("progn", new FuncProgn(), true);
 
         // Mathematical functions
         env.def("+", new FuncAdd(), true);

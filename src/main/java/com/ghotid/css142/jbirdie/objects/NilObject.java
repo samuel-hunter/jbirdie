@@ -1,7 +1,7 @@
 package com.ghotid.css142.jbirdie.objects;
 
 public class NilObject implements LispObject {
-    private static NilObject NIL = new NilObject();
+    private static final NilObject NIL = new NilObject();
 
     private NilObject() {
     }
