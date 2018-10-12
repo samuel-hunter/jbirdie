@@ -1,6 +1,5 @@
 package com.ghotid.css142.jbirdie.objects;
 
-import com.ghotid.css142.jbirdie.App;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.ArgumentNumberException;
 
@@ -9,14 +8,26 @@ import java.util.Iterator;
 public class LambdaObject implements FuncObject {
     private final ConsList lambdaParams;
     private final LispObject lambdaBody;
+    private final boolean isMacro;
 
-    public LambdaObject(LispObject lambdaParams, LispObject lambdaBody) {
+    /**
+     * @param lambdaParams A cons list of symbols representing parameters.
+     * @param lambdaBody   expression to evaluate.
+     * @param isMacro      whether to evaluate the arguments on .call().
+     */
+    public LambdaObject(LispObject lambdaParams, LispObject lambdaBody,
+                        boolean isMacro) {
         this.lambdaParams = new ConsList(lambdaParams);
         this.lambdaBody = lambdaBody;
+        this.isMacro = isMacro;
 
         // Verify the params are all symbols ahead of time.
         for (LispObject obj : this.lambdaParams)
             LispObject.cast(SymbolObject.class, obj);
+    }
+
+    public LambdaObject(LispObject lambdaParams, LispObject lambdaBody) {
+        this(lambdaParams, lambdaBody, false);
     }
 
     @Override
@@ -41,11 +52,25 @@ public class LambdaObject implements FuncObject {
                     SymbolObject.class,
                     paramIterator.next());
 
+            LispObject value = argIterator.next();
+            if (!isMacro)
+                value = value.evaluate(environment);
+
             lambdaEnvironment.setFlat(
                     symbol.getValue(),
-                    argIterator.next().evaluate(environment));
+                    value);
         }
 
-        return lambdaBody.evaluate(lambdaEnvironment);
+        LispObject result = lambdaBody.evaluate(lambdaEnvironment);
+        if (isMacro)
+            return result.evaluate(lambdaEnvironment);
+        else
+            return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "<%s 0x%h>", isMacro ? "MACRO" : "LAMBDA", hashCode());
     }
 }
