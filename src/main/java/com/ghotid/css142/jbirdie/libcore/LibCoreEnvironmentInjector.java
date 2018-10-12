@@ -29,7 +29,7 @@ public class LibCoreEnvironmentInjector {
 
         env.set("setq", new FuncSetq());
         env.set("unsetq", new FuncUnsetq());
-        env.set("setdebug", new FuncSetdebug());
+        env.set("debug", new FuncDebug());
         env.set("exit", new FuncExit());
     }
 }
