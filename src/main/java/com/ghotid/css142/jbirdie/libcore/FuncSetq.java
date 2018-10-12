@@ -15,13 +15,16 @@ public class FuncSetq implements FuncObject {
         if (size != 2)
             throw new ArgumentNumberException(size, "2");
 
+        SymbolObject symbol = LispObject.cast(
+                SymbolObject.class, args.getCar());
+
         LispObject value = argList.get(1).evaluate(environment);
 
         environment.set(
-                LispObject.cast(SymbolObject.class, argList.get(0)).getValue(),
+                symbol.getValue(),
                 value
         );
 
-        return value;
+        return symbol;
     }
 }
