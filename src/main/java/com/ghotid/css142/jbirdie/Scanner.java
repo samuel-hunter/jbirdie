@@ -52,6 +52,9 @@ class Scanner {
             case ')':
                 addToken(TokenType.RIGHT_PAREN);
                 break;
+            case '\'':
+                addToken(TokenType.QUOTE);
+                break;
 
             case ' ':
             case '\r':
