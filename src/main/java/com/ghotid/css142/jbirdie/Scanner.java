@@ -9,7 +9,7 @@ import java.util.List;
  * Scanner for the code's source.
  */
 class Scanner {
-    private static final String unsymbolicChars = "()'\"";
+    private static final String unsymbolicChars = ";()'\"";
     private final String source;
     private final List<Token> tokens = new ArrayList<>();
 
@@ -56,6 +56,11 @@ class Scanner {
                 addToken(TokenType.QUOTE);
                 break;
 
+            case ';':
+                if (peek() == ';')
+                    skipLine();
+                break;
+
             case ' ':
             case '\r':
             case '\t':
@@ -81,6 +86,14 @@ class Scanner {
                             String.format("Unexpected character: '%c'.", c));
                 }
         }
+    }
+
+    private void skipLine() {
+        Character c;
+        do {
+            c = advance();
+        } while (c != '\n' && !isAtEnd());
+        line++;
     }
 
     /**
