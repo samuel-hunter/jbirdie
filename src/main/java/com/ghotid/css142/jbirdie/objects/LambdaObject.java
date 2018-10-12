@@ -56,9 +56,7 @@ public class LambdaObject implements FuncObject {
             if (!isMacro)
                 value = value.evaluate(environment);
 
-            lambdaEnvironment.setFlat(
-                    symbol.getValue(),
-                    value);
+            lambdaEnvironment.def(symbol.getValue(), value, false);
         }
 
         LispObject result = lambdaBody.evaluate(lambdaEnvironment);
