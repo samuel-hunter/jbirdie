@@ -14,6 +14,11 @@ class Parser {
         this.tokens = new ArrayDeque<>(tokens);
     }
 
+    boolean hasNext() {
+        return tokens.peek() != null &&
+                tokens.peek().getType() != TokenType.EOF;
+    }
+
     LispObject nextObject() {
         Token tok = tokens.remove();
 

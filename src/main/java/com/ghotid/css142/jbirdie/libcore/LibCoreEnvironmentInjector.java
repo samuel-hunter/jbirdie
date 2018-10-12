@@ -9,11 +9,7 @@ public class LibCoreEnvironmentInjector {
     }
 
     public static void injectInto(Environment env) {
-        env.def("+", new FuncAdd(), true);
-        env.def("-", new FuncSubtract(), true);
-        env.def("*", new FuncMultiply(), true);
-        env.def("/", new FuncDivide(), true);
-
+        // Core lisp functions
         env.def("quote", new FuncQuote(), true);
         env.def("atom", new FuncAtom(), true);
         env.def("eq", new FuncEq(), true);
@@ -22,14 +18,27 @@ public class LibCoreEnvironmentInjector {
         env.def("car", new FuncCar(), true);
         env.def("cdr", new FuncCdr(), true);
 
-        env.def("lambda", new FuncLambda(), true);
-        env.def("macro", new FuncMacro(), true);
-
+        // Constants
         env.def("t", new SymbolObject("t"), true);
         env.def("nil", NilObject.getNil(), true);
 
+        // Less important but still important lisp functions
+        env.def("lambda", new FuncLambda(), true);
+        env.def("macro", new FuncMacro(), true);
+
+        // Mathematical functions
+        env.def("+", new FuncAdd(), true);
+        env.def("-", new FuncSubtract(), true);
+        env.def("*", new FuncMultiply(), true);
+        env.def("/", new FuncDivide(), true);
+
+        // State-changing methods
         env.def("setq", new FuncSetq(), true);
         env.def("unsetq", new FuncUnsetq(), true);
+        env.def("defvar", new FuncDefvar(), true);
+        env.def("defconst", new FuncDefconst(), true);
+
+        // Interpreter or system methods
         env.def("debug", new FuncDebug(), true);
         env.def("exit", new FuncExit(), true);
     }

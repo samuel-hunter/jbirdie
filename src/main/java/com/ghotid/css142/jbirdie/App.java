@@ -1,11 +1,12 @@
 package com.ghotid.css142.jbirdie;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
+import com.ghotid.css142.jbirdie.environment.LispEnvironment;
 import com.ghotid.css142.jbirdie.exception.LispException;
 import com.ghotid.css142.jbirdie.exception.LispExitException;
 import com.ghotid.css142.jbirdie.exception.ReaderException;
-import com.ghotid.css142.jbirdie.environment.LispEnvironment;
-import com.ghotid.css142.jbirdie.libcore.*;
+import com.ghotid.css142.jbirdie.libcore.LibCoreEnvironmentInjector;
+import com.ghotid.css142.jbirdie.objects.LispObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,7 +57,7 @@ public class App {
      */
     private static void runFile(String path, Environment environment) throws IOException {
         byte[] bytes = Files.readAllBytes(Paths.get(path));
-        run(new String(bytes, Charset.defaultCharset()), environment);
+        run(new String(bytes, Charset.defaultCharset()), environment, false);
     }
 
     /**
@@ -70,7 +71,7 @@ public class App {
 
         while (isContinuing) {
             System.out.print("> ");
-            run(reader.readLine(), environment);
+            run(reader.readLine(), environment, true);
         }
     }
 
@@ -79,12 +80,18 @@ public class App {
      *
      * @param source raw source code.
      */
-    private static void run(String source, Environment environment) {
+    private static void run(String source, Environment environment,
+                            Boolean isRepl) {
         try {
             Scanner scanner = new Scanner(source);
             List<Token> tokens = scanner.toTokens();
             Parser parser = new Parser(tokens);
-            System.out.println(parser.nextObject().evaluate(environment));
+
+            while (parser.hasNext()) {
+                LispObject result = parser.nextObject().evaluate(environment);
+                if (isRepl)
+                    System.out.println(result);
+            }
         } catch (ReaderException e) {
             System.err.printf("[Line %d] %s\n", e.getLine(), e.getMessage());
             if (isDebugging)
