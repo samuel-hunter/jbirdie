@@ -23,6 +23,7 @@ public class LibCoreEnvironmentInjector {
         env.set("cdr", new FuncCdr());
 
         env.set("lambda", new FuncLambda());
+        env.set("macro", new FuncMacro());
 
         env.set("t", new SymbolObject("t"));
         env.set("nil", NilObject.getNil());
