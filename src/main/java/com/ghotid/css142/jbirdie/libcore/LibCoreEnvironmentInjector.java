@@ -9,28 +9,28 @@ public class LibCoreEnvironmentInjector {
     }
 
     public static void injectInto(Environment env) {
-        env.set("+", new FuncAdd());
-        env.set("-", new FuncSubtract());
-        env.set("*", new FuncMultiply());
-        env.set("/", new FuncDivide());
+        env.def("+", new FuncAdd(), true);
+        env.def("-", new FuncSubtract(), true);
+        env.def("*", new FuncMultiply(), true);
+        env.def("/", new FuncDivide(), true);
 
-        env.set("quote", new FuncQuote());
-        env.set("atom", new FuncAtom());
-        env.set("eq", new FuncEq());
-        env.set("cons", new FuncCons());
-        env.set("cond", new FuncCond());
-        env.set("car", new FuncCar());
-        env.set("cdr", new FuncCdr());
+        env.def("quote", new FuncQuote(), true);
+        env.def("atom", new FuncAtom(), true);
+        env.def("eq", new FuncEq(), true);
+        env.def("cons", new FuncCons(), true);
+        env.def("cond", new FuncCond(), true);
+        env.def("car", new FuncCar(), true);
+        env.def("cdr", new FuncCdr(), true);
 
-        env.set("lambda", new FuncLambda());
-        env.set("macro", new FuncMacro());
+        env.def("lambda", new FuncLambda(), true);
+        env.def("macro", new FuncMacro(), true);
 
-        env.set("t", new SymbolObject("t"));
-        env.set("nil", NilObject.getNil());
+        env.def("t", new SymbolObject("t"), true);
+        env.def("nil", NilObject.getNil(), true);
 
-        env.set("setq", new FuncSetq());
-        env.set("unsetq", new FuncUnsetq());
-        env.set("debug", new FuncDebug());
-        env.set("exit", new FuncExit());
+        env.def("setq", new FuncSetq(), true);
+        env.def("unsetq", new FuncUnsetq(), true);
+        env.def("debug", new FuncDebug(), true);
+        env.def("exit", new FuncExit(), true);
     }
 }

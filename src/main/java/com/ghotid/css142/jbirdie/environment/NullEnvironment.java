@@ -16,7 +16,7 @@ public class NullEnvironment implements Environment {
     }
 
     @Override
-    public void setFlat(String symbol, LispObject obj) {
+    public void def(String symbol, LispObject obj, boolean isConstant) {
         throw new UnsupportedOperationException();
     }
 
