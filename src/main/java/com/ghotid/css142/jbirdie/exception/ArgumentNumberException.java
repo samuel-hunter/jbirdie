@@ -1,6 +1,10 @@
 package com.ghotid.css142.jbirdie.exception;
 
 public class ArgumentNumberException extends LispException {
+    public ArgumentNumberException(Integer given, Integer expected) {
+        this(given, expected.toString());
+    }
+
     public ArgumentNumberException(Integer given, String expected) {
         super(String.format(
                 "Wrong number of arguments (given %d, expected %s).",

@@ -1,5 +1,7 @@
 package com.ghotid.css142.jbirdie.objects;
 
+import com.ghotid.css142.jbirdie.exception.ArgumentNumberException;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +12,30 @@ public class ConsList implements List<LispObject> {
 
     public ConsList(LispObject list) {
         this.list = list;
+    }
+
+    public void assertSizeEquals(int expected) {
+        int actual = size();
+        if (expected != actual)
+            throw new ArgumentNumberException(actual, expected);
+    }
+
+    public int assertSizeAtLeast(int minimum) {
+        int actual = size();
+        if (minimum > actual)
+            throw new ArgumentNumberException(actual, minimum + "+");
+
+        return actual;
+    }
+
+    public int assertSizeWithin(int minimum, int maximum) {
+        int actual = size();
+        if (minimum > actual || maximum < actual) {
+            throw new ArgumentNumberException(actual,
+                    minimum + ".." + maximum);
+        }
+
+        return actual;
     }
 
     @Override

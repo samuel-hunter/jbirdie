@@ -6,6 +6,9 @@ import com.ghotid.css142.jbirdie.objects.FuncObject;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 import com.ghotid.css142.jbirdie.objects.NumberObject;
 
+/**
+ * Calculate the product of all given numbers.
+ */
 public class FuncMultiply implements FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
