@@ -1,7 +1,6 @@
 package com.ghotid.css142.jbirdie.libcore;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
-import com.ghotid.css142.jbirdie.exception.ArgumentNumberException;
 import com.ghotid.css142.jbirdie.objects.ConsList;
 import com.ghotid.css142.jbirdie.objects.FuncObject;
 import com.ghotid.css142.jbirdie.objects.LispObject;
@@ -21,9 +20,7 @@ public class FuncCond implements FuncObject {
     public LispObject call(Environment environment, LispObject args) {
         for (LispObject obj : new ConsList(args)) {
             ConsList pair = new ConsList(obj);
-            int size = pair.size();
-            if (size != 2)
-                throw new ArgumentNumberException(size, "2");
+            pair.assertSizeEquals(2);
 
             LispObject conditional = pair.get(0).evaluate(environment);
             if (conditional.isTruthy())

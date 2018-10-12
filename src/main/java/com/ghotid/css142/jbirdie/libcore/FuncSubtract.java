@@ -1,7 +1,6 @@
 package com.ghotid.css142.jbirdie.libcore;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
-import com.ghotid.css142.jbirdie.exception.ArgumentNumberException;
 import com.ghotid.css142.jbirdie.objects.FuncObject;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 import com.ghotid.css142.jbirdie.objects.ConsList;
@@ -11,10 +10,7 @@ public class FuncSubtract implements FuncObject {
 
     @Override
     public LispObject call(Environment environment, LispObject args) {
-        int size = new ConsList(args).size();
-
-        if (size == 0)
-            throw new ArgumentNumberException(0, "1+");
+        int size = new ConsList(args).assertSizeAtLeast(1);
 
         Double value =
                 LispObject.cast(
