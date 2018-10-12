@@ -30,6 +30,14 @@ class Parser {
                 return new StringObject((String) tok.getLiteral());
             case NUMBER:
                 return new NumberObject((Double) tok.getLiteral());
+            case QUOTE:
+                return new ConsObject(
+                        new SymbolObject("quote"),
+                        new ConsObject(
+                                nextObject(),
+                                NilObject.getNil()
+                        )
+                );
             case EOF:
                 throw new ReaderException(tok.getLine(), "End of file.");
         }
