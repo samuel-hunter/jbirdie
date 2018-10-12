@@ -28,6 +28,7 @@ public class LibCoreEnvironmentInjector {
         env.set("nil", NilObject.getNil());
 
         env.set("setq", new FuncSetq());
+        env.set("unsetq", new FuncUnsetq());
         env.set("setdebug", new FuncSetdebug());
         env.set("exit", new FuncExit());
     }

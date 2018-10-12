@@ -1,5 +1,6 @@
 package com.ghotid.css142.jbirdie.environment;
 
+import com.ghotid.css142.jbirdie.exception.UndefinedSymbolException;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
 import java.util.HashMap;
@@ -34,7 +35,10 @@ public class LispEnvironment implements Environment {
 
     @Override
     public void unset(String symbol) {
-        symbolMap.remove(symbol);
+        if (symbolMap.containsKey(symbol))
+            symbolMap.remove(symbol);
+        else
+            throw new UndefinedSymbolException(symbol);
     }
 
     @Override
