@@ -33,6 +33,10 @@ public class LibCoreEnvironmentInjector {
         env.def("*", new FuncMultiply(), true);
         env.def("/", new FuncDivide(), true);
 
+        env.def("<", new FuncLess(), true);
+        env.def(">", new FuncGreater(), true);
+        env.def("=", new FuncEq(), true);
+
         // State-changing methods
         env.def("setq", new FuncSetq(), true);
         env.def("unsetq", new FuncUnsetq(), true);
