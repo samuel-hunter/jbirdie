@@ -233,4 +233,9 @@ public class ConsList implements List<LispObject> {
     public List<LispObject> subList(int i, int i1) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public String toString() {
+        return list.toString();
+    }
 }

@@ -41,11 +41,15 @@ public class LibCoreEnvironmentInjector {
         env.def("read-line", new FuncReadLine(), true);
         env.def("read-number", new FuncReadNumber(), true);
 
+        // Control flow methods.
+        env.def("while", new FuncWhile(), true);
+
         // State-changing methods
         env.def("setq", new FuncSetq(), true);
         env.def("unsetq", new FuncUnsetq(), true);
         env.def("defvar", new FuncDefvar(), true);
         env.def("defconst", new FuncDefconst(), true);
+        env.def("defun", new FuncDefun(), true);
 
         // Interpreter or system methods
         env.def("debug", new FuncDebug(), true);

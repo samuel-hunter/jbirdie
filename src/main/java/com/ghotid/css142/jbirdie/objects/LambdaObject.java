@@ -68,7 +68,8 @@ public class LambdaObject implements FuncObject {
 
     @Override
     public String toString() {
-        return String.format(
-                "<%s 0x%h>", isMacro ? "MACRO" : "LAMBDA", hashCode());
+        return String.format("(lambda %s\n\t%s)",
+                lambdaParams,
+                lambdaBody);
     }
 }
