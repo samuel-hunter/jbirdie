@@ -1,17 +1,73 @@
-(defun null (x) (eq x nil))
-
-(defun assoc (key alist)
+;; Binary NOT
+(defun not (Cond)
     (cond
-        ((null alist) nil)
-        ((eq key (car (car alist))) (car alist))
-        (t (assoc key (cdr alist)))))
+        (Cond nil)
+        (t t)))
+
+;; Binary OR
+(defun or (CondA CondB)
+    (cond
+        (CondA t)
+        (CondB t)))
+
+;; Binary AND
+(defun and (CondA CondB)
+    (cond
+        (CondA (cond
+                   (CondB t)))))
+
+
+;; car, cdr utility functions
+(defun caar (X)
+    (car (car X)))
+
+(defun cadr (X)
+    (car (cdr X)))
+
+(defun cdar (X)
+    (cdr (car X)))
+
+(defun cddr (X)
+    (cdr (cdr X)))
+
+;; Return whether the value is nil.
+(defun null (X) (eq X nil))
+
+(defun assoc (Key Alist)
+    (cond
+        ((null Alist) nil)
+        ((eq Key (caar Alist)) (car Alist))
+        (t (assoc Key (cdr Alist)))))
 
 ;; Aliases for car, cdr
 (defconst first car)
 (defconst rest cdr)
 
-(defun nth (index place)
+(defun +1 (X)
+    (+ X 1))
+
+(defun -1 (X)
+    (- X 1))
+
+;; Return the nth element of a list
+(defun nth (Index List)
     (cond
-        ((null place) nil)
-        ((eq index 0) (car place))
-        (t (nth (- index 1) (cdr place)))))
+        ((null List) nil)
+        ((eq Index 0) (first List))
+        (t (nth (-1 Index) (rest List)))))
+
+;; Calculate the size of a list
+(defun size (List)
+    (defun size-iter (List Size)
+        (cond
+            ((null List) Size)
+            (t (size-iter (rest List) (+1 Size)))))
+
+    (size-iter List 0))
+
+;; Return whether an element is a member of a list.
+(defun member (Elem List)
+    (cond
+        ((null List) nil)
+        ((eq Elem (first List)) t)
+        (t (member (Elem (rest List))))))
