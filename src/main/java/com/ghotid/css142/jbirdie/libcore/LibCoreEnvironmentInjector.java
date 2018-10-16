@@ -37,6 +37,10 @@ public class LibCoreEnvironmentInjector {
         env.def(">", new FuncGreater(), true);
         env.def("=", new FuncEq(), true);
 
+        // I/O Functions
+        env.def("read-line", new FuncReadLine(), true);
+        env.def("read-number", new FuncReadNumber(), true);
+
         // State-changing methods
         env.def("setq", new FuncSetq(), true);
         env.def("unsetq", new FuncUnsetq(), true);
