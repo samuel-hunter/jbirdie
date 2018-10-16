@@ -1,14 +1,17 @@
 package com.ghotid.css142.jbirdie.libcore;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
+import com.ghotid.css142.jbirdie.environment.LispEnvironment;
 import com.ghotid.css142.jbirdie.objects.NilObject;
 import com.ghotid.css142.jbirdie.objects.SymbolObject;
 
-public class LibCoreEnvironmentInjector {
-    private LibCoreEnvironmentInjector() {
+public class LibCoreEnvironmentFactory {
+    private LibCoreEnvironmentFactory() {
     }
 
-    public static void injectInto(Environment env) {
+    public static Environment create() {
+        Environment env = new LispEnvironment();
+
         // Core lisp functions
         env.def("quote", new FuncQuote(), true);
         env.def("atom", new FuncAtom(), true);
@@ -37,6 +40,9 @@ public class LibCoreEnvironmentInjector {
         env.def(">", new FuncGreater(), true);
         env.def("=", new FuncEq(), true);
 
+        // String Functions
+        env.def("concat", new FuncConcat(), true);
+
         // I/O Functions
         env.def("read-line", new FuncReadLine(), true);
         env.def("read-number", new FuncReadNumber(), true);
@@ -54,5 +60,7 @@ public class LibCoreEnvironmentInjector {
         // Interpreter or system methods
         env.def("debug", new FuncDebug(), true);
         env.def("exit", new FuncExit(), true);
+
+        return env;
     }
 }

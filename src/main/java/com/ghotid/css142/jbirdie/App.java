@@ -1,11 +1,10 @@
 package com.ghotid.css142.jbirdie;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
-import com.ghotid.css142.jbirdie.environment.LispEnvironment;
 import com.ghotid.css142.jbirdie.exception.LispException;
 import com.ghotid.css142.jbirdie.exception.LispExitException;
 import com.ghotid.css142.jbirdie.exception.ReaderException;
-import com.ghotid.css142.jbirdie.libcore.LibCoreEnvironmentInjector;
+import com.ghotid.css142.jbirdie.libcore.LibCoreEnvironmentFactory;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
 import java.io.BufferedReader;
@@ -31,12 +30,11 @@ public class App {
             System.exit(1);
         }
 
-        LispEnvironment environment = new LispEnvironment();
-        LibCoreEnvironmentInjector.injectInto(environment);
+        Environment environment = LibCoreEnvironmentFactory.create();
         loadResource("/stdlib.bdl", environment);
 
         if (args.length == 1)
-            runFile(args[0], environment);
+            loadFile(args[0], environment);
         else
             runPrompt(environment);
 
@@ -67,9 +65,10 @@ public class App {
      * @param path path to the file.
      * @throws IOException if the file couldn't be read.
      */
-    private static void runFile(String path, Environment environment) throws IOException {
+    private static void loadFile(String path, Environment environment) throws IOException {
         byte[] bytes = Files.readAllBytes(Paths.get(path));
-        run(new String(bytes, Charset.defaultCharset()), environment, false);
+        run(new String(bytes, Charset.defaultCharset()),
+                environment.pushStack(), false);
     }
 
     /**
@@ -83,7 +82,7 @@ public class App {
 
         while (isContinuing) {
             System.out.print("> ");
-            run(reader.readLine(), environment, true);
+            run(reader.readLine(), environment.pushStack(), true);
         }
     }
 
