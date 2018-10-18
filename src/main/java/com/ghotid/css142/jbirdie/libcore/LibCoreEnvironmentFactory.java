@@ -31,6 +31,7 @@ public class LibCoreEnvironmentFactory {
         env.def("lambda", new FuncLambda(), true);
         env.def("macro", new FuncMacro(), true);
         env.def("progn", new FuncProgn(), true);
+        env.def("list", new FuncList(), true);
 
         // Mathematical functions
         env.def("+", new FuncAdd(), true);
@@ -56,6 +57,7 @@ public class LibCoreEnvironmentFactory {
 
         // Control flow methods.
         env.def("while", new FuncWhile(), true);
+        env.def("foreach", new FuncForeach(), true);
 
         // State-changing methods
         env.def("setq", new FuncSetq(), true);

@@ -1,6 +1,8 @@
 ;;; choose-your-bonus.bdl - example of HW1 in Birdie Lisp.
 
 ;; Constants
+;; Workaround: there's as of yet no way to define constants (will be `defconst`
+;; in the future), so use defvar for now.
 (defvar *min-salary* 15080)
 (defvar *max-salary* 470000)
 
@@ -12,18 +14,19 @@
 
 ;; An example of using lambdas to dynamically select a method.
 (defvar *options*
-    '((lambda (Salary)
-           ;; $5,000 annual bonus.
-           (+ (* 3 Salary) (* 2 5000)))
-      (lambda (Salary)
-           ;; 10% annual bonus.
-           (* 3.2 Salary))
-      (lambda (Salary)
-           ;; 3% salary increase each year.
-           (+
-            Salary
-            (* 1.03 Salary)
-            (* 1.03 1.03 Salary)))))
+        (list
+         (lambda (Salary)
+              ;; $5,000 annual bonus.
+              (+ (* 3 Salary)
+                 (* 2 5000)))
+         (lambda (Salary)
+              ;; 10% annual bonus.
+              (* 3.2 Salary))
+         (lambda (Salary)
+              ;; 3% salary increase each year.
+              (+ Salary
+                 (* 1.03 Salary)
+                 (* 1.03 1.03 Salary)))))
 
 ;; Prompt the user and use the given function. Example of using functions as a
 ;; first-class values by passing it in the function.
@@ -32,7 +35,7 @@
     (Promptfn))
 
 ;; Return true when a value is between a minimum and maximum.
-(defun between? (Min Value Max)
+(defun within? (Min Value Max)
     (<= Min Value Max))
 
 ;; Prompt the user for a valid salary.
@@ -40,13 +43,14 @@
     ;; Example of a nested function, visible only to the outer function.
     (defun salary-valid? (Salary)
         ;; return true if the salary is between the max and min.
-        (between? *min-salary* Salary *max-salary*))
+        (within? *min-salary* Salary *max-salary*))
 
     ;; Set the salary to a naturally invalid number.
     ;; Quirk: `-1` is a symbol, since it doesn't start with a number literal.
+    ;; Use the function `-` instead to create a negative number.
     (defvar Salary (- 1))
     (while (not (salary-valid? Salary))
-        (setq Salary (prompt "Salary: " read-number))
+        (setq Salary (prompt "What's your current base salary? $" read-number))
         ;; Workaround: there is no `if` or `unless` defined yet, so use the
         ;;  low-level `cond` instead.
         (cond
@@ -56,16 +60,44 @@
      ;; Return the salary.
      Salary)
 
+;; Similar type of input validation. I /could/ generalize it to accept any
+;; series of options, but I'm only using it for one set of options, so I won't
+;; for this project.
+(defun prompt-option ()
+    (defvar OptionSize (size *option-names*))
+    (defun option-valid? (Option)
+        (within? 1 Option OptionSize))
+
+    (println "How would you like to be rewarded for the next 3 years?")
+    (foreach (Option *option-names*)
+        (println Option))
+
+    ;; Set the option to a naturally invalid number.
+    (defvar UserOption (- 1))
+    (while (not (option-valid? UserOption))
+        (setq UserOption (prompt "> " read-number))
+        (cond
+            ((not (option-valid? UserOption))
+             (println "Choose a valid option!"))))
+
+    ;; Return the option converted from the user input.
+    (nth (-1 UserOption) *options*)) ; decrement by 1.
+
 
 (defun start ()
-    (defvar Fname (prompt "First name: " read-line))
-    (defvar Lname (prompt "Last name: " read-line))
+    (defvar Fname (prompt "What's your first name? " read-line))
+    (defvar Lname (prompt "What's your last name? " read-line))
     (defvar Salary (prompt-salary))
 
-    (println (concat "Hello, " Fname " " Lname "!"))
-    ;; Workaround: `concat` doesn't naturally convert values into strings yet,
-    ;;  to use `to-string` manually for now.
-    (println (concat "You have $" (to-string Salary) "."))
+    ;; Example of using a function as a value.
+    (defvar Earnings ((prompt-option) Salary))
+
+    ;; Print the result.
+    (println (concat "Hello, " Fname " " Lname))
+    (println (concat "Your salary is " (to-string Salary) "."))
+    (println (concat
+              "After 3 years, you would earn a total of $"
+              (to-string Earnings)))
 )
 
 (start)
