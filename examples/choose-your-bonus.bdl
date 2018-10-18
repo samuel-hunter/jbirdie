@@ -1,4 +1,5 @@
-;;; choose-your-bonus.bdl - example of HW1 in Birdie Lisp.
+;;; choose-your-bonus.bdl - example of HW1 in Birdie Lisp, except with input
+;;   validation.
 
 ;; Constants
 ;; Workaround: there's as of yet no way to define constants (will be `defconst`
