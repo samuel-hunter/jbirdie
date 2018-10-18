@@ -32,6 +32,14 @@ public class ConsObject implements LispObject {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ConsObject)) return false;
+        ConsObject value = (ConsObject) obj;
+
+        return car.equals(value.car) && cdr.equals(value.cdr);
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append('(').append(car.toString());

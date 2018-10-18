@@ -17,6 +17,12 @@ public class StringObject implements LispObject {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof StringObject)) return false;
+        return value.equals(((StringObject) obj).value);
+    }
+
+    @Override
     public String toString() {
         return '"' + value + '"';
     }

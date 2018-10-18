@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Birdie" />
         <module name="jBirdie" />
+        <module name="jbirdie" />
       </profile>
     </annotationProcessing>
   </component>

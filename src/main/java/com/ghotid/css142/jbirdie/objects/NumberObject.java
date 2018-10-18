@@ -13,9 +13,9 @@ public class NumberObject implements LispObject {
     }
 
     @Override
-    public boolean equalsHard(LispObject o) {
-        return (o instanceof NumberObject) &&
-                ((NumberObject) o).getValue().equals(value);
+    public boolean equals(Object obj) {
+        if (!(obj instanceof NumberObject)) return false;
+        return value.equals(((NumberObject) obj).value);
     }
 
     @Override

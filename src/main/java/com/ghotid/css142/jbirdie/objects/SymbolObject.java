@@ -19,9 +19,9 @@ public class SymbolObject implements LispObject {
     }
 
     @Override
-    public boolean equalsHard(LispObject o) {
-        return o instanceof SymbolObject &&
-                ((SymbolObject) o).getValue().equals(symbol);
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SymbolObject)) return false;
+        return symbol.equals(((SymbolObject) obj).symbol);
     }
 
     @Override
