@@ -6,27 +6,24 @@
 (defvar *min-salary* 15080)
 (defvar *max-salary* 470000)
 
-;; An example of defining a list by using the quote shorthand.
-(defvar *option-names*
-    '("Option 1: $5,000 annual bonus (no pay increase)"
-      "Option 2: 10% annual bonus based on salary (no pay increase)"
-      "Option 3: 3% salary increase every year (no bonus)"))
-
-;; An example of using lambdas to dynamically select a method.
+;; An example of an association list, or "a-list": a list of pairs; each pair
+;;  is an association. Often, the "car" (or first) of each pair is the key, and
+;;  the "cdr" is the value. In this case, the car is the option name, and the
+;;  cdr is the method to calculate the earnings for three years.
 (defvar *options*
-        (list
-         (lambda (Salary)
-              ;; $5,000 annual bonus.
-              (+ (* 3 Salary)
-                 (* 2 5000)))
-         (lambda (Salary)
-              ;; 10% annual bonus.
-              (* 3.2 Salary))
-         (lambda (Salary)
-              ;; 3% salary increase each year.
-              (+ Salary
-                 (* 1.03 Salary)
-                 (* 1.03 1.03 Salary)))))
+    (list
+        (cons "Option 1: $5,000 annual bonus (no pay increase)"
+              (lambda (Salary)
+                   (+ (* 3 Salary)
+                      (* 2 5000))))
+        (cons "Option 2: 10% annual bonus based on salary (no pay increase)"
+              (lambda (Salary)
+                   (* 3.2 Salary)))
+        (cons "Option 3: 3% salary increase each year (no bonus)"
+              (lambda (Salary)
+                   (+ Salary
+                      (* 1.03 Salary)
+                      (* 1.03 1.03 Salary))))))
 
 ;; Prompt the user and use the given function. Example of using functions as a
 ;; first-class values by passing it in the function.
@@ -64,13 +61,14 @@
 ;; series of options, but I'm only using it for one set of options, so I won't
 ;; for this project.
 (defun prompt-option ()
-    (defvar OptionSize (size *option-names*))
+    (defvar OptionSize (size *options*))
     (defun option-valid? (Option)
         (within? 1 Option OptionSize))
 
+    ;; List all options for the user.
     (println "How would you like to be rewarded for the next 3 years?")
-    (foreach (Option *option-names*)
-        (println Option))
+    (foreach (Option *options*)
+        (println (car Option)))
 
     ;; Set the option to a naturally invalid number.
     (defvar UserOption (- 1))
@@ -89,12 +87,15 @@
     (defvar Lname (prompt "What's your last name? " read-line))
     (defvar Salary (prompt-salary))
 
+    ;; Prompt the options
+    (defvar Option (prompt-option))
+
     ;; Example of using a function as a value.
-    (defvar Earnings ((prompt-option) Salary))
+    (defvar Earnings ((cdr Option) Salary))
 
     ;; Print the result.
     (println (concat "Hello, " Fname " " Lname))
-    (println (concat "Your salary is " (to-string Salary) "."))
+    (println (concat "You chose " (car Option)))
     (println (concat
               "After 3 years, you would earn a total of $"
               (to-string Earnings)))
