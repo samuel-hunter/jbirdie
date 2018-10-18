@@ -39,8 +39,10 @@ public class LibCoreEnvironmentFactory {
         env.def("/", new FuncDivide(), true);
 
         env.def("<", new FuncLess(), true);
-        env.def(">", new FuncGreater(), true);
+        env.def("<=", new FuncLessEqual(), true);
         env.def("=", new FuncEq(), true);
+        env.def(">", new FuncGreater(), true);
+        env.def(">=", new FuncGreaterEqual(), true);
 
         // String Functions
         env.def("concat", new FuncConcat(), true);
