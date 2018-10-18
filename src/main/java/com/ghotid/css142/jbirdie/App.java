@@ -30,8 +30,9 @@ public class App {
             System.exit(1);
         }
 
-        Environment environment = LibCoreEnvironmentFactory.create();
-        loadResource("/stdlib.bdl", environment);
+        // Push a stack to separate the core/stdlib functions from the user's
+        // state.
+        Environment environment = createStandardEnvironment().pushStack();
 
         if (args.length == 1)
             loadFile(args[0], environment);
@@ -40,6 +41,12 @@ public class App {
 
         System.exit(exitCode);
 
+    }
+
+    private static Environment createStandardEnvironment() {
+        Environment environment = LibCoreEnvironmentFactory.create();
+        loadResource("/stdlib.bdl", environment);
+        return environment;
     }
 
     public static Boolean getDebug() {

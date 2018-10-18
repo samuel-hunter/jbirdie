@@ -57,8 +57,7 @@ class Scanner {
                 break;
 
             case ';':
-                if (peek() == ';')
-                    skipLine();
+                skipLine();
                 break;
 
             case ' ':
