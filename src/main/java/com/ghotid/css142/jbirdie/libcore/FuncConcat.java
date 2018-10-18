@@ -17,7 +17,7 @@ public class FuncConcat implements FuncObject {
         for (LispObject obj : new ConsList(args)) {
             StringObject str = LispObject.cast(
                     StringObject.class,
-                    obj
+                    obj.evaluate(environment)
             );
 
             sb.append(str.getValue());

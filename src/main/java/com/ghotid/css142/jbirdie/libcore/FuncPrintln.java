@@ -16,7 +16,7 @@ public class FuncPrintln implements FuncObject {
         new ConsList(args).assertSizeEquals(1);
         StringObject string = LispObject.cast(
                 StringObject.class,
-                args.getCar()
+                args.getCar().evaluate(environment)
         );
 
         System.out.println(string.getValue());
