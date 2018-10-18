@@ -15,7 +15,7 @@ public class TokenTest {
      */
     @Test
     public void testAdditionEquation() {
-        Token[] tokens = {
+        Token[] expected = {
                 new Token(TokenType.LEFT_PAREN, "(", null, 1),
                 new Token(TokenType.SYMBOL, "+", "+", 1),
                 new Token(TokenType.NUMBER, "1", 1.0, 1),
@@ -24,9 +24,23 @@ public class TokenTest {
                 new Token(TokenType.EOF, "", null, 1)
         };
 
-        assertArrayEquals(tokens, toTokens("(+ 1 2)"));
-        assertArrayEquals(tokens, toTokens("(+    1   2   )"));
-        assertArrayEquals(tokens, toTokens("(    + 1 2)"));
+        assertArrayEquals(expected, toTokens("(+ 1 2)"));
+        assertArrayEquals(expected, toTokens("(+    1   2   )"));
+        assertArrayEquals(expected, toTokens("(    + 1 2)"));
+    }
+
+    @Test
+    public void testCons() {
+        Token[] expected  = {
+                new Token(TokenType.LEFT_PAREN, "(", null, 1),
+                new Token(TokenType.SYMBOL, "a", "a", 1),
+                new Token(TokenType.CONS, ".", null, 1),
+                new Token(TokenType.SYMBOL, "b", "b", 1),
+                new Token(TokenType.RIGHT_PAREN, ")", null, 1),
+                new Token(TokenType.EOF, "", null, 1)
+        };
+
+        assertArrayEquals(expected, toTokens("(a . b)"));
     }
 
     private Token[] toTokens(String source) {

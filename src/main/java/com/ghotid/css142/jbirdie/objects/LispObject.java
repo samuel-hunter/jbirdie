@@ -20,10 +20,6 @@ public interface LispObject {
         return true;
     }
 
-    default boolean equalsHard(LispObject o) {
-        return this == o;
-    }
-
     default String toPureString() {
         return toString();
     }

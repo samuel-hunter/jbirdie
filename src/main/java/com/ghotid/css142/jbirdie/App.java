@@ -37,7 +37,7 @@ public class App {
         if (args.length == 1)
             loadFile(args[0], environment);
         else
-            runPrompt(environment);
+            runPrompt(environment.pushStack());
 
         System.exit(exitCode);
 
@@ -89,7 +89,7 @@ public class App {
 
         while (isContinuing) {
             System.out.print("> ");
-            run(reader.readLine(), environment.pushStack(), true);
+            run(reader.readLine(), environment, true);
         }
     }
 

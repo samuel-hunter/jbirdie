@@ -6,8 +6,8 @@ import com.ghotid.css142.jbirdie.objects.*;
 /**
  * Third function required to implement a minimal lisp.
  * <p>
- * "eq" accepts two values. It returns the symbol "t" if they both point to the
- * same object; else, it returns nil.
+ * "eq" accepts two values. It returns t if they are both the
+ * same effective value; it returns nil otherwise.
  */
 public class FuncEq implements FuncObject {
     @Override
@@ -15,7 +15,7 @@ public class FuncEq implements FuncObject {
         ConsList argList = new ConsList(args);
         argList.assertSizeEquals(2);
 
-        if (argList.get(0).evaluate(environment).equalsHard(
+        if (argList.get(0).evaluate(environment).equals(
                 argList.get(1).evaluate(environment))) {
 
             return environment.get("t");

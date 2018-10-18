@@ -25,10 +25,6 @@ class Parser {
         switch (tok.getType()) {
             case LEFT_PAREN:
                 return getCons();
-            case RIGHT_PAREN:
-                throw new ReaderException(
-                        tok.getLine(),
-                        String.format("Unexpected token %s.", tok));
             case SYMBOL:
                 return new SymbolObject((String) tok.getLiteral());
             case STRING:
@@ -45,9 +41,12 @@ class Parser {
                 );
             case EOF:
                 throw new ReaderException(tok.getLine(), "End of file.");
+            default:
+                throw new ReaderException(
+                        tok.getLine(),
+                        String.format("Unexpected token %s.", tok)
+                );
         }
-
-        return nextObject();
     }
 
     private LispObject getCons() {
@@ -56,8 +55,17 @@ class Parser {
 
         switch (tok.getType()) {
             case RIGHT_PAREN:
-                tokens.remove();
+                tokens.remove(); // Consume the parenthesis.
                 return NilObject.getNil();
+            case CONS:
+                tokens.remove(); // consume the dot.
+                LispObject result = nextObject();
+
+                Token rightParen = tokens.remove();
+                if (!(rightParen.getType() == TokenType.RIGHT_PAREN))
+                    throw new ReaderException(tok.getLine(),
+                            "Unexpected token " + rightParen + ".");
+                return result;
             case EOF:
                 throw new ReaderException(tok.getLine(), "End of file.");
             default:

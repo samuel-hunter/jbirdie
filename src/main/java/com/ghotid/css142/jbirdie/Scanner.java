@@ -9,7 +9,7 @@ import java.util.List;
  * Scanner for the code's source.
  */
 class Scanner {
-    private static final String unsymbolicChars = ";()'\"";
+    private static final String unsymbolicChars = ".;()'\"";
     private final String source;
     private final List<Token> tokens = new ArrayList<>();
 
@@ -54,6 +54,9 @@ class Scanner {
                 break;
             case '\'':
                 addToken(TokenType.QUOTE);
+                break;
+            case '.':
+                addToken(TokenType.CONS);
                 break;
 
             case ';':
