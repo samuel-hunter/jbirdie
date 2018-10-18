@@ -12,6 +12,11 @@ public class StringObject implements LispObject {
     }
 
     @Override
+    public String toPureString() {
+        return value;
+    }
+
+    @Override
     public String toString() {
         return '"' + value + '"';
     }

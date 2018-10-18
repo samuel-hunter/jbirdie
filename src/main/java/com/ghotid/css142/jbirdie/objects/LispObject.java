@@ -24,6 +24,10 @@ public interface LispObject {
         return this == o;
     }
 
+    default String toPureString() {
+        return toString();
+    }
+
     static <T extends LispObject> T cast(Class<? extends T> lispClass,
                                          LispObject obj) {
         if (lispClass.isInstance(obj))

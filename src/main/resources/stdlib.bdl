@@ -1,3 +1,28 @@
+;; car, cdr utility functions
+(defun caar (X)
+    (car (car X)))
+
+(defun cadr (X)
+    (car (cdr X)))
+
+(defun cdar (X)
+    (cdr (car X)))
+
+(defun cddr (X)
+    (cdr (cdr X)))
+
+;; Reverses the list.
+(defun reverse (List)
+    (defun reverse-iter (List Result)
+        (cond
+            ((null List) Result)
+            (t (reverse-iter (cdr List) (cons (car List) Result)))))
+
+    (reverse-iter List nil))
+
+;; Return whether the value is nil.
+(defun null (X) (eq X nil))
+
 ;; Binary NOT
 (defun not (Cond)
     (cond
@@ -15,23 +40,6 @@
     (cond
         (CondA (cond
                    (CondB t)))))
-
-
-;; car, cdr utility functions
-(defun caar (X)
-    (car (car X)))
-
-(defun cadr (X)
-    (car (cdr X)))
-
-(defun cdar (X)
-    (cdr (car X)))
-
-(defun cddr (X)
-    (cdr (cdr X)))
-
-;; Return whether the value is nil.
-(defun null (X) (eq X nil))
 
 (defun assoc (Key Alist)
     (cond
