@@ -3,6 +3,7 @@ package com.ghotid.css142.jbirdie.libcore;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.environment.LispEnvironment;
 import com.ghotid.css142.jbirdie.objects.NilObject;
+import com.ghotid.css142.jbirdie.objects.StringObject;
 import com.ghotid.css142.jbirdie.objects.SymbolObject;
 
 public class LibCoreEnvironmentFactory {
@@ -24,6 +25,7 @@ public class LibCoreEnvironmentFactory {
         // Constants
         env.def("t", new SymbolObject("t"), true);
         env.def("nil", NilObject.getNil(), true);
+        env.def("newline", new StringObject("\n"), true);
 
         // Less important but still important lisp functions
         env.def("lambda", new FuncLambda(), true);
@@ -42,10 +44,13 @@ public class LibCoreEnvironmentFactory {
 
         // String Functions
         env.def("concat", new FuncConcat(), true);
+        env.def("to-string", new FuncToString(), true);
 
         // I/O Functions
         env.def("read-line", new FuncReadLine(), true);
         env.def("read-number", new FuncReadNumber(), true);
+        env.def("print", new FuncPrint(), true);
+        env.def("println", new FuncPrintln(), true);
 
         // Control flow methods.
         env.def("while", new FuncWhile(), true);
