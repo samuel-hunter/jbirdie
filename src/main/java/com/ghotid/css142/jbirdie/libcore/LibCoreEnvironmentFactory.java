@@ -63,7 +63,6 @@ public class LibCoreEnvironmentFactory {
         env.def("unsetq", new FuncUnsetq(), true);
         env.def("defvar", new FuncDefvar(), true);
         env.def("defconst", new FuncDefconst(), true);
-        env.def("defun", new FuncDefun(), true);
 
         // Interpreter or system methods
         env.def("debug", new FuncDebug(), true);

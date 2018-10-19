@@ -14,12 +14,9 @@ public class FuncPrint implements FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeEquals(1);
-        StringObject string = LispObject.cast(
-                StringObject.class,
-                args.getCar().evaluate(environment)
-        );
 
-        System.out.print(string.getValue());
-        return string;
+        String string = args.getCar().evaluate(environment).toPureString();
+        System.out.print(string);
+        return new StringObject(string);
     }
 }

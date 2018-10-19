@@ -92,7 +92,7 @@ public class LambdaObject implements FuncObject {
 
         LispObject result = lambdaBody.evaluate(lambdaEnvironment);
         if (isMacro)
-            return result.evaluate(lambdaEnvironment);
+            return result.evaluate(environment);
         else
             return result;
     }

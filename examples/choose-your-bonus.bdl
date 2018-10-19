@@ -1,11 +1,10 @@
 ;;; choose-your-bonus.bdl - example of HW1 in Birdie Lisp, except with input
 ;;   validation.
 
-;; Constants
-;; Workaround: there's as of yet no way to define constants (will be `defconst`
-;; in the future), so use defvar for now.
-(defvar *min-salary* 15080)
-(defvar *max-salary* 470000)
+;; Constants. The third argument for `defconst` and `defvar` are an optional
+;; documentation.
+(defconst *min-salary* 15080 "Lowest possible salary.")
+(defconst *max-salary* 470000 "Highest possible salary.")
 
 ;; An example of an association list, or "a-list": a list of pairs; each pair
 ;;  is an association. Often, the "car" (or first) of each pair is the key, and
@@ -26,9 +25,12 @@
                       (* 1.03 Salary)
                       (* 1.03 1.03 Salary))))))
 
-;; Prompt the user and use the given function. Example of using functions as a
-;; first-class values by passing it in the function.
+;; Example of using functions as a first-class values by passing it in the
+;; function. The string at the beginning of the function is its version of
+;; "javadoc"; there will be a way to retrieve it in-program in a later
+;; checkpoint.
 (defun prompt (Dialogue Promptfn)
+    "Prompt the user and read with the given function."
     (print Dialogue)
     (Promptfn))
 
@@ -36,8 +38,9 @@
 (defun within? (Min Value Max)
     (<= Min Value Max))
 
-;; Prompt the user for a valid salary.
 (defun prompt-salary ()
+    "Prompt the user for a valid salary."
+
     ;; Example of a nested function, visible only to the outer function.
     (defun salary-valid? (Salary)
         ;; return true if the salary is between the max and min.
@@ -47,13 +50,11 @@
     ;; Quirk: `-1` is a symbol, since it doesn't start with a number literal.
     ;; Use the function `-` instead to create a negative number.
     (defvar Salary (- 1))
-    (while (not (salary-valid? Salary))
+    (until (salary-valid? Salary)
         (setq Salary (prompt "What's your current base salary? $" read-number))
-        ;; Workaround: there is no `if` or `unless` defined yet, so use the
-        ;;  low-level `cond` instead.
-        (cond
-            ((not (salary-valid? Salary))
-             (println "The salary must be between $15,080 and $470,000!"))))
+
+        (unless (salary-valid? Salary)
+            (println "The salary must be between $15,080 and $470,000!"))
 
      ;; Return the salary.
      Salary)
@@ -73,33 +74,33 @@
 
     ;; Set the option to a naturally invalid number.
     (defvar UserOption (- 1))
-    (while (not (option-valid? UserOption))
+    (until (option-valid? UserOption)
         (setq UserOption (prompt "> " read-number))
-        (cond
-            ((not (option-valid? UserOption))
-             (println "Choose a valid option!"))))
+        (unless (option-valid? UserOption)
+            (println "Choose a valid option!"))
 
     ;; Return the option converted from the user input.
     (nth (-1 UserOption) *options*)) ; decrement by 1.
 
 
 (defun start ()
-    (defvar Fname (prompt "What's your first name? " read-line))
-    (defvar Lname (prompt "What's your last name? " read-line))
-    (defvar Salary (prompt-salary))
+    (defconst Fname (prompt "What's your first name? " read-line))
+    (defconst Lname (prompt "What's your last name? " read-line))
+    (defconst Salary (prompt-salary))
 
-    ;; Prompt the options
-    (defvar Option (prompt-option))
+    ;; Prompt the options. Also shows a way to change the value of a
+    ;;  possibly-existant or non-existant variable. If the variable doesn't
+    ;;  exist yet, it acts like "defvar", without the option to add a doc to it.
+    (setq Option (prompt-option))
 
     ;; Example of using a function as a value.
-    (defvar Earnings ((cdr Option) Salary))
+    (defconst Earnings ((cdr Option) Salary))
 
     ;; Print the result.
     (println (concat "Hello, " Fname " " Lname))
     (println (concat "You chose " (car Option)))
     (println (concat
-              "After 3 years, you would earn a total of $"
-              (to-string Earnings)))
+              "After 3 years, you would earn a total of $" Earnings))
 )
 
 (start)
