@@ -11,7 +11,6 @@ public class FuncLambda implements FuncObject {
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);
 
-        return new LambdaObject(args.getCar(),
-                new ConsObject(new FuncProgn(), args.getCdr()));
+        return new LambdaObject(args.getCar(), args.getCdr());
     }
 }

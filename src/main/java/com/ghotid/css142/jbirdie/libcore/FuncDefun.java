@@ -20,9 +20,7 @@ public class FuncDefun implements FuncObject {
                 argList.get(0));
         FuncObject func = new LambdaObject(
                 argList.get(1),
-                new ConsObject(
-                        new FuncProgn(),
-                        args.getCdr().getCdr())
+                args.getCdr().getCdr()
         );
 
         environment.def(funcName.getValue(), func, true);
