@@ -11,6 +11,11 @@
 (defun cddr (X)
     (cdr (cdr X)))
 
+;; List utility functions.
+(defun list X
+    "Build a list from variable arguments."
+    X)
+
 ;; Reverses the list.
 (defun reverse (List)
     (defun reverse-iter (List Result)

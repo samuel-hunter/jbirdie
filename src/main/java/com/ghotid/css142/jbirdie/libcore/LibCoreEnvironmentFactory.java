@@ -31,7 +31,6 @@ public class LibCoreEnvironmentFactory {
         env.def("lambda", new FuncLambda(), true);
         env.def("macro", new FuncMacro(), true);
         env.def("progn", new FuncProgn(), true);
-        env.def("list", new FuncList(), true);
 
         // Mathematical functions
         env.def("+", new FuncAdd(), true);
