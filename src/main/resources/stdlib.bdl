@@ -1,3 +1,17 @@
+(debug t)
+
+;; `list` cannot be defined via `defun`, since `defun` isn't defined yet.
+(defconst list (lambda X X)
+    "Build a list from its arguments.")
+
+(defconst defmacro (macro (Name Args . Body)
+    (list 'defconst Name (list 'macro Args (cons 'progn Body))))
+    "Define a macro.")
+
+(defconst defun (macro (Name Args . Body)
+    (list 'defconst Name (list 'lambda Args (cons 'progn Body))))
+    "Define a function.")
+
 ;; car, cdr utility functions
 (defun caar (X)
     (car (car X)))
@@ -11,66 +25,21 @@
 (defun cddr (X)
     (cdr (cdr X)))
 
-;; List utility functions.
-(defun list X
-    "Build a list from variable arguments."
-    X)
-
-;; Reverses the list.
-(defun reverse (List)
-    (defun reverse-iter (List Result)
-        (cond
-            ((null List) Result)
-            (t (reverse-iter (cdr List) (cons (car List) Result)))))
-
-    (reverse-iter List nil))
-
-;; Return whether the value is nil.
-(defun null (X) (eq X nil))
-
-;; Binary NOT
-(defun not (Cond)
-    (cond
-        (Cond nil)
-        (t t)))
-
-;; Binary OR
-(defun or (CondA CondB)
-    (cond
-        (CondA t)
-        (CondB t)))
-
-;; Binary AND
-(defun and (CondA CondB)
-    (cond
-        (CondA (cond
-                   (CondB t)))))
-
-(defun assoc (Key Alist)
-    (cond
-        ((null Alist) nil)
-        ((eq Key (caar Alist)) (car Alist))
-        (t (assoc Key (cdr Alist)))))
-
 ;; Aliases for car, cdr
 (defconst first car)
 (defconst rest cdr)
 
-(defun +1 (X)
-    (+ X 1))
+;; List utility functions.
 
-(defun -1 (X)
-    (- X 1))
-
-;; Return the nth element of a list
 (defun nth (Index List)
+    "Return the nth element of the list."
     (cond
         ((null List) nil)
         ((eq Index 0) (first List))
         (t (nth (-1 Index) (rest List)))))
 
-;; Calculate the size of a list
 (defun size (List)
+    "Return the size of the list."
     (defun size-iter (List Size)
         (cond
             ((null List) Size)
@@ -78,9 +47,88 @@
 
     (size-iter List 0))
 
-;; Return whether an element is a member of a list.
 (defun member (Elem List)
+    "Return true if the element is a member of the list."
     (cond
         ((null List) nil)
         ((eq Elem (first List)) t)
         (t (member (Elem (rest List))))))
+
+
+(defun reverse (List)
+    "Returns a list with the same items, reversed."
+    (defun reverse-iter (List Result)
+        (cond
+            ((null List) Result)
+            (t (reverse-iter (cdr List) (cons (car List) Result)))))
+
+    (reverse-iter List nil))
+
+(defun assoc (Key Alist)
+    "Search through an a-list and return a pair where its car matches the key."
+    (cond
+        ((null Alist) nil)
+        ;; Return the first element if its car matches.
+        ((eq Key (caar Alist)) (car Alist))
+        ;; Go through assoc again, but cut off the first element from the list.
+        (t (assoc Key (cdr Alist)))))
+
+(defun assocr (Key Alist)
+    "Search through an a-list and return a pair where its cdr matches the key."
+    (cond
+        ((null Alist) nil)
+        ;; return the first element if its cdr matches.
+        ((eq Key (cdar Alist)) (car Alist))
+        ;; Go through assocr again, but without the a-list's first element.
+        (t (assoc Key (cdr Alist)))))
+
+;; Return whether the value is nil.
+(defun null (X) (eq X nil))
+
+;; Binary NOT
+(defun not (Cond)
+    "Return the logical inverse of Cond."
+    (cond
+        (Cond nil)
+        (t t)))
+
+(defmacro and (CondA CondB)
+    "Return the second value if both values are truthy."
+    (list 'cond (list CondA CondB)))
+
+(defmacro or (CondA CondB)
+    "Return t if either value is truthy."
+    (list 'cond
+        (list CondA t)
+        (list CondB t)))
+
+(defmacro if (Cond Truecase . Args)
+    "Evaluate the Truecase if Cond is truthy; else, evaluate the second case if
+    defined."
+    ;; Should return nil if the third case doesn't exist.
+    (defconst Falsecase (car Args))
+    (list 'cond
+        (list Cond Truecase)
+        (list t Falsecase)))
+
+(defmacro when (Cond . Body)
+    "Evaluate the body if the condition is truthy."
+    (list 'cond
+        (list Cond (cons 'progn Body))))
+
+(defmacro unless (Cond . Body)
+    "Evaluate the body unless the condition is truthy."
+    (list 'when (list 'not Cond) (cons 'progn Body)))
+
+(defmacro until (Cond . Body)
+    "Keep evaluating the body until the condition is truthy."
+    (list 'while (list 'not Cond) (cons 'progn Body)))
+
+;; Mathematical utilities.
+(defun +1 (X)
+    "Increment the value by 1."
+    (+ X 1))
+
+(defun -1 (X)
+    "Decrement the value by 1."
+    (- X 1))

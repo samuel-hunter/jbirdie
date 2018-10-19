@@ -10,7 +10,8 @@ public class FuncDefconst implements FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         ConsList argList = new ConsList(args);
-        argList.assertSizeEquals(2);
+        // Allow third argument, to implement documentation later.
+        argList.assertSizeWithin(2, 3);
 
         SymbolObject symbol =
                 LispObject.cast(SymbolObject.class, argList.get(0));
