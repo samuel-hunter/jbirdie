@@ -7,15 +7,22 @@ import com.ghotid.css142.jbirdie.objects.LispObject;
 import com.ghotid.css142.jbirdie.objects.StringObject;
 
 /**
- * Print the string without a line.
+ * Concatenate all arguments as strings and print them, along with a newline.
  */
 public class FuncPrintln implements FuncObject {
 
     @Override
     public LispObject call(Environment environment, LispObject args) {
-        new ConsList(args).assertSizeEquals(1);
-        String string = args.getCar().evaluate(environment).toPureString();
-        System.out.println(string);
-        return new StringObject(string);
+        ConsList argList = new ConsList(args);
+        StringBuilder sb = new StringBuilder();
+
+        for (LispObject arg : argList)
+            sb.append(arg.evaluate(environment).toPureString());
+
+        String result = sb.toString();
+        System.out.println(result);
+
+        // Return the stringified result.
+        return new StringObject(result);
     }
 }

@@ -7,16 +7,22 @@ import com.ghotid.css142.jbirdie.objects.LispObject;
 import com.ghotid.css142.jbirdie.objects.StringObject;
 
 /**
- * Print the string without a line.
+ * Concatenate all values as strings and print them.
  */
 public class FuncPrint implements FuncObject {
 
     @Override
     public LispObject call(Environment environment, LispObject args) {
-        new ConsList(args).assertSizeEquals(1);
+        ConsList argList = new ConsList(args);
+        StringBuilder sb = new StringBuilder();
 
-        String string = args.getCar().evaluate(environment).toPureString();
-        System.out.print(string);
-        return new StringObject(string);
+        for (LispObject arg : argList)
+            sb.append(arg.evaluate(environment).toPureString());
+
+        String result = sb.toString();
+        System.out.print(result);
+
+        // Return the stringified result.
+        return new StringObject(result);
     }
 }
