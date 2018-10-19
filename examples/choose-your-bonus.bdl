@@ -54,7 +54,7 @@
         (setq Salary (prompt "What's your current base salary? $" read-number))
 
         (unless (salary-valid? Salary)
-            (println "The salary must be between $15,080 and $470,000!"))
+            (println "The salary must be between $15,080 and $470,000!")))
 
      ;; Return the salary.
      Salary)
@@ -77,7 +77,7 @@
     (until (option-valid? UserOption)
         (setq UserOption (prompt "> " read-number))
         (unless (option-valid? UserOption)
-            (println "Choose a valid option!"))
+            (println "Choose a valid option!")))
 
     ;; Return the option converted from the user input.
     (nth (-1 UserOption) *options*)) ; decrement by 1.
@@ -97,10 +97,9 @@
     (defconst Earnings ((cdr Option) Salary))
 
     ;; Print the result.
-    (println (concat "Hello, " Fname " " Lname))
-    (println (concat "You chose " (car Option)))
-    (println (concat
-              "After 3 years, you would earn a total of $" Earnings))
+    (println "Hello, " Fname " " Lname)
+    (println "You chose " (car Option))
+    (println "After 3 years, you would earn a total of $" Earnings)
 )
 
 (start)

@@ -1,5 +1,3 @@
-(debug t)
-
 ;; `list` cannot be defined via `defun`, since `defun` isn't defined yet.
 (defconst list (lambda X X)
     "Build a list from its arguments.")
