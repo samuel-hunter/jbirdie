@@ -1,10 +1,7 @@
 package com.ghotid.css142.jbirdie.libcore;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
-import com.ghotid.css142.jbirdie.objects.ConsList;
-import com.ghotid.css142.jbirdie.objects.FuncObject;
-import com.ghotid.css142.jbirdie.objects.LispObject;
-import com.ghotid.css142.jbirdie.objects.NilObject;
+import com.ghotid.css142.jbirdie.objects.*;
 
 /**
  * The fifth function required to implement a minimal lisp.
@@ -15,7 +12,7 @@ import com.ghotid.css142.jbirdie.objects.NilObject;
  * <p>
  * If none of the pairs' conditionals are true, then it returns nil.
  */
-public class FuncCond implements FuncObject {
+public class FuncCond extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         for (LispObject obj : new ConsList(args)) {

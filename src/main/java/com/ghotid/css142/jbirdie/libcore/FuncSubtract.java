@@ -6,7 +6,7 @@ import com.ghotid.css142.jbirdie.objects.LispObject;
 import com.ghotid.css142.jbirdie.objects.ConsList;
 import com.ghotid.css142.jbirdie.objects.NumberObject;
 
-public class FuncSubtract implements FuncObject {
+public class FuncSubtract extends FuncObject {
 
     @Override
     public LispObject call(Environment environment, LispObject args) {

@@ -10,7 +10,7 @@ import com.ghotid.css142.jbirdie.objects.LispObject;
  * <p>
  * `quote` accepts one value and returns it, unevaluated.
  */
-public class FuncQuote implements FuncObject {
+public class FuncQuote extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeEquals(1);

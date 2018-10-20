@@ -9,7 +9,7 @@ import com.ghotid.css142.jbirdie.objects.StringObject;
 /**
  * Concatenate multiple string values.
  */
-public class FuncConcat implements FuncObject {
+public class FuncConcat extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         StringBuilder sb = new StringBuilder();

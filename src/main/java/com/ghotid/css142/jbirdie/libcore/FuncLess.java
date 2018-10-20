@@ -6,7 +6,7 @@ import com.ghotid.css142.jbirdie.objects.*;
 /**
  * Return true "t" when each number given is less than the next.
  */
-public class FuncLess implements FuncObject {
+public class FuncLess extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);

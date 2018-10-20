@@ -12,7 +12,7 @@ import com.ghotid.css142.jbirdie.objects.*;
  * @author Samuel Hunter
  * @version 20181017
  */
-public class FuncForeach implements FuncObject {
+public class FuncForeach extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         ConsList header = new ConsList(args.getCar());

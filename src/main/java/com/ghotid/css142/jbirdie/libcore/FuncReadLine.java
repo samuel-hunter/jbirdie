@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * Read a line from standard input and return a string.
  */
-public class FuncReadLine implements FuncObject {
+public class FuncReadLine extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeEquals(0);

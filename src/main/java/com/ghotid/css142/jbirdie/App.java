@@ -108,7 +108,7 @@ public class App {
             while (parser.hasNext()) {
                 LispObject result = parser.nextObject().evaluate(environment);
                 if (isRepl)
-                    System.out.println(result);
+                    System.out.println(result.inspect());
             }
         } catch (ReaderException e) {
             System.err.printf("[Line %d] %s\n", e.getLine(), e.getMessage());

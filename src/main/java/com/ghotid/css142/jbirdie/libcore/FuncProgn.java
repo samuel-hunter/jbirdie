@@ -1,12 +1,9 @@
 package com.ghotid.css142.jbirdie.libcore;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
-import com.ghotid.css142.jbirdie.objects.ConsList;
-import com.ghotid.css142.jbirdie.objects.FuncObject;
-import com.ghotid.css142.jbirdie.objects.LispObject;
-import com.ghotid.css142.jbirdie.objects.NilObject;
+import com.ghotid.css142.jbirdie.objects.*;
 
-public class FuncProgn implements FuncObject {
+public class FuncProgn extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         LispObject result = NilObject.getNil();

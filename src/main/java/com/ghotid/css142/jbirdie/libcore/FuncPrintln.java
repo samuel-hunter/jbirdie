@@ -9,7 +9,7 @@ import com.ghotid.css142.jbirdie.objects.StringObject;
 /**
  * Concatenate all arguments as strings and print them, along with a newline.
  */
-public class FuncPrintln implements FuncObject {
+public class FuncPrintln extends FuncObject {
 
     @Override
     public LispObject call(Environment environment, LispObject args) {
@@ -17,7 +17,7 @@ public class FuncPrintln implements FuncObject {
         StringBuilder sb = new StringBuilder();
 
         for (LispObject arg : argList)
-            sb.append(arg.evaluate(environment).toPureString());
+            sb.append(arg.evaluate(environment));
 
         String result = sb.toString();
         System.out.println(result);

@@ -7,7 +7,7 @@ import com.ghotid.css142.jbirdie.objects.*;
 /**
  * Raise an exception specifically to exit from the interpreter.
  */
-public class FuncExit implements FuncObject {
+public class FuncExit extends FuncObject {
 
     @Override
     public LispObject call(Environment environment, LispObject args) {

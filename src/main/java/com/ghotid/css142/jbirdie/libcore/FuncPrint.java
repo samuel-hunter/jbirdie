@@ -9,7 +9,7 @@ import com.ghotid.css142.jbirdie.objects.StringObject;
 /**
  * Concatenate all values as strings and print them.
  */
-public class FuncPrint implements FuncObject {
+public class FuncPrint extends FuncObject {
 
     @Override
     public LispObject call(Environment environment, LispObject args) {
@@ -17,7 +17,7 @@ public class FuncPrint implements FuncObject {
         StringBuilder sb = new StringBuilder();
 
         for (LispObject arg : argList)
-            sb.append(arg.evaluate(environment).toPureString());
+            sb.append(arg.evaluate(environment));
 
         String result = sb.toString();
         System.out.print(result);

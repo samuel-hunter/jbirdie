@@ -9,7 +9,7 @@ import com.ghotid.css142.jbirdie.objects.NumberObject;
 /**
  * Calculate the product of all given numbers.
  */
-public class FuncMultiply implements FuncObject {
+public class FuncMultiply extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         Double result = 1.0;

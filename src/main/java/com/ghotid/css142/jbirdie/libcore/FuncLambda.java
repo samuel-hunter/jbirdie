@@ -6,7 +6,7 @@ import com.ghotid.css142.jbirdie.objects.*;
 /**
  * Create a lambda using the expression given by the programmer as the formula.
  */
-public class FuncLambda implements FuncObject {
+public class FuncLambda extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);

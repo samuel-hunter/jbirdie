@@ -26,8 +26,8 @@ public class ParserTest {
     public void testCanReadCons() {
         assertEquals(
                 new ConsObject(
-                        new SymbolObject("a"),
-                        new SymbolObject("b")
+                        SymbolObject.fromString("a"),
+                        SymbolObject.fromString("b")
                 ),
                 readString("(a . b)")
         );
