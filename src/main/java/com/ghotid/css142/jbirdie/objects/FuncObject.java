@@ -2,7 +2,12 @@ package com.ghotid.css142.jbirdie.objects;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
 
-public interface FuncObject extends LispObject {
+public abstract class FuncObject extends AtomObject {
 
-    LispObject call(Environment environment, LispObject args);
+    public abstract LispObject call(Environment environment, LispObject args);
+
+    @Override
+    public Class getValue() {
+        return getClass();
+    }
 }

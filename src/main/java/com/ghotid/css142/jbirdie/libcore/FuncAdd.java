@@ -9,7 +9,7 @@ import com.ghotid.css142.jbirdie.objects.NumberObject;
 /**
  * "def" accepts 0 or more numbers and returns its sum.
  */
-public class FuncAdd implements FuncObject {
+public class FuncAdd extends FuncObject {
 
     @Override
     public LispObject call(Environment environment, LispObject args) {

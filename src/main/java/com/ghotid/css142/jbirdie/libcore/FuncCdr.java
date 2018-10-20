@@ -8,7 +8,7 @@ import com.ghotid.css142.jbirdie.objects.LispObject;
 /**
  * Seventh and final function required to implement a minimal lisp.
  */
-public class FuncCdr implements FuncObject {
+public class FuncCdr extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeEquals(1);

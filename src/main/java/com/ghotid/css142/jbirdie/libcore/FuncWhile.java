@@ -7,7 +7,7 @@ import com.ghotid.css142.jbirdie.objects.*;
  * Given a conditional s-expr and a body, keep running the body until the
  * conditional is false.
  */
-public class FuncWhile implements FuncObject {
+public class FuncWhile extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);

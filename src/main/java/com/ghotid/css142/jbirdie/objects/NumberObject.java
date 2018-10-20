@@ -1,25 +1,14 @@
 package com.ghotid.css142.jbirdie.objects;
 
-public class NumberObject implements LispObject {
-    private final Double value;
+public class NumberObject extends AtomObject {
+    private final double value;
 
-    public NumberObject(Double value) {
-        assert value != null;
+    public NumberObject(double value) {
         this.value = value;
     }
 
+    @Override
     public Double getValue() {
         return value;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof NumberObject)) return false;
-        return value.equals(((NumberObject) obj).value);
-    }
-
-    @Override
-    public String toString() {
-        return value.toString();
     }
 }

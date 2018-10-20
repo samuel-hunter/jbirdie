@@ -7,7 +7,7 @@ import com.ghotid.css142.jbirdie.objects.*;
  * Return true "t" when each number given is less than or equal to the
  * next.
  */
-public class FuncLessEqual implements FuncObject {
+public class FuncLessEqual extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);

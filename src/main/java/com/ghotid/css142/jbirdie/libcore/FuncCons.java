@@ -9,7 +9,7 @@ import com.ghotid.css142.jbirdie.objects.LispObject;
 /**
  * Fourth function required to implement a minimum Lisp.
  */
-public class FuncCons implements FuncObject {
+public class FuncCons extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         ConsList list = new ConsList(args);

@@ -6,7 +6,7 @@ import com.ghotid.css142.jbirdie.objects.FuncObject;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 import com.ghotid.css142.jbirdie.objects.NumberObject;
 
-public class FuncDivide implements FuncObject {
+public class FuncDivide extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         int size = new ConsList(args).assertSizeAtLeast(1);

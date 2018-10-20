@@ -6,7 +6,7 @@ import com.ghotid.css142.jbirdie.objects.FuncObject;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 import com.ghotid.css142.jbirdie.objects.SymbolObject;
 
-public class FuncUnsetq implements FuncObject {
+public class FuncUnsetq extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeEquals(1);

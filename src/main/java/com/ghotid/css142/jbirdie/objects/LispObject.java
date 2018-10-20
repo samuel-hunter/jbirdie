@@ -20,7 +20,7 @@ public interface LispObject {
         return true;
     }
 
-    default String toPureString() {
+    default String inspect() {
         return toString();
     }
 

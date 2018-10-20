@@ -23,7 +23,7 @@ public class LibCoreEnvironmentFactory {
         env.def("cdr", new FuncCdr(), true);
 
         // Constants
-        env.def("t", new SymbolObject("t"), true);
+        env.def("t", SymbolObject.getT(), true);
         env.def("nil", NilObject.getNil(), true);
         env.def("newline", new StringObject("\n"), true);
 

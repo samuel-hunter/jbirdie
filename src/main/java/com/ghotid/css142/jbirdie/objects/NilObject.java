@@ -1,9 +1,10 @@
 package com.ghotid.css142.jbirdie.objects;
 
-public class NilObject implements LispObject {
+public final class NilObject extends SymbolObject {
     private static final NilObject NIL = new NilObject();
 
     private NilObject() {
+        super("nil");
     }
 
     public static NilObject getNil() {
@@ -23,10 +24,5 @@ public class NilObject implements LispObject {
     @Override
     public boolean isTruthy() {
         return false;
-    }
-
-    @Override
-    public String toString() {
-        return "nil";
     }
 }

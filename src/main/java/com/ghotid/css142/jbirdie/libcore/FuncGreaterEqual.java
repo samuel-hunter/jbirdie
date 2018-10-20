@@ -7,7 +7,7 @@ import com.ghotid.css142.jbirdie.objects.*;
  * Return true "t" only when each number given is greater than or equal to the
  * next.
  */
-public class FuncGreaterEqual implements FuncObject {
+public class FuncGreaterEqual extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);

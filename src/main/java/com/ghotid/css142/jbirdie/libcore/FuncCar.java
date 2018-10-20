@@ -8,7 +8,7 @@ import com.ghotid.css142.jbirdie.objects.LispObject;
 /**
  * Sixth function required to implement a minimal lisp.
  */
-public class FuncCar implements FuncObject {
+public class FuncCar extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeEquals(1);

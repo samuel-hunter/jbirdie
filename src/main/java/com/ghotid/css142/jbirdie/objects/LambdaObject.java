@@ -3,7 +3,7 @@ package com.ghotid.css142.jbirdie.objects;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import java.util.ArrayList;
 
-public class LambdaObject implements FuncObject {
+public final class LambdaObject extends FuncObject {
     private final ArrayList<String> paramList = new ArrayList<>();
     private final String varargParam;
     private final LispObject lambdaBody;
@@ -16,7 +16,8 @@ public class LambdaObject implements FuncObject {
      */
     public LambdaObject(LispObject lambdaParams, LispObject lambdaBody,
                         boolean isMacro) {
-        this.lambdaBody = new ConsObject(new SymbolObject("progn"), lambdaBody);
+        // TODO replace progn with more reasonable alternative
+        this.lambdaBody = new ConsObject(SymbolObject.fromString("progn"), lambdaBody);
         this.isMacro = isMacro;
 
         // Validate the lambda params ahead of time, while taking out all the
@@ -99,6 +100,7 @@ public class LambdaObject implements FuncObject {
 
     @Override
     public String toString() {
-        return "<LAMBDA " + lambdaBody + ">";
+        String status = isMacro ? "MACRO" : "LAMBDA";
+        return '<' + status + ' ' + lambdaBody + '>';
     }
 }

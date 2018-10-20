@@ -8,7 +8,7 @@ import com.ghotid.css142.jbirdie.objects.NumberObject;
 
 import java.util.Scanner;
 
-public class FuncReadNumber implements FuncObject {
+public class FuncReadNumber extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeEquals(0);

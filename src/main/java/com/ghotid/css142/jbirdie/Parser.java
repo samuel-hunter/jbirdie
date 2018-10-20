@@ -26,14 +26,14 @@ class Parser {
             case LEFT_PAREN:
                 return getCons();
             case SYMBOL:
-                return new SymbolObject((String) tok.getLiteral());
+                return SymbolObject.fromString((String) tok.getLiteral());
             case STRING:
                 return new StringObject((String) tok.getLiteral());
             case NUMBER:
                 return new NumberObject((Double) tok.getLiteral());
             case QUOTE:
                 return new ConsObject(
-                        new SymbolObject("quote"),
+                        SymbolObject.fromString("quote"),
                         new ConsObject(
                                 nextObject(),
                                 NilObject.getNil()
