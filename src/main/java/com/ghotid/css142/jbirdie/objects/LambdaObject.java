@@ -1,5 +1,6 @@
 package com.ghotid.css142.jbirdie.objects;
 
+import com.ghotid.css142.jbirdie.LispUtils;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import java.util.ArrayList;
 
@@ -17,7 +18,7 @@ public final class LambdaObject extends FuncObject {
     public LambdaObject(LispObject lambdaParams, LispObject lambdaBody,
                         boolean isMacro) {
         // TODO replace progn with more reasonable alternative
-        this.lambdaBody = new ConsObject(SymbolObject.fromString("progn"), lambdaBody);
+        this.lambdaBody = lambdaBody;
         this.isMacro = isMacro;
 
         // Validate the lambda params ahead of time, while taking out all the
@@ -91,7 +92,7 @@ public final class LambdaObject extends FuncObject {
             lambdaEnvironment.def(varargParam, args, false);
         }
 
-        LispObject result = lambdaBody.evaluate(lambdaEnvironment);
+        LispObject result = LispUtils.progn(lambdaEnvironment, lambdaBody);
         if (isMacro)
             return result.evaluate(environment);
         else
