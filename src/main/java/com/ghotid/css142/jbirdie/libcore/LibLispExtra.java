@@ -25,6 +25,16 @@ public final class LibLispExtra {
         return new LambdaObject(args.getCar(), args.getCdr(), true);
     }
 
+    @BuiltinFunc(name="apply")
+    public static LispObject apply(Environment environment, LispObject args) {
+        ConsList argList = new ConsList(args);
+        argList.assertSizeEquals(2);
+
+        return new ConsObject(
+                argList.get(0), argList.get(1).evaluate(environment)
+        ).evaluate(environment);
+    }
+
     @BuiltinFunc(name="progn",
             doc="Evaluate the list of expressions and return the value of the" +
                     " last expression.")

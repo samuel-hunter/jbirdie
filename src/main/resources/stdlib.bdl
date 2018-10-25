@@ -1,14 +1,11 @@
-;; `list` cannot be defined via `defun`, since `defun` isn't defined yet.
-(defconst list (lambda X X)
-    "Build a list from its arguments.")
-
 (defconst defmacro (macro (Name Args . Body)
-    (list 'defconst Name (list 'macro Args (cons 'progn Body))))
+    (list 'defconst Name (append (list 'macro Args) Body)))
     "Define a macro.")
 
-(defconst defun (macro (Name Args . Body)
-    (list 'defconst Name (list 'lambda Args (cons 'progn Body))))
-    "Define a function.")
+(defmacro defun (Name Args . Body)
+    "Define a function."
+    (list 'defconst Name (append (list 'lambda Args) Body)))
+
 
 ;; car, cdr utility functions
 (defun caar (X)
@@ -53,6 +50,29 @@
         ((eq Elem (first List)) t)
         (t (member (Elem (rest List))))))
 
+(defun fold (Func Result List)
+    "Take a two-argument function Func and fold down List to Result"
+    (if (null List)
+        Result
+        (fold Func (Func Result (first List)) (rest List))))
+
+(defun mapcar (Func List)
+    "Process each element in List with Func."
+    (if (null List)
+        nil
+        (cons (Func (first List)) (mapcar Func (rest List)))))
+
+(defmacro push (Elem List)
+    (list 'setq List (list 'cons Elem List)))
+
+(defun range (Size)
+    "Return a list of range Size from 0."
+    (defun range-iter (Num Result)
+        (if (<= Num 0)
+            Result
+            (range-iter (-1 Num) (cons Num Result))))
+
+    (range-iter Size ()))
 
 (defun reverse (List)
     "Returns a list with the same items, reversed."
@@ -125,9 +145,47 @@
 
 ;; Mathematical utilities.
 (defun +1 (X)
-    "Increment the value by 1."
+    "Return the value plus 1."
     (+ X 1))
 
 (defun -1 (X)
-    "Decrement the value by 1."
+    "Return the value less 1."
     (- X 1))
+
+(defun sum (List)
+    (apply + List))
+
+(defun avg (List)
+    (/ (sum List) (size List)))
+
+(defun min (List)
+    "Return the smallest value from List."
+    (defun min* (Current New)
+        (cond
+            ((null Current) New)
+            ((> Current New) New)
+            (t Current)))
+
+    (fold min* nil List))
+
+(defun max (List)
+    "Return the largest value from List."
+    (defun max* (Current New)
+        (cond
+            ((null Current) New)
+            ((< Current New) New)
+            (t Current)))
+
+    (fold max* nil List))
+
+(defmacro inc (X)
+    "Increment the variable by 1 and return its result."
+    (list 'progn
+        (list 'setq X (list '+1 X))
+        X))
+
+(defmacro dec (X)
+    "Decrement the variable by 1 and return its result."
+    (list 'progn
+        (list 'setq X (list '-1 X))
+        X))
