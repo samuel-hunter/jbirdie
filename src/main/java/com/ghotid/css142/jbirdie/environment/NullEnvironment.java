@@ -21,11 +21,6 @@ public class NullEnvironment implements Environment {
     }
 
     @Override
-    public void unset(String symbol) {
-        // Silently succeed; it doesn't change anything, anyway.
-    }
-
-    @Override
     public Environment pushStack() {
         throw new UnsupportedOperationException();
     }

@@ -45,14 +45,6 @@ public class LispEnvironment implements Environment {
     }
 
     @Override
-    public void unset(String symbol) {
-        if (symbolMap.containsKey(symbol))
-            symbolMap.remove(symbol);
-        else
-            throw new UndefinedSymbolException(symbol);
-    }
-
-    @Override
     public Environment pushStack() {
         return new LispEnvironment(this);
     }

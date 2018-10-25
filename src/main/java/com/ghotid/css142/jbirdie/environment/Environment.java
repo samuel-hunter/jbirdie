@@ -15,8 +15,6 @@ public interface Environment {
 
     void def(String symbol, LispObject obj, boolean isConstant);
 
-    void unset(String symbol);
-
     Environment pushStack();
 
     LispObject get(String symbol);
