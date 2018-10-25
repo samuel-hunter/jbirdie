@@ -15,14 +15,14 @@ public final class LibLispExtra {
     public static LispObject lambda(Environment environment, LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);
 
-        return new LambdaObject(args.getCar(), args.getCdr());
+        return new LambdaObject(environment, args, false);
     }
 
     @BuiltinFunc(name="macro")
     public static LispObject call(Environment environment, LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);
 
-        return new LambdaObject(args.getCar(), args.getCdr(), true);
+        return new LambdaObject(environment, args, true);
     }
 
     @BuiltinFunc(name="apply")

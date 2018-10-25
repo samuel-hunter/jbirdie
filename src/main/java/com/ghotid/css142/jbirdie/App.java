@@ -64,6 +64,7 @@ public class App {
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         String source = s.hasNext() ? s.next() : "";
         run(source, environment, false);
+        System.out.println("Resource '" + path + "' loaded.");
     }
 
     /**
@@ -112,12 +113,17 @@ public class App {
             }
         } catch (ReaderException e) {
             System.err.printf("[Line %d] %s\n", e.getLine(), e.getMessage());
+            if (!isRepl)
+                throw e;
             if (isDebugging)
                 e.printStackTrace();
         } catch (LispExitException e) {
             isContinuing = false;
             exitCode = e.getExitCode();
         } catch (LispException e) {
+            if (!isRepl)
+                throw e;
+
             System.err.printf("%s: %s\n", e.getClass().getSimpleName(),
                     e.getMessage());
             if (isDebugging)

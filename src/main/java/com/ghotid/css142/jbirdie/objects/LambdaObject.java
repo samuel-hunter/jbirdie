@@ -3,27 +3,27 @@ package com.ghotid.css142.jbirdie.objects;
 import com.ghotid.css142.jbirdie.LispUtils;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public final class LambdaObject extends FuncObject {
     private final ArrayList<String> paramList = new ArrayList<>();
     private final String varargParam;
     private final LispObject lambdaBody;
+    private final Environment lambdaEnvironment;
     private final boolean isMacro;
 
     /**
-     * @param lambdaParams A cons list of symbols representing parameters.
-     * @param lambdaBody   expression to evaluate.
      * @param isMacro      whether to evaluate the arguments on .call().
      */
-    public LambdaObject(LispObject lambdaParams, LispObject lambdaBody,
+    public LambdaObject(Environment lambdaEnvironment, LispObject args,
                         boolean isMacro) {
-        // TODO replace progn with more reasonable alternative
-        this.lambdaBody = lambdaBody;
+        this.lambdaBody = args.getCdr();
+        this.lambdaEnvironment = lambdaEnvironment;
         this.isMacro = isMacro;
 
         // Validate the lambda params ahead of time, while taking out all the
         // symbols.
-        LispObject node = lambdaParams;
+        LispObject node = args.getCar();
         for (; node instanceof ConsObject; node = node.getCdr()) {
             String param = LispObject.cast(
                     SymbolObject.class,
@@ -44,16 +44,6 @@ public final class LambdaObject extends FuncObject {
         }
     }
 
-    public LambdaObject(LispObject lambdaParams, LispObject lambdaBody) {
-        this(lambdaParams, lambdaBody, false);
-    }
-
-    private void bind(Environment environment, String param, LispObject obj) {
-        if (!isMacro)
-            obj = obj.evaluate(environment);
-        environment.def(param, obj, false);
-    }
-
     @Override
     public LispObject call(Environment environment, LispObject args) {
         ConsList lambdaArgs = new ConsList(args);
@@ -66,22 +56,23 @@ public final class LambdaObject extends FuncObject {
         else
             lambdaArgs.assertSizeAtLeast(paramSize);
 
+        if (!isMacro)
+            args = LispUtils.evalList(environment, lambdaArgs);
+
         // Set up the scope for the lambda.
-        Environment lambdaEnvironment = environment.pushStack();
+        Environment callEnvironment = lambdaEnvironment.pushStack();
 
         for (String param : paramList) {
-            bind(lambdaEnvironment, param, args.getCar());
+            callEnvironment.def(param, args.getCar(), false);
             args = args.getCdr();
         }
 
         // Bind vararg parameter if it exists.
         if (varargParam != null) {
-            if (!isMacro)
-                args = LispUtils.evalList(environment, new ConsList(args));
-            lambdaEnvironment.def(varargParam, args, false);
+            callEnvironment.def(varargParam, args, false);
         }
 
-        LispObject result = LispUtils.progn(lambdaEnvironment, lambdaBody);
+        LispObject result = LispUtils.progn(callEnvironment, lambdaBody);
         if (isMacro)
             return result.evaluate(environment);
         else
