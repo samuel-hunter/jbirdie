@@ -48,17 +48,6 @@ public final class LambdaObject extends FuncObject {
         this(lambdaParams, lambdaBody, false);
     }
 
-    private LispObject evalArgs(Environment environment, LispObject args) {
-        if (args instanceof NilObject) {
-            return args;
-        } else {
-            return new ConsObject(
-                    args.getCar().evaluate(environment),
-                    evalArgs(environment, args.getCdr())
-            );
-        }
-    }
-
     private void bind(Environment environment, String param, LispObject obj) {
         if (!isMacro)
             obj = obj.evaluate(environment);
@@ -88,7 +77,7 @@ public final class LambdaObject extends FuncObject {
         // Bind vararg parameter if it exists.
         if (varargParam != null) {
             if (!isMacro)
-                args = evalArgs(environment, args);
+                args = LispUtils.evalList(environment, new ConsList(args));
             lambdaEnvironment.def(varargParam, args, false);
         }
 

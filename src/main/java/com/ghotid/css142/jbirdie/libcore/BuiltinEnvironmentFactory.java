@@ -8,8 +8,8 @@ import com.ghotid.css142.jbirdie.objects.SymbolObject;
 
 import java.lang.reflect.Method;
 
-public class LibCoreEnvironmentFactory {
-    private LibCoreEnvironmentFactory() {}
+public class BuiltinEnvironmentFactory {
+    private BuiltinEnvironmentFactory() {}
 
     private static void addAnnotatedMethods(Class c, Environment env) {
         for (Method method : c.getMethods()) {
@@ -25,6 +25,7 @@ public class LibCoreEnvironmentFactory {
 
         addAnnotatedMethods(LibLispCore.class, env);
         addAnnotatedMethods(LibLispExtra.class, env);
+        addAnnotatedMethods(LibList.class, env);
         addAnnotatedMethods(LibMath.class, env);
         addAnnotatedMethods(LibString.class, env);
         addAnnotatedMethods(LibIO.class, env);

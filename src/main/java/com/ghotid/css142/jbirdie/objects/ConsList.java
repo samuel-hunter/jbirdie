@@ -92,7 +92,13 @@ public class ConsList implements List<LispObject> {
 
     @Override
     public Object[] toArray() {
-        throw new UnsupportedOperationException();
+        LispObject[] result = new LispObject[size()];
+        int index = 0;
+        for (LispObject obj : this) {
+            result[index++] = obj;
+        }
+
+        return result;
     }
 
     @Override

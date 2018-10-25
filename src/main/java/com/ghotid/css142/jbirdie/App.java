@@ -4,7 +4,7 @@ import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.LispException;
 import com.ghotid.css142.jbirdie.exception.LispExitException;
 import com.ghotid.css142.jbirdie.exception.ReaderException;
-import com.ghotid.css142.jbirdie.libcore.LibCoreEnvironmentFactory;
+import com.ghotid.css142.jbirdie.libcore.BuiltinEnvironmentFactory;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
 import java.io.BufferedReader;
@@ -44,7 +44,7 @@ public class App {
     }
 
     private static Environment createStandardEnvironment() {
-        Environment environment = LibCoreEnvironmentFactory.create();
+        Environment environment = BuiltinEnvironmentFactory.create();
         loadResource("/stdlib.bdl", environment);
         return environment;
     }

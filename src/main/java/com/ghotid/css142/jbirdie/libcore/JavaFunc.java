@@ -43,8 +43,12 @@ public final class JavaFunc extends FuncObject {
         try {
             return (LispObject) method.invoke(null, environment, args);
         } catch (InvocationTargetException e) {
-            if (e.getCause() instanceof LispException)
-                throw (LispException) e.getCause();
+            Throwable cause = e;
+            while (cause instanceof InvocationTargetException)
+                cause = cause.getCause();
+
+            if (cause instanceof LispException)
+                throw (LispException) cause;
             else
                 throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
