@@ -13,11 +13,17 @@ public interface Environment {
      */
     void set(String symbol, LispObject obj);
 
-    void def(String symbol, LispObject obj, boolean isConstant);
+    void def(String symbol, LispObject obj, String doc, boolean isConstant);
+
+    default void def(String symbol, LispObject obj, boolean isConstant) {
+        def(symbol, obj, "", isConstant);
+    }
 
     Environment pushStack();
 
     LispObject get(String symbol);
+
+    String getDoc(String symbol);
 
     boolean contains(String symbol);
 }

@@ -157,11 +157,17 @@ public class ConsList implements List<LispObject> {
      */
     @Override
     public LispObject get(int i) {
-        assert i >= 0;
-        LispObject node = list;
+        if (i < 0)
+            throw new IndexOutOfBoundsException();
 
+        LispObject node = list;
         while (i > 0) {
             node = node.getCdr();
+
+            // Optimization: return the result already if it is nil.
+            if (node instanceof NilObject)
+                return node;
+
             i--;
         }
 

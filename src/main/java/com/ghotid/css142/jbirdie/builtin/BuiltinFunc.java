@@ -7,9 +7,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BuiltinFunc {
     String name();
-
-    @SuppressWarnings("unused")
     String doc() default "";
-
     boolean evalArgs();
 }
