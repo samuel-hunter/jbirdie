@@ -1,6 +1,5 @@
-package com.ghotid.css142.jbirdie.libcore;
+package com.ghotid.css142.jbirdie.builtin;
 
-import com.ghotid.css142.jbirdie.LispUtils;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.ConsList;
 import com.ghotid.css142.jbirdie.objects.ConsObject;
@@ -14,18 +13,16 @@ import java.util.ArrayList;
 public final class LibList {
     private LibList() {}
 
-    @BuiltinFunc(name="list",
+    @BuiltinFunc(name="list", evalArgs = true,
     doc="Build a list from its arguments.")
     public static LispObject list(Environment environment, LispObject args) {
-        return LispUtils.evalList(environment, new ConsList(args));
+        return args;
     }
 
-    @BuiltinFunc(name="append",
+    @BuiltinFunc(name="append", evalArgs = true,
     doc="Combine multiple lists and return the result.")
     public static LispObject append(Environment environment, LispObject args) {
-        ConsList argList = new ConsList(
-                LispUtils.evalList(environment, new ConsList(args))
-        );
+        ConsList argList = new ConsList(args);
         ArrayList<LispObject> result = new ArrayList<>();
 
         for (LispObject arg : argList)

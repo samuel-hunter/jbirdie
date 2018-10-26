@@ -1,4 +1,4 @@
-package com.ghotid.css142.jbirdie.libcore;
+package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.environment.LispEnvironment;
@@ -15,7 +15,7 @@ public class BuiltinEnvironmentFactory {
         for (Method method : c.getMethods()) {
             if (method.isAnnotationPresent(BuiltinFunc.class)) {
                 BuiltinFunc a = method.getDeclaredAnnotation(BuiltinFunc.class);
-                env.def(a.name(), new JavaFunc(method), true);
+                env.def(a.name(), new JavaFunc(method, a.evalArgs()), true);
             }
         }
     }

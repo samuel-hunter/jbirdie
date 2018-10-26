@@ -1,4 +1,4 @@
-package com.ghotid.css142.jbirdie.libcore;
+package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.ConsList;
@@ -12,20 +12,19 @@ import com.ghotid.css142.jbirdie.objects.NumberObject;
 public final class LibMath {
     private LibMath() {}
 
-    @BuiltinFunc(name="+",
+    @BuiltinFunc(name="+", evalArgs = true,
             doc="Return the sum of its arguments. With no args, return 0.")
     public static LispObject add(Environment environment, LispObject args) {
         Double result = 0.0;
 
         for (LispObject obj : new ConsList(args)) {
-            obj = obj.evaluate(environment);
             result += LispObject.cast(NumberObject.class, obj).getValue();
         }
 
         return new NumberObject(result);
     }
 
-    @BuiltinFunc(name="-",
+    @BuiltinFunc(name="-", evalArgs = true,
             doc="Subtract the second and all subsequent arguments from the " +
                     "first; or, with one argument, negate it.")
     public static LispObject subtract(Environment environment,
@@ -35,35 +34,33 @@ public final class LibMath {
         Double value =
                 LispObject.cast(
                         NumberObject.class,
-                        args.getCar().evaluate(environment)
+                        args.getCar()
                 ).getValue();
 
         if (size == 1)
             return new NumberObject(-value);
 
         for (LispObject obj : new ConsList(args.getCdr())) {
-            obj = obj.evaluate(environment);
             value -= LispObject.cast(NumberObject.class, obj).getValue();
         }
 
         return new NumberObject(value);
     }
 
-    @BuiltinFunc(name="*",
+    @BuiltinFunc(name="*", evalArgs = true,
             doc="Return the product of its arguments. With no args, return 1.")
     public static LispObject multiply(Environment environment,
                                       LispObject args) {
         Double result = 1.0;
 
         for (LispObject obj : new ConsList(args)) {
-            obj = obj.evaluate(environment);
             result *= LispObject.cast(NumberObject.class, obj).getValue();
         }
 
         return new NumberObject(result);
     }
 
-    @BuiltinFunc(name="/",
+    @BuiltinFunc(name="/", evalArgs = true,
             doc="Divide the first argument by each of the following " +
                     "arguments, in turn. With one argument, return its " +
                     "reciprocal.")
@@ -73,21 +70,20 @@ public final class LibMath {
         Double quotient =
                 LispObject.cast(
                         NumberObject.class,
-                        args.getCar().evaluate(environment)
+                        args.getCar()
                 ).getValue();
 
         if (size == 1)
             return new NumberObject(1 / quotient);
 
         for (LispObject obj : new ConsList(args.getCdr())) {
-            obj = obj.evaluate(environment);
             quotient /= LispObject.cast(NumberObject.class, obj).getValue();
         }
 
         return new NumberObject(quotient);
     }
 
-    @BuiltinFunc(name="<",
+    @BuiltinFunc(name="<", evalArgs = true,
             doc="Return t if all of its arguments are in strictly " +
                     "increasing order, nil otherwise.")
     public static LispObject lessThan(Environment environment,
@@ -97,13 +93,12 @@ public final class LibMath {
         // Get the value of the first number to compare with.
         double smallerNum = LispObject.cast(
                 NumberObject.class,
-                args.getCar().evaluate(environment)
+                args.getCar()
         ).getValue();
 
         for (LispObject obj : new ConsList(args.getCdr())) {
             double largerNum = LispObject.cast(
-                    NumberObject.class,
-                    obj.evaluate(environment)
+                    NumberObject.class, obj
             ).getValue();
 
             // If the current number is greater than the previous, the
@@ -117,7 +112,7 @@ public final class LibMath {
         return environment.get("t");
     }
 
-    @BuiltinFunc(name="<=",
+    @BuiltinFunc(name="<=", evalArgs = true,
             doc="Return t if all of its arguments are in strictly " +
                     "non-decreasing order, nil otherwise.")
     public static LispObject lessThanEqual(Environment environment,
@@ -126,14 +121,12 @@ public final class LibMath {
 
         // Get the value of the first number to compare with.
         double smallerNum = LispObject.cast(
-                NumberObject.class,
-                args.getCar().evaluate(environment)
+                NumberObject.class, args.getCar()
         ).getValue();
 
         for (LispObject obj : new ConsList(args.getCdr())) {
             double largerNum = LispObject.cast(
-                    NumberObject.class,
-                    obj.evaluate(environment)
+                    NumberObject.class, obj
             ).getValue();
 
             // If the current number is greater than the previous, the
@@ -147,7 +140,7 @@ public final class LibMath {
         return environment.get("t");
     }
 
-    @BuiltinFunc(name=">=",
+    @BuiltinFunc(name=">=", evalArgs = true,
             doc="Return t if all of its arguments are in strictly " +
                     "non-increasing order, nil otherwise.")
     public static LispObject isGreaterEqual(Environment environment,
@@ -155,14 +148,12 @@ public final class LibMath {
         new ConsList(args).assertSizeAtLeast(1);
 
         double largerNum = LispObject.cast(
-                NumberObject.class,
-                args.getCar().evaluate(environment)
+                NumberObject.class, args.getCar()
         ).getValue();
 
         for (LispObject obj : new ConsList(args.getCdr())) {
             double smallerNum = LispObject.cast(
-                    NumberObject.class,
-                    obj.evaluate(environment)
+                    NumberObject.class, obj
             ).getValue();
 
             // Return false immediately if one of the expressions is not valid.
@@ -175,7 +166,7 @@ public final class LibMath {
         return environment.get("t");
     }
 
-    @BuiltinFunc(name=">",
+    @BuiltinFunc(name=">", evalArgs = true,
             doc="Return t if all of its arguments are in strictly increasing " +
                     "order, nil otherwise.")
     public static LispObject isGreater(Environment environment,
@@ -184,13 +175,12 @@ public final class LibMath {
 
         double largerNum = LispObject.cast(
                 NumberObject.class,
-                args.getCar().evaluate(environment)
+                args.getCar()
         ).getValue();
 
         for (LispObject obj : new ConsList(args.getCdr())) {
             double smallerNum = LispObject.cast(
-                    NumberObject.class,
-                    obj.evaluate(environment)
+                    NumberObject.class, obj
             ).getValue();
 
             // Return false immediately if one of the expressions is not valid.

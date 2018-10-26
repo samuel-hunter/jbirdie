@@ -4,7 +4,7 @@ import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.LispException;
 import com.ghotid.css142.jbirdie.exception.LispExitException;
 import com.ghotid.css142.jbirdie.exception.ReaderException;
-import com.ghotid.css142.jbirdie.libcore.BuiltinEnvironmentFactory;
+import com.ghotid.css142.jbirdie.builtin.BuiltinEnvironmentFactory;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
 import java.io.BufferedReader;

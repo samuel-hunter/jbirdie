@@ -1,4 +1,4 @@
-package com.ghotid.css142.jbirdie.libcore;
+package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.*;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 public final class LibIO {
     private LibIO() {}
 
-    @BuiltinFunc(name="read-line",
+    @BuiltinFunc(name="read-line", evalArgs = true,
             doc="Read the next line from standard input, and return it.")
     public static LispObject readLine(Environment environment,
                                       LispObject args) {
@@ -24,7 +24,7 @@ public final class LibIO {
         return new StringObject(line);
     }
 
-    @BuiltinFunc(name="read-number",
+    @BuiltinFunc(name="read-number", evalArgs = true,
             doc="Read the next number from standard input, and return it.")
     public static LispObject readNumber(Environment environment,
                                       LispObject args) {
@@ -37,14 +37,14 @@ public final class LibIO {
         return new NumberObject(value);
     }
 
-    @BuiltinFunc(name="print",
+    @BuiltinFunc(name="print", evalArgs = true,
             doc="Print all arguments to standard output.")
     public static LispObject print(Environment environment, LispObject args) {
         ConsList argList = new ConsList(args);
         StringBuilder sb = new StringBuilder();
 
         for (LispObject arg : argList)
-            sb.append(arg.evaluate(environment));
+            sb.append(arg);
 
         String result = sb.toString();
         System.out.print(result);
@@ -53,14 +53,14 @@ public final class LibIO {
         return new StringObject(result);
     }
 
-    @BuiltinFunc(name="println",
+    @BuiltinFunc(name="println", evalArgs = true,
             doc="Print all arguments to standard output, followed by a newline.")
     public static LispObject println(Environment environment, LispObject args) {
         ConsList argList = new ConsList(args);
         StringBuilder sb = new StringBuilder();
 
         for (LispObject arg : argList)
-            sb.append(arg.evaluate(environment));
+            sb.append(arg);
 
         String result = sb.toString();
         System.out.println(result);

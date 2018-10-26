@@ -1,4 +1,4 @@
-package com.ghotid.css142.jbirdie.libcore;
+package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.*;
@@ -9,7 +9,7 @@ import com.ghotid.css142.jbirdie.objects.*;
 public final class LibState {
     private LibState() {}
 
-    @BuiltinFunc(name="defconst",
+    @BuiltinFunc(name="defconst", evalArgs = false,
             doc="Define a non-changing variable.")
     public static LispObject defconst(Environment environment,
                                       LispObject args) {
@@ -25,7 +25,7 @@ public final class LibState {
         return symbol;
     }
 
-    @BuiltinFunc(name="defvar",
+    @BuiltinFunc(name="defvar", evalArgs = false,
             doc="Define a variable.")
     public static LispObject defvar(Environment environment, LispObject args) {
         ConsList argList = new ConsList(args);
@@ -40,7 +40,7 @@ public final class LibState {
         return symbol;
     }
 
-    @BuiltinFunc(name="setq",
+    @BuiltinFunc(name="setq", evalArgs = false,
             doc="Set the value of a variable.")
     public static LispObject setq(Environment environment, LispObject args) {
         ConsList argList = new ConsList(args);

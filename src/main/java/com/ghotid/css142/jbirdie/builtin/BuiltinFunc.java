@@ -1,4 +1,4 @@
-package com.ghotid.css142.jbirdie.libcore;
+package com.ghotid.css142.jbirdie.builtin;
 
 import java.lang.annotation.*;
 
@@ -10,4 +10,6 @@ public @interface BuiltinFunc {
 
     @SuppressWarnings("unused")
     String doc() default "";
+
+    boolean evalArgs();
 }
