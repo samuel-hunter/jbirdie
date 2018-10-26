@@ -1,7 +1,9 @@
-package com.ghotid.css142.jbirdie.libcore;
+package com.ghotid.css142.jbirdie.builtin;
 
+import com.ghotid.css142.jbirdie.LispUtils;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.LispException;
+import com.ghotid.css142.jbirdie.objects.ConsList;
 import com.ghotid.css142.jbirdie.objects.FuncObject;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
@@ -14,9 +16,11 @@ import java.lang.reflect.Modifier;
  */
 public final class JavaFunc extends FuncObject {
     private final Method method;
+    private final boolean evalArgs;
 
-    JavaFunc(Method method) {
+    JavaFunc(Method method, boolean evalArgs) {
         this.method = method;
+        this.evalArgs = evalArgs;
 
         // Verify return type.
         if (!LispObject.class.isAssignableFrom(method.getReturnType()))
@@ -41,6 +45,9 @@ public final class JavaFunc extends FuncObject {
     @Override
     public LispObject call(Environment environment, LispObject args) {
         try {
+            if (evalArgs)
+                args = LispUtils.evalList(environment, new ConsList(args));
+
             return (LispObject) method.invoke(null, environment, args);
         } catch (InvocationTargetException e) {
             Throwable cause = e;

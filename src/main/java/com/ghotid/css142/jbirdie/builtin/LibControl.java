@@ -1,4 +1,4 @@
-package com.ghotid.css142.jbirdie.libcore;
+package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.LispUtils;
 import com.ghotid.css142.jbirdie.environment.Environment;
@@ -10,8 +10,9 @@ import com.ghotid.css142.jbirdie.objects.*;
 public final class LibControl {
     private LibControl() {}
 
-    @BuiltinFunc(name="while",
-            doc="Repeat executing the body so long as the conditional is true.")
+    @BuiltinFunc(name = "while", evalArgs = false,
+            doc = "Repeat executing the body so long as the conditional is " +
+                    "true.")
     public static LispObject while_(Environment environment, LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);
 
@@ -27,7 +28,7 @@ public final class LibControl {
         return result;
     }
 
-    @BuiltinFunc(name="foreach",
+    @BuiltinFunc(name = "foreach", evalArgs = false,
             doc="Iterate over the body with each variable")
     public static LispObject forEach(Environment environment, LispObject args) {
         ConsList header = new ConsList(args.getCar());

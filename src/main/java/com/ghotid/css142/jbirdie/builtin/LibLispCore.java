@@ -1,4 +1,4 @@
-package com.ghotid.css142.jbirdie.libcore;
+package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.*;
@@ -9,7 +9,7 @@ import com.ghotid.css142.jbirdie.objects.*;
 public final class LibLispCore {
     private LibLispCore() {}
 
-    @BuiltinFunc(name="quote",
+    @BuiltinFunc(name="quote", evalArgs = false,
             doc="Return the first argument as a literal, i.e. without " +
                     "evaluation.")
     public static LispObject quote(Environment environment, LispObject args) {
@@ -18,17 +18,17 @@ public final class LibLispCore {
         return args.getCar();
     }
 
-    @BuiltinFunc(name="atom",
+    @BuiltinFunc(name="atom", evalArgs = true,
             doc="Return t if the first argument is an atomic data type, nil " +
                     "otherwise.")
     public static LispObject atom(Environment environment, LispObject args) {
         new ConsList(args).assertSizeEquals(1);
 
-        LispObject obj = args.getCar().evaluate(environment);
+        LispObject obj = args.getCar();
         return SymbolObject.fromBoolean(obj instanceof AtomObject);
     }
 
-    @BuiltinFunc(name="eq",
+    @BuiltinFunc(name="eq", evalArgs = true,
             doc="Return t if the first two arguments have the same effective " +
                     "value, nil otherwise.")
     public static LispObject eq(Environment environment, LispObject args) {
@@ -36,22 +36,18 @@ public final class LibLispCore {
         argList.assertSizeEquals(2);
 
         return SymbolObject.fromBoolean(
-                argList.get(0).evaluate(environment).equals(
-                        argList.get(1).evaluate(environment)
-                )
+                argList.get(0).equals(argList.get(1))
         );
     }
 
-    @BuiltinFunc(name="cons",
+    @BuiltinFunc(name="cons", evalArgs = true,
             doc="Return a CONS object with the first argument as the CAR and " +
                     "the second as its CDR.")
     public static LispObject cons(Environment environment, LispObject args) {
         ConsList list = new ConsList(args);
         list.assertSizeEquals(2);
 
-        return new ConsObject(
-                list.get(0).evaluate(environment),
-                list.get(1).evaluate(environment));
+        return new ConsObject(list.get(0), list.get(1));
     }
 
     /**
@@ -62,7 +58,7 @@ public final class LibLispCore {
      * <p>
      * If none of the pairs' conditionals are true, then it returns nil.
      */
-    @BuiltinFunc(name="cond")
+    @BuiltinFunc(name="cond", evalArgs = false)
     public static LispObject cond(Environment environment, LispObject args) {
         for (LispObject obj : new ConsList(args)) {
             ConsList pair = new ConsList(obj);
@@ -76,20 +72,20 @@ public final class LibLispCore {
         return NilObject.getNil();
     }
 
-    @BuiltinFunc(name="car",
+    @BuiltinFunc(name="car", evalArgs = true,
             doc="Return the first object of a list.")
     public static LispObject car(Environment environment, LispObject args) {
         new ConsList(args).assertSizeEquals(1);
 
-        return args.getCar().evaluate(environment).getCar();
+        return args.getCar().getCar();
     }
 
-    @BuiltinFunc(name="cdr",
+    @BuiltinFunc(name="cdr", evalArgs = true,
     doc="Return all but the first object of a list.")
     public static LispObject cdr(Environment environment, LispObject args) {
         new ConsList(args).assertSizeEquals(1);
 
-        return args.getCar().evaluate(environment).getCdr();
+        return args.getCar().getCdr();
     }
 
 
