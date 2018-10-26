@@ -15,7 +15,7 @@ public class BuiltinEnvironmentFactory {
         for (Method method : c.getMethods()) {
             if (method.isAnnotationPresent(BuiltinFunc.class)) {
                 BuiltinFunc a = method.getDeclaredAnnotation(BuiltinFunc.class);
-                env.def(a.name(), new JavaFunc(method, a.evalArgs()), true);
+                env.def(a.name(), new JavaFunc(method, a.evalArgs()), a.doc(), true);
             }
         }
     }
@@ -32,6 +32,7 @@ public class BuiltinEnvironmentFactory {
         addAnnotatedMethods(LibState.class, env);
         addAnnotatedMethods(LibSystem.class, env);
         addAnnotatedMethods(LibControl.class, env);
+        addAnnotatedMethods(LibIntrospection.class, env);
 
         // Constants
         env.def("t", SymbolObject.getT(), true);

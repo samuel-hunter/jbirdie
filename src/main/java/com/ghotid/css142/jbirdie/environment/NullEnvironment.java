@@ -16,8 +16,8 @@ public class NullEnvironment implements Environment {
     }
 
     @Override
-    public void def(String symbol, LispObject obj, boolean isConstant) {
-        throw new UnsupportedOperationException();
+    public void def(String symbol, LispObject obj, String doc, boolean isConstant) {
+        throw new UndefinedSymbolException(symbol);
     }
 
     @Override
@@ -28,6 +28,11 @@ public class NullEnvironment implements Environment {
     @Override
     public LispObject get(String symbol) {
         throw new UndefinedSymbolException(symbol);
+    }
+
+    @Override
+    public String getDoc(String symbol) {
+        return null;
     }
 
     @Override

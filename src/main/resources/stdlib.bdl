@@ -1,10 +1,3 @@
-(defconst defmacro (macro (Name Args . Body)
-    (list 'defconst Name (append (list 'macro Args) Body)))
-    "Define a macro.")
-
-(defmacro defun (Name Args . Body)
-    "Define a function."
-    (list 'defconst Name (append (list 'lambda Args) Body)))
 
 
 ;; car, cdr utility functions
