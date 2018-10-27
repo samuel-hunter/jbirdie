@@ -54,17 +54,17 @@ public class ConsObject implements LispObject {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append('(').append(car.toString());
+        sb.append('(').append(car.inspect());
 
         LispObject tail = cdr;
 
         while (tail instanceof ConsObject) {
-            sb.append(' ').append(tail.getCar().toString());
+            sb.append(' ').append(tail.getCar().inspect());
             tail = tail.getCdr();
         }
 
         if (!(tail instanceof NilObject)) {
-            sb.append(" . ").append(tail.toString());
+            sb.append(" . ").append(tail.inspect());
         }
 
         return sb.append(')').toString();
