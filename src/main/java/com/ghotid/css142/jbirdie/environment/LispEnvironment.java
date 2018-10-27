@@ -65,6 +65,15 @@ public class LispEnvironment implements Environment {
     }
 
     @Override
+    public Map<String, LispObject> getMap() {
+        Map<String, LispObject> result = parentEnvironment.getMap();
+        for (String symbol : slotMap.keySet())
+            result.put(symbol, slotMap.get(symbol).getValue());
+
+        return result;
+    }
+
+    @Override
     public boolean contains(String symbol) {
         return slotMap.containsKey(symbol) ||
                 parentEnvironment.contains(symbol);

@@ -2,6 +2,8 @@ package com.ghotid.css142.jbirdie.environment;
 
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
+import java.util.Map;
+
 /**
  * A scope for symbols to reside in.
  */
@@ -22,6 +24,8 @@ public interface Environment {
     Environment pushStack();
 
     LispObject get(String symbol);
+
+    Map<String, LispObject> getMap();
 
     String getDoc(String symbol);
 
