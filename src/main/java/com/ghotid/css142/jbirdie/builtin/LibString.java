@@ -14,13 +14,8 @@ public final class LibString {
     public static LispObject concat(Environment environment, LispObject args) {
         StringBuilder sb = new StringBuilder();
 
-        for (LispObject obj : new ConsList(args)) {
-            StringObject str = LispObject.cast(
-                    StringObject.class, obj
-            );
-
-            sb.append(str.getValue());
-        }
+        for (LispObject obj : new ConsList(args))
+            sb.append(obj);
 
         return new StringObject(sb.toString());
     }
