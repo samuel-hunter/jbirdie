@@ -1,0 +1,17 @@
+(defun prompt (Dialogue)
+    "Prompt the user and read with the given function."
+    (print Dialogue " ")
+    (read-number))
+
+(defvar numbers () "List of numbers to show stats on.")
+
+;; Ask user for the numbers
+(print "How many numbers would you like to enter? ")
+(foreach (num (range (read-number)))
+    (push (prompt (concat "Number " num ":")) numbers))
+
+;; Show statistics.
+(println "Smallest number: " (min numbers))
+(println "Largest number: " (max numbers))
+(println "Sum: " (sum numbers))
+(println "Avg: " (avg numbers))
