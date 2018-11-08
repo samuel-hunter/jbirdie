@@ -73,9 +73,11 @@ public class JBirdie {
         try {
             Scanner scanner = new Scanner(source);
             Parser parser = new Parser(scanner);
+            InterpreterContext context = new InterpreterContext(environment);
 
             while (parser.hasNext()) {
-                LispObject result = parser.nextObject().evaluate(environment);
+                LispObject result =
+                        context.evaluate(parser.nextObject());
                 if (isRepl)
                     System.out.println(result.inspect());
             }

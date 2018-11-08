@@ -1,5 +1,6 @@
 package com.ghotid.css142.jbirdie.builtin;
 
+import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.*;
 
@@ -9,29 +10,31 @@ import com.ghotid.css142.jbirdie.objects.*;
 public final class LibLispCore {
     private LibLispCore() {}
 
-    @BuiltinFunc(name="quote", evalArgs = false,
+    @BuiltinFunc(name="quote", evalArgs = false, evalResult = false,
             doc="Return the first argument as a literal, i.e. without " +
                     "evaluation.")
-    public static LispObject quote(Environment environment, LispObject args) {
+    public static LispObject quote(InterpreterContext context,
+                                   LispObject args) {
         new ConsList(args).assertSizeEquals(1);
 
         return args.getCar();
     }
 
-    @BuiltinFunc(name="atom", evalArgs = true,
+    @BuiltinFunc(name="atom", evalArgs = true, evalResult = false,
             doc="Return t if the first argument is an atomic data type, nil " +
                     "otherwise.")
-    public static LispObject atom(Environment environment, LispObject args) {
+    public static LispObject atom(InterpreterContext context,
+                                  LispObject args) {
         new ConsList(args).assertSizeEquals(1);
 
         LispObject obj = args.getCar();
         return SymbolObject.fromBoolean(obj instanceof AtomObject);
     }
 
-    @BuiltinFunc(name="eq", evalArgs = true,
+    @BuiltinFunc(name="eq", evalArgs = true, evalResult = false,
             doc="Return t if the first two arguments have the same effective " +
                     "value, nil otherwise.")
-    public static LispObject eq(Environment environment, LispObject args) {
+    public static LispObject eq(InterpreterContext context, LispObject args) {
         ConsList argList = new ConsList(args);
         argList.assertSizeEquals(2);
 
@@ -40,10 +43,10 @@ public final class LibLispCore {
         );
     }
 
-    @BuiltinFunc(name="cons", evalArgs = true,
+    @BuiltinFunc(name="cons", evalArgs = true, evalResult = false,
             doc="Return a CONS object with the first argument as the CAR and " +
                     "the second as its CDR.")
-    public static LispObject cons(Environment environment, LispObject args) {
+    public static LispObject cons(InterpreterContext context, LispObject args) {
         ConsList list = new ConsList(args);
         list.assertSizeEquals(2);
 
@@ -58,31 +61,32 @@ public final class LibLispCore {
      * <p>
      * If none of the pairs' conditionals are true, then it returns nil.
      */
-    @BuiltinFunc(name="cond", evalArgs = false)
-    public static LispObject cond(Environment environment, LispObject args) {
+    @BuiltinFunc(name="cond", evalArgs = false, evalResult = true)
+    public static LispObject cond(InterpreterContext context, LispObject args) {
         for (LispObject obj : new ConsList(args)) {
             ConsList pair = new ConsList(obj);
             pair.assertSizeEquals(2);
 
-            LispObject conditional = pair.get(0).evaluate(environment);
+            LispObject conditional =
+                    context.evaluate(pair.get(0));
             if (conditional.isTruthy())
-                return pair.get(1).evaluate(environment);
+                return pair.get(1);
         }
 
         return NilObject.getNil();
     }
 
-    @BuiltinFunc(name="car", evalArgs = true,
+    @BuiltinFunc(name="car", evalArgs = true, evalResult = true,
             doc="Return the first object of a list.")
-    public static LispObject car(Environment environment, LispObject args) {
+    public static LispObject car(InterpreterContext context, LispObject args) {
         new ConsList(args).assertSizeEquals(1);
 
         return args.getCar().getCar();
     }
 
-    @BuiltinFunc(name="cdr", evalArgs = true,
+    @BuiltinFunc(name="cdr", evalArgs = true, evalResult = true,
     doc="Return all but the first object of a list.")
-    public static LispObject cdr(Environment environment, LispObject args) {
+    public static LispObject cdr(InterpreterContext context, LispObject args) {
         new ConsList(args).assertSizeEquals(1);
 
         return args.getCar().getCdr();

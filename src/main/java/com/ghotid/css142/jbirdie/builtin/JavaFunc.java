@@ -1,7 +1,8 @@
 package com.ghotid.css142.jbirdie.builtin;
 
+import com.ghotid.css142.jbirdie.InterpreterContext;
+import com.ghotid.css142.jbirdie.LispResult;
 import com.ghotid.css142.jbirdie.LispUtils;
-import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.LispException;
 import com.ghotid.css142.jbirdie.objects.ConsList;
 import com.ghotid.css142.jbirdie.objects.FuncObject;
@@ -17,10 +18,12 @@ import java.lang.reflect.Modifier;
 public final class JavaFunc extends FuncObject {
     private final Method method;
     private final boolean evalArgs;
+    private final boolean evalResult;
 
-    JavaFunc(Method method, boolean evalArgs) {
+    JavaFunc(Method method, boolean evalArgs, boolean evalResult) {
         this.method = method;
         this.evalArgs = evalArgs;
+        this.evalResult = evalResult;
 
         // Verify return type.
         if (!LispObject.class.isAssignableFrom(method.getReturnType()))
@@ -30,11 +33,11 @@ public final class JavaFunc extends FuncObject {
         // Verify parameter types.
         Class[] paramTypes = method.getParameterTypes();
         if (paramTypes.length != 2 ||
-            !Environment.class.isAssignableFrom(paramTypes[0]) ||
+            !InterpreterContext.class.isAssignableFrom(paramTypes[0]) ||
             !LispObject.class.isAssignableFrom(paramTypes[1]))
             throw new IllegalArgumentException(
-                    "Method " + method + " must accept an Environment and " +
-                            "LispObject.");
+                    "Method " + method + " must accept an InterpreterContext " +
+                            "and LispObject.");
 
         // Verify misc. method types.
         if (!Modifier.isStatic(method.getModifiers()))
@@ -43,12 +46,13 @@ public final class JavaFunc extends FuncObject {
     }
 
     @Override
-    public LispObject call(Environment environment, LispObject args) {
+    public LispResult call(InterpreterContext context, LispObject args) {
         try {
             if (evalArgs)
-                args = LispUtils.evalList(environment, new ConsList(args));
+                args = LispUtils.evalList(context, new ConsList(args));
+            LispObject result = (LispObject) method.invoke(null, context, args);
 
-            return (LispObject) method.invoke(null, environment, args);
+            return new LispResult(result, !evalResult);
         } catch (InvocationTargetException e) {
             Throwable cause = e;
             while (cause instanceof InvocationTargetException)

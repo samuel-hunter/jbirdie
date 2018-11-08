@@ -1,5 +1,6 @@
 package com.ghotid.css142.jbirdie.builtin;
 
+import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.*;
 
@@ -9,7 +10,7 @@ import com.ghotid.css142.jbirdie.objects.*;
 public final class LibState {
     private LibState() {}
 
-    private static LispObject def(Environment environment, LispObject args,
+    private static LispObject def(InterpreterContext context, LispObject args,
                             boolean isConstant) {
         ConsList argList = new ConsList(args);
         // Allow third argument for documentation.
@@ -25,39 +26,41 @@ public final class LibState {
 
         SymbolObject symbol =
                 LispObject.cast(SymbolObject.class, argList.get(0));
-        environment.def(
+        context.getEnvironment().def(
                 symbol.getValue(),
-                argList.get(1).evaluate(environment),
+                context.evaluate(argList.get(1)),
                 doc, isConstant);
 
         return symbol;
     }
 
-    @BuiltinFunc(name="defconst", evalArgs = false,
+    @BuiltinFunc(name="defconst", evalArgs = false, evalResult = false,
             doc="Define a non-changing variable.")
-    public static LispObject defconst(Environment environment,
+    public static LispObject defconst(InterpreterContext context,
                                       LispObject args) {
-        return def(environment, args, true);
+        return def(context, args, true);
     }
 
-    @BuiltinFunc(name="defvar", evalArgs = false,
+    @BuiltinFunc(name="defvar", evalArgs = false, evalResult = false,
             doc="Define a variable.")
-    public static LispObject defvar(Environment environment, LispObject args) {
-        return def(environment, args, false);
+    public static LispObject defvar(InterpreterContext context,
+                                    LispObject args) {
+        return def(context, args, false);
     }
 
-    @BuiltinFunc(name="setq", evalArgs = false,
+    @BuiltinFunc(name="setq", evalArgs = false, evalResult = false,
             doc="Set the value of a variable.")
-    public static LispObject setq(Environment environment, LispObject args) {
+    public static LispObject setq(InterpreterContext context, LispObject args) {
         ConsList argList = new ConsList(args);
         argList.assertSizeEquals(2);
 
         SymbolObject symbol = LispObject.cast(
                 SymbolObject.class, args.getCar());
 
-        LispObject value = argList.get(1).evaluate(environment);
+        LispObject value =
+                context.evaluate(argList.get(1));
 
-        environment.set(
+        context.getEnvironment().set(
                 symbol.getValue(),
                 value
         );
@@ -94,16 +97,16 @@ public final class LibState {
         return symbol;
     }
 
-    @BuiltinFunc(name="defun", evalArgs = false,
+    @BuiltinFunc(name="defun", evalArgs = false, evalResult = false,
             doc = "Define a function.")
-    public static LispObject defun(Environment environment, LispObject args) {
-        return deflambda(environment, args, false);
+    public static LispObject defun(InterpreterContext context, LispObject args) {
+        return deflambda(context.getEnvironment(), args, false);
     }
 
-    @BuiltinFunc(name="defmacro", evalArgs = false,
+    @BuiltinFunc(name="defmacro", evalArgs = false, evalResult = false,
             doc = "Define a macro.")
-    public static LispObject defmacro(Environment environment,
+    public static LispObject defmacro(InterpreterContext context,
                                       LispObject args) {
-        return deflambda(environment, args, true);
+        return deflambda(context.getEnvironment(), args, true);
     }
 }

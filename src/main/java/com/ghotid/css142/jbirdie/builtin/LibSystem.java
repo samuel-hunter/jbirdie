@@ -1,8 +1,7 @@
 package com.ghotid.css142.jbirdie.builtin;
 
-import com.ghotid.css142.jbirdie.App;
+import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.JBirdie;
-import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.LispExitException;
 import com.ghotid.css142.jbirdie.objects.*;
 
@@ -13,10 +12,10 @@ import com.ghotid.css142.jbirdie.objects.*;
 public final class LibSystem {
     private LibSystem() {}
 
-    @BuiltinFunc(name="debug", evalArgs = true,
+    @BuiltinFunc(name="debug", evalArgs = true, evalResult = false,
             doc="With no arguments, return whether debug mode is on. With one" +
                     " argument, set the interpreter's debug mode.")
-    public static LispObject debug(Environment environment, LispObject args) {
+    public static LispObject debug(InterpreterContext context, LispObject args) {
         int size = new ConsList(args).assertSizeWithin(0, 1);
 
         if (size == 0) {
@@ -28,9 +27,9 @@ public final class LibSystem {
         }
     }
 
-    @BuiltinFunc(name="exit", evalArgs = true,
+    @BuiltinFunc(name="exit", evalArgs = true, evalResult = false,
             doc="Exit the program. With an argument, set the status code.")
-    public static LispObject exit(Environment environment, LispObject args) {
+    public static LispObject exit(InterpreterContext context, LispObject args) {
         int size = new ConsList(args).assertSizeWithin(0, 1);
 
         if (size == 0) {

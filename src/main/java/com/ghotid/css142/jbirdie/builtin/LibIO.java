@@ -1,6 +1,6 @@
 package com.ghotid.css142.jbirdie.builtin;
 
-import com.ghotid.css142.jbirdie.environment.Environment;
+import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.objects.*;
 
 import java.util.Scanner;
@@ -11,9 +11,9 @@ import java.util.Scanner;
 public final class LibIO {
     private LibIO() {}
 
-    @BuiltinFunc(name="read-line", evalArgs = true,
+    @BuiltinFunc(name="read-line", evalArgs = true, evalResult = false,
             doc="Read the next line from standard input, and return it.")
-    public static LispObject readLine(Environment environment,
+    public static LispObject readLine(InterpreterContext context,
                                       LispObject args) {
         new ConsList(args).assertSizeEquals(0);
 
@@ -24,9 +24,9 @@ public final class LibIO {
         return new StringObject(line);
     }
 
-    @BuiltinFunc(name="read-number", evalArgs = true,
+    @BuiltinFunc(name="read-number", evalArgs = true, evalResult = false,
             doc="Read the next number from standard input, and return it.")
-    public static LispObject readNumber(Environment environment,
+    public static LispObject readNumber(InterpreterContext context,
                                       LispObject args) {
         new ConsList(args).assertSizeEquals(0);
 
@@ -37,9 +37,9 @@ public final class LibIO {
         return new NumberObject(value);
     }
 
-    @BuiltinFunc(name="print", evalArgs = true,
+    @BuiltinFunc(name="print", evalArgs = true, evalResult = false,
             doc="Print all arguments to standard output.")
-    public static LispObject print(Environment environment, LispObject args) {
+    public static LispObject print(InterpreterContext context, LispObject args) {
         ConsList argList = new ConsList(args);
         StringBuilder sb = new StringBuilder();
 
@@ -53,9 +53,9 @@ public final class LibIO {
         return new StringObject(result);
     }
 
-    @BuiltinFunc(name="println", evalArgs = true,
+    @BuiltinFunc(name="println", evalArgs = true, evalResult = false,
             doc="Print all arguments to standard output, followed by a newline.")
-    public static LispObject println(Environment environment, LispObject args) {
+    public static LispObject println(InterpreterContext context, LispObject args) {
         ConsList argList = new ConsList(args);
         StringBuilder sb = new StringBuilder();
 

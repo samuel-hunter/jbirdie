@@ -1,5 +1,7 @@
 package com.ghotid.css142.jbirdie.objects;
 
+import com.ghotid.css142.jbirdie.InterpreterContext;
+import com.ghotid.css142.jbirdie.LispResult;
 import com.ghotid.css142.jbirdie.environment.Environment;
 
 public class SymbolObject extends AtomObject {
@@ -43,7 +45,7 @@ public class SymbolObject extends AtomObject {
     }
 
     @Override
-    public LispObject evaluate(Environment environment) {
-        return environment.get(symbol);
+    public LispResult evaluate(InterpreterContext context) {
+        return new LispResult(context.getEnvironment().get(symbol), true);
     }
 }
