@@ -1,0 +1,55 @@
+;; Mathematical utilities.
+
+(defun +1 (X)
+    "Return the value plus 1."
+    (+ X 1))
+
+(defun -1 (X)
+    "Return the value less 1."
+    (- X 1))
+
+(defun sum (List)
+    (apply + List))
+
+(defun avg (List)
+    (/ (sum List) (size List)))
+
+(defun min (List)
+    "Return the smallest value from List."
+    (defun min* (Current New)
+        (cond
+            ((null Current) New)
+            ((> Current New) New)
+            (t Current)))
+
+    (fold min* nil List))
+
+(defun max (List)
+    "Return the largest value from List."
+    (defun max* (Current New)
+        (cond
+            ((null Current) New)
+            ((< Current New) New)
+            (t Current)))
+
+    (fold max* nil List))
+
+(defun odd? (Num)
+    "Return true if the number is odd."
+    (= (% Num 2) 1))
+
+(defun even? (Num)
+    "Return true if the number is even."
+    (= (% Num 2) 0))
+
+(defmacro inc (X)
+    "Increment the variable by 1 and return its result."
+    (list 'progn
+        (list 'setq X (list '+1 X))
+        X))
+
+(defmacro dec (X)
+    "Decrement the variable by 1 and return its result."
+    (list 'progn
+        (list 'setq X (list '-1 X))
+        X))

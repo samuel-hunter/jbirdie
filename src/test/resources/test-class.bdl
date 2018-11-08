@@ -1,0 +1,6 @@
+(defconst +TestAnimal
+    (class nil
+           '(legs eyes name)
+           (list
+            (cons 'call (lambda () "The animal is calling!"))
+            (cons 'walk (lambda () "The animal is walking.")))))

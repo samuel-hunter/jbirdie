@@ -1,0 +1,49 @@
+(defun class (Superclass Slots Methods)
+    "Create a class data structure."
+    (list 'CLASS Superclass Slots Methods))
+
+(defun class? (Class)
+    "Return whether the object is a class."
+    (eq (first Class) 'CLASS))
+
+(defun superclass (Class)
+    "Return the class's superclass."
+    (nth 1 Class))
+
+(defun cslots (Class)
+    "Return a class's list of slots."
+    (nth 2 Class))
+
+(defun cmethods (Class)
+    "Return an a-list of a class's methods."
+    (nth 3 Class))
+
+(defun chas-slot? (Class Slot)
+    "Return whether a class has a slot."
+    (member Slot (cslots Class)))
+
+(defun chas-method?* (Class Methodname)
+    "Return whether a class has a method."
+    (if (null Class)
+        nil
+        (member Methodname (akeys (cmethods Class)))))
+
+(defun chas-method? (Class Methodname)
+    "Return whether a class has a method."
+    (if (null Class)
+        nil
+        (or (chas-method?* Class)
+            (chas-method?* (superclass Class)))))
+
+(defun cfind-method* (Class Methodname)
+    "Return a class's method, if it has any."
+    (if (null Class)
+        nil
+        (cdr (assoc Methodname (cmethods Class)))))
+
+(defun cfind-method (Class Methodname)
+    "Return a class's method, or its superclass's method."
+    (cond
+        ((null Class) nil)
+        ((chas-method?* Class Methodname) (cfind-method* Class Methodname))
+        (t (cfind-method (superclass Class) Methodname))))

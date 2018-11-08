@@ -192,4 +192,24 @@ public final class LibMath {
 
         return environment.get("t");
     }
+
+    @BuiltinFunc(name="%", evalArgs = true,
+            doc="Return X % Y.")
+    public static LispObject mod(Environment environment, LispObject args)
+    {
+        ConsList argList = new ConsList(args);
+        argList.assertSizeEquals(2);
+
+        NumberObject dividend = LispObject.cast(
+                NumberObject.class,
+                argList.get(0)
+        );
+
+        NumberObject divisor = LispObject.cast(
+                NumberObject.class,
+                argList.get(1)
+        );
+
+        return new NumberObject(dividend.getValue() % divisor.getValue());
+    }
 }
