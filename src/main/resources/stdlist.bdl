@@ -1,0 +1,95 @@
+
+;; List functions
+
+(defun nth (Index List)
+    "Return the nth element of the list."
+    (cond
+        ((null List) nil)
+        ((eq Index 0) (first List))
+        (t (nth (-1 Index 1) (rest List)))))
+
+(defun size (List)
+    "Return the size of the list."
+    (defun size-iter (List Size)
+        (cond
+            ((null List) Size)
+            (t (size-iter (rest List) (+1 Size)))))
+
+    (size-iter List 0))
+
+(defun member (Elem List)
+    "Return true if the element is a member of the list."
+    (cond
+        ((null List) nil)
+        ((eq Elem (first List)) t)
+        (t (member Elem (rest List)))))
+
+(defmacro push (Elem List)
+    (list 'setq List (list 'cons Elem List)))
+
+(defun range (Size)
+    "Return a list of range Size from 0."
+    (defun range-iter (Num Result)
+        (if (<= Num 0)
+            Result
+            (range-iter (-1 Num) (cons Num Result))))
+
+    (range-iter Size ()))
+
+(defun reverse (List)
+    "Returns a list with the same items, reversed."
+    (defun reverse-iter (List Result)
+        (cond
+            ((null List) Result)
+            (t (reverse-iter (cdr List) (cons (car List) Result)))))
+
+    (reverse-iter List nil))
+
+(defun uniq (List)
+    "Return a list of all unique values from the list."
+    (defun uniq-iter (List Result)
+        (cond
+            ((null List) (reverse Result))
+            ((member (first List) Result) (uniq-iter (rest List) Result))
+            (t (uniq-iter (rest List) (cons (first List) Result)))))
+
+    (uniq-iter List ()))
+
+(defun filter (Test List)
+    "Return a list containing only values that pass the given test."
+    (defun filter-iter (List Result)
+        (cond
+            ((null List) (reverse Result))
+            ((Test (first List)) (filter-iter (rest List)
+                                              (cons (first List) Result)))
+            (t (filter-iter (rest List) Result))))
+
+    (filter-iter List ()))
+
+;; A-list functions
+
+(defun assoc (Key Alist)
+    "Search through an a-list and return a pair where its car matches the key."
+    (cond
+        ((null Alist) nil)
+        ;; Return the first element if its car matches.
+        ((eq Key (caar Alist)) (car Alist))
+        ;; Go through assoc again, but cut off the first element from the list.
+        (t (assoc Key (cdr Alist)))))
+
+(defun assocr (Key Alist)
+    "Search through an a-list and return a pair where its cdr matches the key."
+    (cond
+        ((null Alist) nil)
+        ;; return the first element if its cdr matches.
+        ((eq Key (cdar Alist)) (car Alist))
+        ;; Go through assocr again, but without the a-list's first element.
+        (t (assoc Key (cdr Alist)))))
+
+(defun akeys (Alist)
+    "Return all keys from an a-list"
+    (mapcar car Alist))
+
+(defun avalues (Alist)
+    "Return all values from an a-list"
+    (mapcar cdr Alist))

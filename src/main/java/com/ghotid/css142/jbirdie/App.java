@@ -46,6 +46,9 @@ public class App {
     private static Environment createStandardEnvironment() {
         Environment environment = BuiltinEnvironmentFactory.create();
         loadResource("/stdlib.bdl", environment);
+        loadResource("/stdlist.bdl", environment);
+        loadResource("/stdmath.bdl", environment);
+        loadResource("/stdclass.bdl", environment);
         return environment;
     }
 
