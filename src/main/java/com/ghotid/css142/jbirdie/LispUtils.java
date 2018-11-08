@@ -11,10 +11,10 @@ import java.util.ArrayList;
 public final class LispUtils {
     private LispUtils() {}
 
-    public static LispObject progn(Environment environment, LispObject body) {
+    public static LispObject progn(InterpreterContext context, LispObject body) {
         LispObject result = NilObject.getNil();
         for (LispObject expr : new ConsList(body))
-            result = expr.evaluate(environment);
+            result = context.evaluate(expr);
 
         return result;
     }
@@ -22,11 +22,11 @@ public final class LispUtils {
     /**
      * Return a list of the given lisp objects, evaluated.
      */
-    public static LispObject evalList(Environment environment,
+    public static LispObject evalList(InterpreterContext context,
                                       ConsList list) {
         ArrayList<LispObject> result = new ArrayList<>();
         for (LispObject obj : list)
-            result.add(obj.evaluate(environment));
+            result.add(context.evaluate(obj));
 
         return ConsObject.fromList(result);
     }

@@ -1,5 +1,6 @@
 package com.ghotid.css142.jbirdie.builtin;
 
+import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.LispUtils;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.*;
@@ -10,27 +11,27 @@ import com.ghotid.css142.jbirdie.objects.*;
 public final class LibControl {
     private LibControl() {}
 
-    @BuiltinFunc(name = "while", evalArgs = false,
+    @BuiltinFunc(name = "while", evalArgs = false, evalResult = false,
             doc = "Repeat executing the body so long as the conditional is " +
                     "true.")
-    public static LispObject while_(Environment environment, LispObject args) {
+    public static LispObject while_(InterpreterContext context, LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);
 
         LispObject result = NilObject.getNil();
         LispObject conditional = args.getCar();
         LispObject body = args.getCdr();
 
-        while (conditional.evaluate(environment).isTruthy()) {
+        while (context.evaluate(conditional).isTruthy()) {
             // Give the construct its own scope.
-            result = LispUtils.progn(environment.pushStack(), body);
+            result = LispUtils.progn(context.pushEnvironment(), body);
         }
 
         return result;
     }
 
-    @BuiltinFunc(name = "foreach", evalArgs = false,
+    @BuiltinFunc(name = "foreach", evalArgs = false, evalResult = false,
             doc="Iterate over the body with each variable")
-    public static LispObject forEach(Environment environment, LispObject args) {
+    public static LispObject forEach(InterpreterContext context, LispObject args) {
         ConsList header = new ConsList(args.getCar());
         header.assertSizeEquals(2);
 
@@ -39,14 +40,15 @@ public final class LibControl {
                 header.get(0)
         ).getValue();
 
-        ConsList list = new ConsList(header.get(1).evaluate(environment));
+        ConsList list = new ConsList(context.evaluate(header.get(1)));
         LispObject body = args.getCdr();
         LispObject result = NilObject.getNil();
 
         for (LispObject element : list) {
-            Environment loopEnvironment = environment.pushStack();
+            Environment loopEnvironment = context.getEnvironment().pushStack();
             loopEnvironment.def(elementName, element, false);
-            result = LispUtils.progn(loopEnvironment, body);
+            result = LispUtils.progn(
+                    context.withEnvironment(loopEnvironment), body);
         }
 
         return result;

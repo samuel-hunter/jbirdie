@@ -9,4 +9,5 @@ public @interface BuiltinFunc {
     String name();
     String doc() default "";
     boolean evalArgs();
+    boolean evalResult();
 }

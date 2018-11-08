@@ -1,5 +1,6 @@
 package com.ghotid.css142.jbirdie.builtin;
 
+import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.*;
 
@@ -9,9 +10,9 @@ import com.ghotid.css142.jbirdie.objects.*;
 public final class LibString {
     private LibString() {}
 
-    @BuiltinFunc(name="concat", evalArgs = true,
+    @BuiltinFunc(name="concat", evalArgs = true, evalResult = false,
             doc="Concatenate multiple values into one string.")
-    public static LispObject concat(Environment environment, LispObject args) {
+    public static LispObject concat(InterpreterContext context, LispObject args) {
         StringBuilder sb = new StringBuilder();
 
         for (LispObject obj : new ConsList(args))
@@ -20,9 +21,9 @@ public final class LibString {
         return new StringObject(sb.toString());
     }
 
-    @BuiltinFunc(name="to-string", evalArgs = true,
+    @BuiltinFunc(name="to-string", evalArgs = true, evalResult = false,
             doc="Convert the first argument into a string.")
-    public static LispObject call(Environment environment, LispObject args) {
+    public static LispObject call(InterpreterContext context, LispObject args) {
         new ConsList(args).assertSizeEquals(1);
         return new StringObject(
                 args.getCar().toString());

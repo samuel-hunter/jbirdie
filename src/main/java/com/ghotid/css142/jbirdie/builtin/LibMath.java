@@ -1,10 +1,7 @@
 package com.ghotid.css142.jbirdie.builtin;
 
-import com.ghotid.css142.jbirdie.environment.Environment;
-import com.ghotid.css142.jbirdie.objects.ConsList;
-import com.ghotid.css142.jbirdie.objects.LispObject;
-import com.ghotid.css142.jbirdie.objects.NilObject;
-import com.ghotid.css142.jbirdie.objects.NumberObject;
+import com.ghotid.css142.jbirdie.InterpreterContext;
+import com.ghotid.css142.jbirdie.objects.*;
 
 /**
  * Collection of builtin functions concerning mathematical operations.
@@ -12,9 +9,10 @@ import com.ghotid.css142.jbirdie.objects.NumberObject;
 public final class LibMath {
     private LibMath() {}
 
-    @BuiltinFunc(name="+", evalArgs = true,
+    @BuiltinFunc(name="+", evalArgs = true, evalResult = false,
             doc="Return the sum of its arguments. With no args, return 0.")
-    public static LispObject add(Environment environment, LispObject args) {
+    public static LispObject add(InterpreterContext context,
+                                 LispObject args) {
         Double result = 0.0;
 
         for (LispObject obj : new ConsList(args)) {
@@ -24,10 +22,10 @@ public final class LibMath {
         return new NumberObject(result);
     }
 
-    @BuiltinFunc(name="-", evalArgs = true,
+    @BuiltinFunc(name="-", evalArgs = true, evalResult = false,
             doc="Subtract the second and all subsequent arguments from the " +
                     "first; or, with one argument, negate it.")
-    public static LispObject subtract(Environment environment,
+    public static LispObject subtract(InterpreterContext context,
                                       LispObject args) {
         int size = new ConsList(args).assertSizeAtLeast(1);
 
@@ -47,9 +45,9 @@ public final class LibMath {
         return new NumberObject(value);
     }
 
-    @BuiltinFunc(name="*", evalArgs = true,
+    @BuiltinFunc(name="*", evalArgs = true, evalResult = false,
             doc="Return the product of its arguments. With no args, return 1.")
-    public static LispObject multiply(Environment environment,
+    public static LispObject multiply(InterpreterContext context,
                                       LispObject args) {
         Double result = 1.0;
 
@@ -60,11 +58,11 @@ public final class LibMath {
         return new NumberObject(result);
     }
 
-    @BuiltinFunc(name="/", evalArgs = true,
+    @BuiltinFunc(name="/", evalArgs = true, evalResult = false,
             doc="Divide the first argument by each of the following " +
                     "arguments, in turn. With one argument, return its " +
                     "reciprocal.")
-    public static LispObject divide(Environment environment, LispObject args) {
+    public static LispObject divide(InterpreterContext context, LispObject args) {
         int size = new ConsList(args).assertSizeAtLeast(1);
 
         Double quotient =
@@ -83,10 +81,10 @@ public final class LibMath {
         return new NumberObject(quotient);
     }
 
-    @BuiltinFunc(name="<", evalArgs = true,
+    @BuiltinFunc(name="<", evalArgs = true, evalResult = false,
             doc="Return t if all of its arguments are in strictly " +
                     "increasing order, nil otherwise.")
-    public static LispObject lessThan(Environment environment,
+    public static LispObject lessThan(InterpreterContext context,
                                       LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);
 
@@ -109,13 +107,13 @@ public final class LibMath {
             smallerNum = largerNum;
         }
 
-        return environment.get("t");
+        return SymbolObject.getT();
     }
 
-    @BuiltinFunc(name="<=", evalArgs = true,
+    @BuiltinFunc(name="<=", evalArgs = true, evalResult = false,
             doc="Return t if all of its arguments are in strictly " +
                     "non-decreasing order, nil otherwise.")
-    public static LispObject lessThanEqual(Environment environment,
+    public static LispObject lessThanEqual(InterpreterContext context,
                                       LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);
 
@@ -137,13 +135,13 @@ public final class LibMath {
             smallerNum = largerNum;
         }
 
-        return environment.get("t");
+        return SymbolObject.getT();
     }
 
-    @BuiltinFunc(name=">=", evalArgs = true,
+    @BuiltinFunc(name=">=", evalArgs = true, evalResult = false,
             doc="Return t if all of its arguments are in strictly " +
                     "non-increasing order, nil otherwise.")
-    public static LispObject isGreaterEqual(Environment environment,
+    public static LispObject isGreaterEqual(InterpreterContext context,
                                       LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);
 
@@ -163,13 +161,13 @@ public final class LibMath {
             largerNum = smallerNum;
         }
 
-        return environment.get("t");
+        return SymbolObject.getT();
     }
 
-    @BuiltinFunc(name=">", evalArgs = true,
+    @BuiltinFunc(name=">", evalArgs = true, evalResult = false,
             doc="Return t if all of its arguments are in strictly increasing " +
                     "order, nil otherwise.")
-    public static LispObject isGreater(Environment environment,
+    public static LispObject isGreater(InterpreterContext context,
                                       LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);
 
@@ -190,12 +188,12 @@ public final class LibMath {
             largerNum = smallerNum;
         }
 
-        return environment.get("t");
+        return SymbolObject.getT();
     }
 
-    @BuiltinFunc(name="%", evalArgs = true,
+    @BuiltinFunc(name="%", evalArgs = true, evalResult = false,
             doc="Return X % Y.")
-    public static LispObject mod(Environment environment, LispObject args)
+    public static LispObject mod(InterpreterContext context, LispObject args)
     {
         ConsList argList = new ConsList(args);
         argList.assertSizeEquals(2);

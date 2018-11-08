@@ -1,5 +1,7 @@
 package com.ghotid.css142.jbirdie.objects;
 
+import com.ghotid.css142.jbirdie.InterpreterContext;
+import com.ghotid.css142.jbirdie.LispResult;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.InvalidTypeException;
 
@@ -12,8 +14,8 @@ public interface LispObject {
         throw new InvalidTypeException("List", this);
     }
 
-    default LispObject evaluate(Environment environment) {
-        return this;
+    default LispResult evaluate(InterpreterContext context) {
+        return new LispResult(this, true);
     }
 
     default boolean isTruthy() {

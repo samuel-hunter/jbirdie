@@ -1,9 +1,10 @@
 package com.ghotid.css142.jbirdie.objects;
 
+import com.ghotid.css142.jbirdie.InterpreterContext;
+import com.ghotid.css142.jbirdie.LispResult;
 import com.ghotid.css142.jbirdie.LispUtils;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public final class LambdaObject extends FuncObject {
     private final ArrayList<String> paramList = new ArrayList<>();
@@ -45,7 +46,7 @@ public final class LambdaObject extends FuncObject {
     }
 
     @Override
-    public LispObject call(Environment environment, LispObject args) {
+    public LispResult call(InterpreterContext context, LispObject args) {
         ConsList lambdaArgs = new ConsList(args);
 
         // Verify the params and args are the same size.
@@ -57,7 +58,7 @@ public final class LambdaObject extends FuncObject {
             lambdaArgs.assertSizeAtLeast(paramSize);
 
         if (!isMacro)
-            args = LispUtils.evalList(environment, lambdaArgs);
+            args = LispUtils.evalList(context, lambdaArgs);
 
         // Set up the scope for the lambda.
         Environment callEnvironment = lambdaEnvironment.pushStack();
@@ -72,11 +73,11 @@ public final class LambdaObject extends FuncObject {
             callEnvironment.def(varargParam, args, false);
         }
 
-        LispObject result = LispUtils.progn(callEnvironment, lambdaBody);
-        if (isMacro)
-            return result.evaluate(environment);
-        else
-            return result;
+        LispObject result = LispUtils.progn(
+                context.withEnvironment(callEnvironment),
+                lambdaBody);
+
+        return new LispResult(result, isMacro);
     }
 
     @Override
