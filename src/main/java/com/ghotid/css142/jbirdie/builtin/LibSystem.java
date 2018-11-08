@@ -1,6 +1,7 @@
 package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.App;
+import com.ghotid.css142.jbirdie.JBirdie;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.exception.LispExitException;
 import com.ghotid.css142.jbirdie.objects.*;
@@ -19,10 +20,10 @@ public final class LibSystem {
         int size = new ConsList(args).assertSizeWithin(0, 1);
 
         if (size == 0) {
-            return SymbolObject.fromBoolean(App.getDebug());
+            return SymbolObject.fromBoolean(JBirdie.isDebugging());
         } else {
             LispObject willDebug = args.getCar();
-            App.setDebug(willDebug.isTruthy());
+            JBirdie.setDebugging(willDebug.isTruthy());
             return willDebug;
         }
     }

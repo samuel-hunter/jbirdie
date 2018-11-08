@@ -10,8 +10,8 @@ import java.util.Queue;
 class Parser {
     private final Queue<Token> tokens;
 
-    Parser(List<Token> tokens) {
-        this.tokens = new ArrayDeque<>(tokens);
+    Parser(Scanner scanner) {
+        this.tokens = new ArrayDeque<>(scanner.toTokens());
     }
 
     boolean hasNext() {
