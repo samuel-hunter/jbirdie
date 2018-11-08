@@ -35,7 +35,7 @@ public class ParserTest {
 
     private LispObject readString(String source) {
         Scanner scanner = new Scanner(source);
-        Parser parser = new Parser(scanner.toTokens());
+        Parser parser = new Parser(scanner);
         return parser.nextObject();
     }
 }
