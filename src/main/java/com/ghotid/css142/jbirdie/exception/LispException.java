@@ -5,7 +5,7 @@ public class LispException extends RuntimeException {
         super();
     }
 
-    LispException(String message) {
+    public LispException(String message) {
         super(message);
     }
 }
