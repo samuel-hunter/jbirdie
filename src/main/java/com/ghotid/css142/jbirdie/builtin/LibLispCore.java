@@ -1,7 +1,6 @@
 package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.InterpreterContext;
-import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.*;
 
 /**

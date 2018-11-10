@@ -2,9 +2,7 @@ package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.LispResult;
-import com.ghotid.css142.jbirdie.LispUtils;
 import com.ghotid.css142.jbirdie.exception.LispException;
-import com.ghotid.css142.jbirdie.objects.ConsList;
 import com.ghotid.css142.jbirdie.objects.FuncObject;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
@@ -46,10 +44,13 @@ public final class JavaFunc extends FuncObject {
     }
 
     @Override
-    public LispResult call(InterpreterContext context, LispObject args) {
+    public boolean isMacro() {
+        return !evalArgs;
+    }
+
+    @Override
+    public LispResult apply(InterpreterContext context, LispObject args) {
         try {
-            if (evalArgs)
-                args = LispUtils.evalList(context, new ConsList(args));
             LispObject result = (LispObject) method.invoke(null, context, args);
 
             return new LispResult(result, !evalResult);

@@ -45,12 +45,13 @@ public final class LambdaObject extends FuncObject {
         }
     }
 
+    @Override
     public boolean isMacro() {
         return isMacro;
     }
 
     @Override
-    public LispResult call(InterpreterContext context, LispObject args) {
+    public LispResult apply(InterpreterContext context, LispObject args) {
         ConsList lambdaArgs = new ConsList(args);
 
         // Verify the params and args are the same size.
@@ -60,9 +61,6 @@ public final class LambdaObject extends FuncObject {
             lambdaArgs.assertSizeEquals(paramSize);
         else
             lambdaArgs.assertSizeAtLeast(paramSize);
-
-        if (!isMacro)
-            args = LispUtils.evalList(context, lambdaArgs);
 
         // Set up the scope for the lambda.
         Environment callEnvironment = lambdaEnvironment.pushStack();
