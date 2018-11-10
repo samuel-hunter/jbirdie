@@ -43,7 +43,7 @@ public class JBirdie {
 
         while (isRunning) {
             System.out.print("> ");
-            run(reader.readLine(), true);
+            run(reader.readLine(), true, System.in, System.out);
         }
 
         return exitCode;
@@ -53,12 +53,12 @@ public class JBirdie {
         InputStream is = new FileInputStream(file);
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         String source = s.hasNext() ? s.next() : "";
-        run(source, false);
+        run(source, false, System.in, System.out);
 
         return exitCode;
     }
 
-    private void runResource(String path) {
+    void runResource(String path, InputStream in, PrintStream out) {
         InputStream is = App.class.getResourceAsStream(path);
         if (is == null)
             throw new RuntimeException(
@@ -66,14 +66,20 @@ public class JBirdie {
 
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         String source = s.hasNext() ? s.next() : "";
-        run(source, false);
+        run(source, false, in, out);
     }
 
-    private void run(String source, boolean isRepl) {
+    private void runResource(String path) {
+        runResource(path, System.in, System.out);
+    }
+
+    private void run(String source, boolean isRepl,
+                     InputStream in, PrintStream out) {
         try {
             Scanner scanner = new Scanner(source);
             Parser parser = new Parser(scanner);
-            InterpreterContext context = new InterpreterContext(environment);
+            InterpreterContext context = new InterpreterContext(
+                    environment, in, out);
 
             while (parser.hasNext()) {
                 LispObject result =

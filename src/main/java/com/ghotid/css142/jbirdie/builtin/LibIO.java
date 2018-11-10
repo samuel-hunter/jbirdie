@@ -1,6 +1,7 @@
 package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.InterpreterContext;
+import com.ghotid.css142.jbirdie.exception.LispIOException;
 import com.ghotid.css142.jbirdie.objects.*;
 
 import java.util.Scanner;
@@ -17,7 +18,7 @@ public final class LibIO {
                                       LispObject args) {
         new ConsList(args).assertSizeEquals(0);
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(context.getIn());
         String line = scanner.nextLine();
 
         // Do not close the scanner here; it will cause an IOException.
@@ -30,7 +31,9 @@ public final class LibIO {
                                       LispObject args) {
         new ConsList(args).assertSizeEquals(0);
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(context.getIn());
+        if (!scanner.hasNextDouble())
+            throw new LispIOException("Next token in stdin is not a number.");
         double value = scanner.nextDouble();
 
         // Do not close the scanner here; it will cause an IOException.
@@ -47,7 +50,7 @@ public final class LibIO {
             sb.append(arg);
 
         String result = sb.toString();
-        System.out.print(result);
+        context.getOut().print(result);
 
         // Return the stringified result.
         return new StringObject(result);
@@ -63,7 +66,7 @@ public final class LibIO {
             sb.append(arg);
 
         String result = sb.toString();
-        System.out.println(result);
+        context.getOut().println(result);
 
         // Return the stringified result.
         return new StringObject(result);
