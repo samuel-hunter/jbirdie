@@ -1,6 +1,7 @@
 package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.InterpreterContext;
+import com.ghotid.css142.jbirdie.LispResult;
 import com.ghotid.css142.jbirdie.LispUtils;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.*;
@@ -26,14 +27,22 @@ public final class LibLispExtra {
         return new LambdaObject(context.getEnvironment(), args, true);
     }
 
-    @BuiltinFunc(name="apply", evalArgs = true, evalResult = true)
+    @BuiltinFunc(name="apply", evalArgs = true, evalResult = false)
     public static LispObject apply(InterpreterContext context, LispObject args) {
         ConsList argList = new ConsList(args);
         argList.assertSizeEquals(2);
 
-        return new ConsObject(
-                argList.get(0), argList.get(1)
+        FuncObject func = LispObject.cast(
+                FuncObject.class,
+                argList.get(0)
         );
+
+        LispResult result = func.apply(context, argList.get(1));
+
+        if (result.isEvaluated())
+            return result.getObject();
+        else
+            return context.evaluate(result.getObject());
     }
 
     @BuiltinFunc(name="let", evalArgs = false, evalResult = false,

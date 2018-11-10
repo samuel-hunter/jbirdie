@@ -15,7 +15,7 @@ public class LispResult {
         return object;
     }
 
-    boolean isEvaluated() {
+    public boolean isEvaluated() {
         return evaluated;
     }
 }
