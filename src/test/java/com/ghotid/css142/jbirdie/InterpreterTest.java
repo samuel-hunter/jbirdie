@@ -32,6 +32,14 @@ public class InterpreterTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testClassObjectModel() {
+        // Includes assertions within.
+        JBirdie jBirdie = new JBirdie();
+        jBirdie.runResource("/test-class.bdl",
+                System.in, System.out);
+    }
+
     private String runResource(String resourcePath, InputStream in) {
         JBirdie jBirdie = new JBirdie();
         ByteArrayOutputStream bytes=  new ByteArrayOutputStream();

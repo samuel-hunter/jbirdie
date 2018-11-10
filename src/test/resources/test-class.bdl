@@ -2,5 +2,22 @@
     (class nil
            '(legs eyes name)
            (list
-            (cons 'call (lambda () "The animal is calling!"))
-            (cons 'walk (lambda () "The animal is walking.")))))
+            (cons 'walk (lambda (Self)
+                (concat (getslot 'name Self) " is walking.")))
+            (cons 'call (lambda (Self Obj)
+                (concat
+                    (getslot 'name Self) " is calling for "
+                    (getslot 'nameObj)))))))
+
+(defconst Jeffery
+    (object +TestAnimal
+            (list
+             (cons 'legs 4)
+             (cons 'eyes 2)
+             (cons 'name "Jeffery"))))
+
+(assert (eq "Jeffery"
+             (getslot 'name Jeffery)))
+
+(assert (eq "Jeffery is walking."
+            (call 'walk Jeffery)))
