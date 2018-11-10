@@ -2,6 +2,7 @@ package com.ghotid.css142.jbirdie.objects;
 
 import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.LispResult;
+import com.ghotid.css142.jbirdie.LispUtils;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class ConsObject implements LispObject {
         this.cdr = cdr;
     }
 
-    public static LispObject fromList(List<LispObject> list) {
+    public static LispObject fromList(List<? extends LispObject> list) {
         if (list.size() == 0)
             return NilObject.getNil();
         else
@@ -36,12 +37,12 @@ public class ConsObject implements LispObject {
 
     @Override
     public LispResult evaluate(InterpreterContext context) {
-        LispObject func = context.evaluate(car);
-
-        return LispObject.cast(
+        FuncObject func = LispObject.cast(
                 FuncObject.class,
-                func
-        ).call(context, cdr);
+                context.evaluate(car)
+        );
+
+        return func.call(context, cdr);
     }
 
     @Override

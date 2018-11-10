@@ -76,7 +76,7 @@ public final class LibLispCore {
         return NilObject.getNil();
     }
 
-    @BuiltinFunc(name="car", evalArgs = true, evalResult = true,
+    @BuiltinFunc(name="car", evalArgs = true, evalResult = false,
             doc="Return the first object of a list.")
     public static LispObject car(InterpreterContext context, LispObject args) {
         new ConsList(args).assertSizeEquals(1);
@@ -84,7 +84,7 @@ public final class LibLispCore {
         return args.getCar().getCar();
     }
 
-    @BuiltinFunc(name="cdr", evalArgs = true, evalResult = true,
+    @BuiltinFunc(name="cdr", evalArgs = true, evalResult = false,
     doc="Return all but the first object of a list.")
     public static LispObject cdr(InterpreterContext context, LispObject args) {
         new ConsList(args).assertSizeEquals(1);

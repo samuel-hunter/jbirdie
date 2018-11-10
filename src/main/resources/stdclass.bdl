@@ -42,8 +42,31 @@
         (cdr (assoc Methodname (cmethods Class)))))
 
 (defun cfind-method (Class Methodname)
-    "Return a class's method, or its superclass's method."
+    "Return a class's method if it exists, otherwise its superclass's method."
     (cond
         ((null Class) nil)
         ((chas-method?* Class Methodname) (cfind-method* Class Methodname))
         (t (cfind-method (superclass Class) Methodname))))
+
+(defun object (Class Slots)
+    "Create an object data structure."
+    (list 'OBJECT Class Slots))
+
+(defun classof (Object)
+    "Get an object's class."
+    (nth 1 Object))
+
+(defun slots (Object)
+    "Get an a-list of the object's slots."
+    (nth 2 Object))
+
+(defun getslot (Slotname Object)
+    "Get the value of a slot of the object."
+    (cdr (assoc Slotname (slots Object))))
+
+(defun find-method (Methodname Object)
+    "Return the method that belongs to the object."
+    (cfind-method (classof Object) Methodname))
+
+(defun call (Methodname Object . Args)
+    (apply (find-method Methodname Object) (cons Object Args)))

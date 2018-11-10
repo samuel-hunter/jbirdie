@@ -45,6 +45,10 @@ public final class LambdaObject extends FuncObject {
         }
     }
 
+    public boolean isMacro() {
+        return isMacro;
+    }
+
     @Override
     public LispResult call(InterpreterContext context, LispObject args) {
         ConsList lambdaArgs = new ConsList(args);
