@@ -77,7 +77,7 @@ public final class LambdaObject extends FuncObject {
                 context.withEnvironment(callEnvironment),
                 lambdaBody);
 
-        return new LispResult(result, isMacro);
+        return new LispResult(result, !isMacro);
     }
 
     @Override

@@ -93,3 +93,10 @@
 (defun avalues (Alist)
     "Return all values from an a-list"
     (mapcar cdr Alist))
+
+(defun alist? (Alist)
+    "Return t if Alist is an associative list; nil otherwise."
+    (cond
+        ((null Alist) t) ;; An empty a-list is still an a-list
+        ((atom (first Alist)) nil) ;; All elements must be a cons object.
+        (t (alist? (rest Alist)))))

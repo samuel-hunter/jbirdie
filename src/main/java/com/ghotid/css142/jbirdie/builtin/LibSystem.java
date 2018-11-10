@@ -2,6 +2,7 @@ package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.JBirdie;
+import com.ghotid.css142.jbirdie.exception.LispException;
 import com.ghotid.css142.jbirdie.exception.LispExitException;
 import com.ghotid.css142.jbirdie.objects.*;
 
@@ -41,5 +42,16 @@ public final class LibSystem {
 
             throw new LispExitException(exitCode.getValue().intValue());
         }
+    }
+
+    @BuiltinFunc(name="error", evalArgs = true, evalResult = false,
+            doc="Send an error to the interpreter.")
+    public static LispObject error(InterpreterContext context, LispObject args)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (LispObject lo : new ConsList(args))
+            sb.append(lo.toString());
+
+        throw new LispException(sb.toString());
     }
 }

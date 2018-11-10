@@ -73,3 +73,9 @@
 (defmacro until (Cond . Body)
     "Keep evaluating the body until the condition is truthy."
     (list 'while (list 'not Cond) (cons 'progn Body)))
+
+;; System utils
+(defmacro assert (Cond)
+    "Fail the program if Cond is false."
+    (list 'unless Cond
+        (list 'error "Assertion " (list 'quote Cond) " failed!")))
