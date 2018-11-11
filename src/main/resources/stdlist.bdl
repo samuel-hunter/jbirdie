@@ -1,6 +1,18 @@
 
 ;; List functions
 
+(defun fold (Func Result List)
+    "Take a two-argument function Func and fold down List to Result"
+    (if (null List)
+        Result
+        (fold Func (Func Result (first List)) (rest List))))
+
+(defun mapcar (Func List)
+    "Process each element in List with Func."
+    (if (null List)
+        nil
+        (cons (Func (first List)) (mapcar Func (rest List)))))
+
 (defun nth (Index List)
     "Return the nth element of the list."
     (cond

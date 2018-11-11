@@ -1,7 +1,11 @@
 JBirdie
 =======
 
-Yet another useless dialect of Lisp.
+Yet another useless dialect of Lisp. Done for a Computer Science assignment 
+to build an interpreter with a concept of arrays, variables, and a 
+rudimentary class-object model.
+
+[Documentation for all the functions here.](./REFERENCE.md)
 
 ### Building
 
@@ -22,4 +26,4 @@ The tests files are also good to look at.
 ### Quirks
 
 * The interactive prompt requires a full statement within only one line.
-* `read-number` throws an exception if the user inputs a non-number value.
+* `read-number` is unstable. ¯\\\_(ツ)\_/¯
