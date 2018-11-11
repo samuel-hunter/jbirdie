@@ -18,22 +18,10 @@
 (defconst rest cdr)
 (defconst = eq)
 
-;; List utility functions.
-
-(defun fold (Func Result List)
-    "Take a two-argument function Func and fold down List to Result"
-    (if (null List)
-        Result
-        (fold Func (Func Result (first List)) (rest List))))
-
-(defun mapcar (Func List)
-    "Process each element in List with Func."
-    (if (null List)
-        nil
-        (cons (Func (first List)) (mapcar Func (rest List)))))
-
 ;; Return whether the value is nil.
-(defun null (X) (eq X nil))
+(defun null (X)
+    "Return whether X is nil."
+    (eq X nil))
 
 ;; Binary NOT
 (defun not (Cond)
