@@ -10,9 +10,15 @@
     "Return the class's superclass."
     (nth 1 Class))
 
-(defun cslots (Class)
+(defun cslots* (Class)
     "Return a class's list of slots."
     (nth 2 Class))
+
+(defun cslots (Class)
+    "Return a class's full list of slots."
+    (cond
+        ((null Class) nil)
+        (t (append (cslots* Class) (cslots (superclass Class))))))
 
 (defun cmethods (Class)
     "Return an a-list of a class's methods."
@@ -70,3 +76,21 @@
 
 (defun call (Methodname Object . Args)
     (apply (find-method Methodname Object) (cons Object Args)))
+
+(defmacro defclass (Name Superclass Doc Slots . Methods)
+    (defun to-lambda-cons (Method)
+        (list 'cons (list 'quote (car Method))
+                    (cons 'lambda (cdr Method))))
+    (list 'defconst Name
+                    (list 'class Superclass
+                        (list 'quote Slots)
+                        (cons 'list (mapcar to-lambda-cons Methods)))
+                    Doc))
+
+(defun make-instance (Class . Slotlist)
+    "Create an object instance."
+    (let ((CSlots (cslots Class)))
+        (unless (= (size Slotlist) (size CSlots))
+                (error "Object must have " (size Slotlist) " slots."))
+
+        (object Class (zip CSlots Slotlist))))

@@ -87,12 +87,22 @@
         (t (assoc Key (cdr Alist)))))
 
 (defun akeys (Alist)
-    "Return all keys from an a-list"
+    "Return all keys from an a-list."
     (mapcar car Alist))
 
 (defun avalues (Alist)
-    "Return all values from an a-list"
+    "Return all values from an a-list."
     (mapcar cdr Alist))
+
+(defun zip (Keys Values)
+    "Zip two lists into an a-list."
+    (defun zip-iter (Keys Values Result)
+        (cond
+            ((null Keys) Result)
+            (t (zip-iter (rest Keys) (rest Values)
+                         (cons (cons (first Keys) (first Values)) Result)))))
+
+    (zip-iter Keys Values nil))
 
 (defun alist? (Alist)
     "Return t if Alist is an associative list; nil otherwise."

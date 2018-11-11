@@ -1,23 +1,19 @@
-(defconst +TestAnimal
-    (class nil
-           '(legs eyes name)
-           (list
-            (cons 'walk (lambda (Self)
-                (concat (getslot 'name Self) " is walking.")))
-            (cons 'call (lambda (Self Obj)
-                (concat
-                    (getslot 'name Self) " is calling for "
-                    (getslot 'nameObj)))))))
+(defclass +TestAnimal ()
+    "An Animal class."
+    (legs eyes name)
+    (walk (Self)
+        (concat (getslot 'name Self) " is walking."))
+    (cons 'call (lambda (Self Obj))
+        (concat (getslot 'name Self) " is calling for " (getslot 'name Obj))))
 
-(defconst Jeffery
-    (object +TestAnimal
-            (list
-             (cons 'legs 4)
-             (cons 'eyes 2)
-             (cons 'name "Jeffery"))))
+;; Create an animal named Jeffery with 4 legs and two eyes.
+(defvar Jeffery (make-instance +TestAnimal 4 2 "Jeffery"))
 
 (assert (eq "Jeffery"
-             (getslot 'name Jeffery)))
+            (getslot 'name Jeffery)))
 
 (assert (eq "Jeffery is walking."
             (call 'walk Jeffery)))
+
+(assert (eq "An Animal class."
+            (doc '+TestAnimal)))
