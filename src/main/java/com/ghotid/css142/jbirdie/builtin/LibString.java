@@ -1,7 +1,6 @@
 package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.InterpreterContext;
-import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.*;
 
 /**
@@ -18,7 +17,9 @@ public final class LibString {
         for (LispObject obj : new ConsList(args))
             sb.append(obj);
 
-        return new StringObject(sb.toString());
+        return new StringObject(
+                args.getSource(),
+                sb.toString());
     }
 
     @BuiltinFunc(name="to-string", evalArgs = true, evalResult = false,
@@ -26,6 +27,7 @@ public final class LibString {
     public static LispObject call(InterpreterContext context, LispObject args) {
         new ConsList(args).assertSizeEquals(1);
         return new StringObject(
+                args.getSource(),
                 args.getCar().toString());
     }
 }

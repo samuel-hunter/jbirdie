@@ -22,7 +22,7 @@ public final class LibIO {
         String line = scanner.nextLine();
 
         // Do not close the scanner here; it will cause an IOException.
-        return new StringObject(line);
+        return new StringObject(args.getSource(), line);
     }
 
     @BuiltinFunc(name="read-number", evalArgs = true, evalResult = false,
@@ -37,7 +37,7 @@ public final class LibIO {
         double value = scanner.nextDouble();
 
         // Do not close the scanner here; it will cause an IOException.
-        return new NumberObject(value);
+        return new NumberObject(args.getSource(), value);
     }
 
     @BuiltinFunc(name="print", evalArgs = true, evalResult = false,
@@ -53,7 +53,7 @@ public final class LibIO {
         context.getOut().print(result);
 
         // Return the stringified result.
-        return new StringObject(result);
+        return new StringObject(args.getSource(), result);
     }
 
     @BuiltinFunc(name="println", evalArgs = true, evalResult = false,
@@ -69,6 +69,6 @@ public final class LibIO {
         context.getOut().println(result);
 
         // Return the stringified result.
-        return new StringObject(result);
+        return new StringObject(args.getSource(), result);
     }
 }

@@ -1,6 +1,6 @@
 package com.ghotid.css142.jbirdie.exception;
 
-public class LispExitException extends LispException {
+public class LispExitException extends RuntimeException {
     private final Integer exitCode;
 
     public LispExitException(Integer exitCode) {

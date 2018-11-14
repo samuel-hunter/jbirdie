@@ -23,11 +23,11 @@ public final class LispUtils {
      * Return a list of the given lisp objects, evaluated.
      */
     public static LispObject evalList(InterpreterContext context,
-                                      ConsList list) {
+                                      LispObject object) {
         ArrayList<LispObject> result = new ArrayList<>();
-        for (LispObject obj : list)
+        for (LispObject obj : new ConsList(object))
             result.add(context.evaluate(obj));
 
-        return ConsObject.fromList(result);
+        return ConsObject.fromList(object.getSource(), result);
     }
 }

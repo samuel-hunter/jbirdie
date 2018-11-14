@@ -24,6 +24,7 @@ public final class LibIntrospection {
         );
 
         return new StringObject(
+                args.getSource(),
                 context.getEnvironment().getDoc(symbol.getValue()));
     }
 
@@ -36,10 +37,11 @@ public final class LibIntrospection {
         Map<String, LispObject> slotMap = context.getEnvironment().getMap();
         for (String symbol : slotMap.keySet())
             result.add(new ConsObject(
-                    SymbolObject.fromString(symbol),
+                    args.getSource(),
+                    SymbolObject.fromString(args.getSource(), symbol),
                     slotMap.get(symbol)
             ));
 
-        return ConsObject.fromList(result);
+        return ConsObject.fromList(args.getSource(), result);
     }
 }

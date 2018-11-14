@@ -1,10 +1,12 @@
 package com.ghotid.css142.jbirdie.objects;
 
+import com.ghotid.css142.jbirdie.LispSource;
+
 public final class NilObject extends SymbolObject {
     private static final NilObject NIL = new NilObject();
 
     private NilObject() {
-        super("nil");
+        super(LispSource.BUILTIN_SOURCE, "nil");
     }
 
     public static NilObject getNil() {

@@ -18,6 +18,7 @@ public final class LambdaObject extends FuncObject {
      */
     public LambdaObject(Environment lambdaEnvironment, LispObject args,
                         boolean isMacro) {
+        super(args.getSource());
         this.lambdaBody = args.getCdr();
         this.lambdaEnvironment = lambdaEnvironment;
         this.isMacro = isMacro;

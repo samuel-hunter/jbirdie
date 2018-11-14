@@ -2,7 +2,7 @@ package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.LispResult;
-import com.ghotid.css142.jbirdie.exception.LispException;
+import com.ghotid.css142.jbirdie.LispSource;
 import com.ghotid.css142.jbirdie.objects.FuncObject;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
@@ -19,6 +19,7 @@ public final class JavaFunc extends FuncObject {
     private final boolean evalResult;
 
     JavaFunc(Method method, boolean evalArgs, boolean evalResult) {
+        super(LispSource.BUILTIN_SOURCE);
         this.method = method;
         this.evalArgs = evalArgs;
         this.evalResult = evalResult;
@@ -59,10 +60,10 @@ public final class JavaFunc extends FuncObject {
             while (cause instanceof InvocationTargetException)
                 cause = cause.getCause();
 
-            if (cause instanceof LispException)
-                throw (LispException) cause;
+            if (cause instanceof RuntimeException)
+                throw (RuntimeException) cause;
             else
-                throw new RuntimeException(e);
+                throw new RuntimeException(cause);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
