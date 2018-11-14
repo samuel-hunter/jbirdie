@@ -3,25 +3,26 @@ package com.ghotid.css142.jbirdie;
 import com.ghotid.css142.jbirdie.exception.ReaderException;
 import com.ghotid.css142.jbirdie.objects.*;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.Iterator;
 
-class Parser {
-    private final Queue<Token> tokens;
+class Parser implements Iterator<LispObject> {
+    private final PeekableIterator<Token> tokenIterator;
     private final String sourceName;
 
-    Parser(String sourceName, Scanner scanner) {
+    Parser(String sourceName, Iterator<Token> tokenIterator) {
         this.sourceName = sourceName;
-        this.tokens = new ArrayDeque<>(scanner.toTokens());
+        this.tokenIterator = new PeekableIterator<>(tokenIterator);
     }
 
-    boolean hasNext() {
-        return tokens.peek() != null &&
-                tokens.peek().getType() != TokenType.EOF;
+    @Override
+    public boolean hasNext() {
+        return tokenIterator.peek() != null &&
+                tokenIterator.peek().getType() != TokenType.EOF;
     }
 
-    LispObject nextObject() {
-        Token tok = tokens.remove();
+    @Override
+    public LispObject next() {
+        Token tok = tokenIterator.next();
 
         switch (tok.getType()) {
             case LEFT_PAREN:
@@ -46,7 +47,7 @@ class Parser {
                                 "quote"),
                         new ConsObject(
                                 new LispSource(tok.getLine(), sourceName),
-                                nextObject(),
+                                next(),
                                 NilObject.getNil()
                         )
                 );
@@ -61,18 +62,18 @@ class Parser {
     }
 
     private LispObject getCons() {
-        Token tok = tokens.peek();
+        Token tok = tokenIterator.peek();
         assert tok != null;
 
         switch (tok.getType()) {
             case RIGHT_PAREN:
-                tokens.remove(); // Consume the parenthesis.
+                tokenIterator.next(); // Consume the parenthesis.
                 return NilObject.getNil();
             case CONS:
-                tokens.remove(); // consume the dot.
-                LispObject result = nextObject();
+                tokenIterator.next(); // consume the dot.
+                LispObject result = next();
 
-                Token rightParen = tokens.remove();
+                Token rightParen = tokenIterator.next();
                 if (!(rightParen.getType() == TokenType.RIGHT_PAREN))
                     throw new ReaderException(tok.getLine(),
                             "Unexpected token " + rightParen + ".");
@@ -82,7 +83,7 @@ class Parser {
             default:
                 return new ConsObject(
                         new LispSource(tok.getLine(), sourceName),
-                        nextObject(), getCons());
+                        next(), getCons());
         }
     }
 }
