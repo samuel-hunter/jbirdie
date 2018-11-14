@@ -3,15 +3,16 @@ package com.ghotid.css142.jbirdie;
 import com.ghotid.css142.jbirdie.exception.ReaderException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Scanner for the code's source.
  */
-class Scanner {
+class Scanner implements Iterator<Token> {
     private static final String unsymbolicChars = ".;()'\"";
     private final String source;
-    private final List<Token> tokens = new ArrayList<>();
+    private final Iterator<Token> tokenIterator;
 
     private Integer start = 0;
     private Integer current = 0;
@@ -19,6 +20,8 @@ class Scanner {
 
     Scanner(String source) {
         this.source = source;
+        List<Token> tokenList = toTokens();
+        tokenIterator = tokenList.iterator();
     }
 
     /**
@@ -27,13 +30,14 @@ class Scanner {
      * @return the compiled list of tokens.
      */
     List<Token> toTokens() {
+        List<Token> tokenList = new ArrayList<>();
         while (!isAtEnd()) {
             start = current;
-            scanToken();
+            scanToken(tokenList);
         }
 
-        tokens.add(new Token(TokenType.EOF, "", null, line));
-        return tokens;
+        tokenList.add(new Token(TokenType.EOF, "", null, line));
+        return tokenList;
     }
 
     private boolean isAtEnd() {
@@ -43,20 +47,20 @@ class Scanner {
     /**
      * Scan for the next token and def it to the token list.
      */
-    private void scanToken() {
+    private void scanToken(List<Token> tokenList) {
         Character c = advance();
         switch (c) {
             case '(':
-                addToken(TokenType.LEFT_PAREN);
+                tokenList.add(addToken(TokenType.LEFT_PAREN));
                 break;
             case ')':
-                addToken(TokenType.RIGHT_PAREN);
+                tokenList.add(addToken(TokenType.RIGHT_PAREN));
                 break;
             case '\'':
-                addToken(TokenType.QUOTE);
+                tokenList.add(addToken(TokenType.QUOTE));
                 break;
             case '.':
-                addToken(TokenType.CONS);
+                tokenList.add(addToken(TokenType.CONS));
                 break;
 
             case ';':
@@ -70,7 +74,7 @@ class Scanner {
                 break;
 
             case '"':
-                addString();
+                tokenList.add(scanString());
                 break;
 
             case '\n':
@@ -79,9 +83,9 @@ class Scanner {
 
             default:
                 if (Character.isDigit(c)) {
-                    addNumber();
+                    tokenList.add(scanNumber());
                 } else if (isSymbolic(c)) {
-                    addSymbol();
+                    tokenList.add(scanSymbol());
                 } else {
                     throw new ReaderException(
                             line,
@@ -103,8 +107,8 @@ class Scanner {
      *
      * @param type the token's type.
      */
-    private void addToken(TokenType type) {
-        addToken(type, null);
+    private Token addToken(TokenType type) {
+        return addToken(type, null);
     }
 
     /**
@@ -113,9 +117,9 @@ class Scanner {
      * @param type    the token's type.
      * @param literal data for the token.
      */
-    private void addToken(TokenType type, Object literal) {
+    private Token addToken(TokenType type, Object literal) {
         String text = source.substring(start, current);
-        tokens.add(new Token(type, text, literal, line));
+        return new Token(type, text, literal, line);
     }
 
     private Character advance() {
@@ -143,7 +147,7 @@ class Scanner {
      * Assume the current character is the start of a quotation, parse the
      * string, and def to the token list.
      */
-    private void addString() {
+    private Token scanString() {
         while (peek() != '"' && !isAtEnd()) {
             // Allow newlines in our strings, since they're easier to lex.
             if (peek() == '\n') line++;
@@ -160,14 +164,14 @@ class Scanner {
 
         // Trim the surrounding quotes.
         String value = source.substring(start + 1, current - 1);
-        addToken(TokenType.STRING, value);
+        return addToken(TokenType.STRING, value);
     }
 
     /**
      * Assume the current character is a digit, parse the digit, and def to
      * the token list.
      */
-    private void addNumber() {
+    private Token scanNumber() {
         while (Character.isDigit(peek()) && !isAtEnd()) advance();
         // Look for a fractional part.
         if (peek() == '.' && Character.isDigit(peekNext())) {
@@ -178,16 +182,16 @@ class Scanner {
         while (Character.isDigit(peek())) advance();
 
         Double value = Double.parseDouble(source.substring(start, current));
-        addToken(TokenType.NUMBER, value);
+        return addToken(TokenType.NUMBER, value);
     }
 
     /**
      * Assume the current character is the start of a symbol and def it to
      * the token list.
      */
-    private void addSymbol() {
+    private Token scanSymbol() {
         while (isSymbolic(peek()) && !isAtEnd()) advance();
-        addToken(TokenType.SYMBOL, source.substring(start, current));
+        return addToken(TokenType.SYMBOL, source.substring(start, current));
     }
 
     /**
@@ -195,5 +199,15 @@ class Scanner {
      */
     private boolean isSymbolic(Character c) {
         return !Character.isWhitespace(c) && unsymbolicChars.indexOf(c) < 0;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return tokenIterator.hasNext();
+    }
+
+    @Override
+    public Token next() {
+        return tokenIterator.next();
     }
 }

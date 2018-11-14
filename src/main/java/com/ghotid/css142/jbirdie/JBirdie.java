@@ -85,7 +85,7 @@ public class JBirdie {
 
             while (parser.hasNext()) {
                 LispObject result =
-                        context.evaluate(parser.nextObject());
+                        context.evaluate(parser.next());
                 if (isRepl)
                     System.out.println(result.inspect());
             }
