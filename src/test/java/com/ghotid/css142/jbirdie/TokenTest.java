@@ -4,6 +4,7 @@ import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,7 +46,10 @@ public class TokenTest {
 
     private Token[] toTokens(String source) {
         Scanner scanner = new Scanner(source);
-        List<Token> tokens = scanner.toTokens();
+        List<Token> tokens = new ArrayList<>();
+        while (scanner.hasNext())
+            tokens.add(scanner.next());
+
         return tokens.toArray(new Token[0]);
     }
 }

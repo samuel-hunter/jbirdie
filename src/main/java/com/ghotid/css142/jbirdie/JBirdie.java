@@ -37,15 +37,12 @@ public class JBirdie {
         JBirdie.debugging = debugging;
     }
 
-    int runPrompt() throws IOException {
+    int runPrompt() {
         isRunning = true;
-
-        InputStreamReader input = new InputStreamReader(System.in);
-        BufferedReader reader = new BufferedReader(input);
 
         while (isRunning) {
             System.out.print("> ");
-            run("<REPL>", reader.readLine(), true, System.in, System.out);
+            run("<REPL>", System.in, true, System.in, System.out);
         }
 
         return exitCode;
@@ -53,9 +50,7 @@ public class JBirdie {
 
     int runFile(File file) throws FileNotFoundException {
         InputStream is = new FileInputStream(file);
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        String source = s.hasNext() ? s.next() : "";
-        run(file.getName(), source, false, System.in, System.out);
+        run(file.getName(), is, false, System.in, System.out);
 
         return exitCode;
     }
@@ -66,16 +61,14 @@ public class JBirdie {
             throw new RuntimeException(
                     "Resource '" + path + "' doesn't exist.");
 
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        String source = s.hasNext() ? s.next() : "";
-        run(path, source, false, in, out);
+        run(path, is, false, in, out);
     }
 
     private void runResource(String path) {
         runResource(path, System.in, System.out);
     }
 
-    private void run(String filePath, String source, boolean isRepl,
+    private void run(String filePath, InputStream source, boolean isRepl,
                      InputStream in, PrintStream out) {
         try {
             Scanner scanner = new Scanner(source);

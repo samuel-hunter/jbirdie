@@ -2,212 +2,238 @@ package com.ghotid.css142.jbirdie;
 
 import com.ghotid.css142.jbirdie.exception.ReaderException;
 
-import java.util.ArrayList;
+import java.io.*;
+import java.nio.CharBuffer;
 import java.util.Iterator;
-import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Scanner for the code's source.
  */
 class Scanner implements Iterator<Token> {
-    private static final String unsymbolicChars = ".;()'\"";
-    private final String source;
-    private final Iterator<Token> tokenIterator;
+    private static final int MAX_TOK_SIZE = 4096;
 
-    private Integer start = 0;
-    private Integer current = 0;
-    private Integer line = 1;
+    private static final String unsymbolicChars = ".;()'\"";
+    private final BufferedInputStream source;
+
+    private int line = 1;
+
+    private boolean isEOF = false;
+    private boolean hasSentEOFToken = false;
+
+    private final CharBuffer tokBuffer = CharBuffer.allocate(MAX_TOK_SIZE);
+
+    Scanner(InputStream source) {
+        this.source = new BufferedInputStream(source);
+    }
 
     Scanner(String source) {
-        this.source = source;
-        List<Token> tokenList = toTokens();
-        tokenIterator = tokenList.iterator();
+        this(new ByteArrayInputStream(source.getBytes()));
     }
 
     /**
-     * Scan the complete source string.
+     * Return the next char from the source, or update `isEOF` if appropriate
      *
-     * @return the compiled list of tokens.
+     * @return the next car. Note that, if it triggers `isEOF` to true, the
+     * char would be 0xFF (-1 casted into a character).
      */
-    List<Token> toTokens() {
-        List<Token> tokenList = new ArrayList<>();
-        while (!isAtEnd()) {
-            start = current;
-            scanToken(tokenList);
-        }
+    private char nextChar() throws IOException {
+        int c = source.read();
+        if (c == -1)
+            isEOF = true;
 
-        tokenList.add(new Token(TokenType.EOF, "", null, line));
-        return tokenList;
-    }
-
-    private boolean isAtEnd() {
-        return current >= source.length();
+        return (char)(c);
     }
 
     /**
-     * Scan for the next token and def it to the token list.
+     * Peek at the first character without consuming anything.
      */
-    private void scanToken(List<Token> tokenList) {
-        Character c = advance();
-        switch (c) {
-            case '(':
-                tokenList.add(addToken(TokenType.LEFT_PAREN));
-                break;
-            case ')':
-                tokenList.add(addToken(TokenType.RIGHT_PAREN));
-                break;
-            case '\'':
-                tokenList.add(addToken(TokenType.QUOTE));
-                break;
-            case '.':
-                tokenList.add(addToken(TokenType.CONS));
-                break;
+    private char peek() throws IOException {
+        source.mark(1);
+        char c = nextChar();
+        source.reset(); // Go back to previous position
 
-            case ';':
-                skipLine();
-                break;
-
-            case ' ':
-            case '\r':
-            case '\t':
-                // Ignore whitespace.
-                break;
-
-            case '"':
-                tokenList.add(scanString());
-                break;
-
-            case '\n':
-                line++;
-                break;
-
-            default:
-                if (Character.isDigit(c)) {
-                    tokenList.add(scanNumber());
-                } else if (isSymbolic(c)) {
-                    tokenList.add(scanSymbol());
-                } else {
-                    throw new ReaderException(
-                            line,
-                            String.format("Unexpected character: '%c'.", c));
-                }
-        }
+        return c;
     }
 
-    private void skipLine() {
-        Character c;
+    /**
+     * Peek at the second character without consuming anything.
+     */
+    private char peekNext() throws IOException {
+        source.mark(2);
+        nextChar(); // "Consume" character (for now).
+        char c = nextChar();
+        source.reset(); // Go back to previous position
+
+        return c;
+    }
+
+    /**
+     * Generate a token String from the token CharBuffer.
+     */
+    private String finalizeBuf() {
+        // Calculate length of token
+        int tokLen = tokBuffer.position();
+        tokBuffer.rewind(); // Put buffer back to position zero.
+
+        // Copy token to char array
+        char strbuf[] = new char[tokLen];
+        tokBuffer.get(strbuf);
+
+        // Reset buffer to previous position.
+        tokBuffer.position(tokLen);
+
+        // Return char array, converted to string.
+        return String.valueOf(strbuf);
+    }
+
+    /**
+     * Quickly generate a token using object state.
+     */
+    private Token token(TokenType type, Object literal) {
+        return new Token(type, finalizeBuf(), literal, line);
+    }
+
+    private Token token(TokenType type) {
+        return token(type, null);
+    }
+
+    private char advance() throws IOException {
+        char c = nextChar();
+
+        if (!isEOF)
+            tokBuffer.append(c);
+        return c;
+    }
+
+    /**
+     * Move the token buffer's position back by 1 character.
+     */
+    private void unputChar() {
+        tokBuffer.position(tokBuffer.position() - 1);
+    }
+
+    private void skipLine() throws IOException {
+        char c;
         do {
-            c = advance();
-        } while (c != '\n' && !isAtEnd());
+            c = nextChar();
+        } while (!isEOF && c != '\n');
         line++;
     }
 
-    /**
-     * Add a token to the token list with no literal.
-     *
-     * @param type the token's type.
-     */
-    private Token addToken(TokenType type) {
-        return addToken(type, null);
-    }
+    private Token scanString() throws IOException {
+        StringBuilder sb = new StringBuilder();
 
-    /**
-     * Add a token to the list.
-     *
-     * @param type    the token's type.
-     * @param literal data for the token.
-     */
-    private Token addToken(TokenType type, Object literal) {
-        String text = source.substring(start, current);
-        return new Token(type, text, literal, line);
-    }
+        while (!isEOF && peek() != '"') {
+            // Allow newlines in our strings, since they're easier to parse.
+            if (peek() == '\n')
+                line++;
 
-    private Character advance() {
-        return source.charAt(current++);
-    }
-
-    /**
-     * @return the current character without consuming it.
-     */
-    private Character peek() {
-        if (isAtEnd()) return '\0';
-        return source.charAt(current);
-    }
-
-    /**
-     * @return the character after the current character without consuming
-     * anything.
-     */
-    private Character peekNext() {
-        if (current + 1 >= source.length()) return '\0';
-        return source.charAt(current + 1);
-    }
-
-    /**
-     * Assume the current character is the start of a quotation, parse the
-     * string, and def to the token list.
-     */
-    private Token scanString() {
-        while (peek() != '"' && !isAtEnd()) {
-            // Allow newlines in our strings, since they're easier to lex.
-            if (peek() == '\n') line++;
-            advance();
+            sb.append(advance());
         }
 
         // Unterminated string.
-        if (isAtEnd()) {
+        if (isEOF)
             throw new ReaderException(line, "Unterminated string.");
-        }
 
-        // Consume the closing "
+        // Consume the closing `"`
         advance();
 
-        // Trim the surrounding quotes.
-        String value = source.substring(start + 1, current - 1);
-        return addToken(TokenType.STRING, value);
+        return token(TokenType.STRING, sb.toString());
     }
 
-    /**
-     * Assume the current character is a digit, parse the digit, and def to
-     * the token list.
-     */
-    private Token scanNumber() {
-        while (Character.isDigit(peek()) && !isAtEnd()) advance();
+    private Token scanNumber() throws IOException {
+        while (!isEOF && Character.isDigit(peek()))
+            advance();
+
         // Look for a fractional part.
         if (peek() == '.' && Character.isDigit(peekNext())) {
             // Consume the "."
             advance();
         }
 
-        while (Character.isDigit(peek())) advance();
+        while (Character.isDigit(peek()))
+            advance();
 
-        Double value = Double.parseDouble(source.substring(start, current));
-        return addToken(TokenType.NUMBER, value);
+        double value = Double.parseDouble(finalizeBuf());
+        return token(TokenType.NUMBER, value);
     }
 
-    /**
-     * Assume the current character is the start of a symbol and def it to
-     * the token list.
-     */
-    private Token scanSymbol() {
-        while (isSymbolic(peek()) && !isAtEnd()) advance();
-        return addToken(TokenType.SYMBOL, source.substring(start, current));
-    }
-
-    /**
-     * @return whether the character is valid for a symbol.
-     */
-    private boolean isSymbolic(Character c) {
+    private boolean isSymbolic(char c) {
         return !Character.isWhitespace(c) && unsymbolicChars.indexOf(c) < 0;
+    }
+
+    private Token scanSymbol() throws IOException {
+        while (!isEOF && isSymbolic(peek()))
+            advance();
+
+        return token(TokenType.SYMBOL, finalizeBuf());
     }
 
     @Override
     public boolean hasNext() {
-        return tokenIterator.hasNext();
+        return !hasSentEOFToken;
     }
 
     @Override
     public Token next() {
-        return tokenIterator.next();
+        if (hasSentEOFToken)
+            throw new NoSuchElementException();
+
+        try {
+            tokBuffer.clear();
+            while (true) {
+                char c = advance();
+
+                // `advance` triggers whether the file is at EOF.
+                if (isEOF)
+                    break;
+
+                switch (c) {
+                    case '(':
+                        return token(TokenType.LEFT_PAREN);
+                    case ')':
+                        return token(TokenType.RIGHT_PAREN);
+                    case '\'':
+                        return token(TokenType.QUOTE);
+                    case '.':
+                        return token(TokenType.CONS);
+
+                    // Comments
+                    case ';':
+                        skipLine();
+                        break;
+
+                    // Whitespace
+                    case '\n': line++; // Increment linenumber while we're at it
+                    case ' ':
+                    case '\r':
+                    case '\t':
+                        // Ignore whitespace.
+                        unputChar(); // Remove whitespace from buffer.
+                        break;
+
+                    case '"':
+                        return scanString();
+
+                    default:
+                        if (Character.isDigit(c)) {
+                            return scanNumber();
+                        } else if (isSymbolic(c)) {
+                            return scanSymbol();
+                        } else {
+                            throw new ReaderException(
+                                    line,
+                                    String.format("Unexpected character '%c'.", c)
+                            );
+                        }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        hasSentEOFToken = true;
+        return token(TokenType.EOF);
     }
 }

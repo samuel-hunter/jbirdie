@@ -2,6 +2,7 @@ package com.ghotid.css142.jbirdie;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * An iterator where you can look at the next element without consuming it.
@@ -14,19 +15,20 @@ public class PeekableIterator<T> implements Iterator<T> {
     private final Iterator<T> iterator;
     private T curr;
 
+    private boolean tokenPulled = false;
+
     public PeekableIterator(Iterator<T> iterator) {
         this.iterator = iterator;
         pullElement();
     }
 
     /**
-     * Update the current element.
+     * Pull the current element from the element to peek at.
      */
     private void pullElement() {
         if (iterator.hasNext()) {
-            curr = iterator.next();
-        } else {
-            curr = null;
+            curr = Objects.requireNonNull(iterator.next());
+            tokenPulled = true;
         }
     }
 
@@ -35,7 +37,7 @@ public class PeekableIterator<T> implements Iterator<T> {
      */
     @Override
     public boolean hasNext() {
-        return curr != null;
+        return tokenPulled || iterator.hasNext();
     }
 
     /**
@@ -43,21 +45,25 @@ public class PeekableIterator<T> implements Iterator<T> {
      */
     @Override
     public T next() {
-        if (!hasNext())
+        if (!hasNext()) {
             throw new NoSuchElementException();
-
-        T result = curr;
-        pullElement();
-
-        return result;
+        } else if (tokenPulled) {
+            tokenPulled = false;
+            return curr;
+        } else {
+            return iterator.next();
+        }
     }
 
     /**
      * Return the next element without consuming it.
      */
     public T peek() {
-        if (!hasNext())
+        if (!hasNext()) {
             throw new NoSuchElementException();
+        } else if (!tokenPulled) {
+            pullElement();
+        }
 
         return curr;
     }
