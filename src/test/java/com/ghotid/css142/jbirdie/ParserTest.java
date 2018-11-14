@@ -40,6 +40,6 @@ public class ParserTest {
     private LispObject readString(String source) {
         Scanner scanner = new Scanner(source);
         Parser parser = new Parser(source, scanner);
-        return parser.nextObject();
+        return parser.next();
     }
 }
