@@ -1,6 +1,12 @@
 package com.ghotid.css142.jbirdie.objects;
 
-public abstract class AtomObject implements LispObject {
+import com.ghotid.css142.jbirdie.LispSource;
+
+public abstract class AtomObject extends LispObject {
+    AtomObject(LispSource source) {
+        super(source);
+    }
+
     public abstract Object getValue();
 
     @Override

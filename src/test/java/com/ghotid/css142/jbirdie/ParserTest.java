@@ -10,11 +10,14 @@ public class ParserTest {
     public void testCanReadNumberList() {
         assertEquals(
                 new ConsObject(
-                        new NumberObject(1.0),
+                        null,
+                        new NumberObject(null, 1.0),
                         new ConsObject(
-                                new NumberObject(2.0),
+                                null,
+                                new NumberObject(null, 2.0),
                                 new ConsObject(
-                                        new NumberObject(3.0),
+                                        null,
+                                        new NumberObject(null, 3.0),
                                         NilObject.getNil()
                                 )
                         )
@@ -26,8 +29,9 @@ public class ParserTest {
     public void testCanReadCons() {
         assertEquals(
                 new ConsObject(
-                        SymbolObject.fromString("a"),
-                        SymbolObject.fromString("b")
+                        null,
+                        SymbolObject.fromString(null, "a"),
+                        SymbolObject.fromString(null, "b")
                 ),
                 readString("(a . b)")
         );
@@ -35,7 +39,7 @@ public class ParserTest {
 
     private LispObject readString(String source) {
         Scanner scanner = new Scanner(source);
-        Parser parser = new Parser(scanner);
+        Parser parser = new Parser(source, scanner);
         return parser.nextObject();
     }
 }

@@ -2,26 +2,29 @@ package com.ghotid.css142.jbirdie.objects;
 
 import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.LispResult;
-import com.ghotid.css142.jbirdie.LispUtils;
+import com.ghotid.css142.jbirdie.LispSource;
 
 import java.util.List;
 
-public class ConsObject implements LispObject {
+public class ConsObject extends LispObject {
     private final LispObject car;
     private final LispObject cdr;
 
-    public ConsObject(LispObject car, LispObject cdr) {
+    public ConsObject(LispSource source, LispObject car, LispObject cdr) {
+        super(source);
         this.car = car;
         this.cdr = cdr;
     }
 
-    public static LispObject fromList(List<? extends LispObject> list) {
+    public static LispObject fromList(LispSource source,
+                                      List<?extends LispObject> list) {
         if (list.size() == 0)
             return NilObject.getNil();
         else
             return new ConsObject(
+                    source,
                     list.get(0),
-                    fromList(list.subList(1, list.size()))
+                    fromList(source, list.subList(1, list.size()))
             );
     }
 

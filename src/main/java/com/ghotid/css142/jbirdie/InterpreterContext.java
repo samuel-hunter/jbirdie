@@ -1,6 +1,8 @@
 package com.ghotid.css142.jbirdie;
 
 import com.ghotid.css142.jbirdie.environment.Environment;
+import com.ghotid.css142.jbirdie.exception.InterpreterException;
+import com.ghotid.css142.jbirdie.exception.LispException;
 import com.ghotid.css142.jbirdie.objects.LispObject;
 
 import java.io.InputStream;
@@ -33,8 +35,15 @@ public class InterpreterContext {
     public LispObject evaluate(LispObject object) {
         LispResult result = new LispResult(object, false);
 
-        while (!result.isEvaluated()) {
-            result = result.getObject().evaluate(this);
+        try {
+            while (!result.isEvaluated()) {
+                result = result.getObject().evaluate(this);
+            }
+        } catch (LispException e) {
+            throw new InterpreterException(e, object);
+        } catch (InterpreterException e) {
+            e.addToStack(object);
+            throw e;
         }
 
         return result.getObject();

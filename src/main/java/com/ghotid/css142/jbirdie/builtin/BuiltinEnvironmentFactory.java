@@ -1,5 +1,6 @@
 package com.ghotid.css142.jbirdie.builtin;
 
+import com.ghotid.css142.jbirdie.LispSource;
 import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.environment.LispEnvironment;
 import com.ghotid.css142.jbirdie.objects.NilObject;
@@ -38,7 +39,9 @@ public class BuiltinEnvironmentFactory {
         // Constants
         env.def("t", SymbolObject.getT(), true);
         env.def("nil", NilObject.getNil(), true);
-        env.def("newline", new StringObject("\n"), true);
+        env.def("newline", new StringObject(LispSource.BUILTIN_SOURCE,
+                        "\n"),
+                true);
 
         return env;
     }

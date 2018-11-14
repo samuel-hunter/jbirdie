@@ -4,13 +4,14 @@ import com.ghotid.css142.jbirdie.exception.ReaderException;
 import com.ghotid.css142.jbirdie.objects.*;
 
 import java.util.ArrayDeque;
-import java.util.List;
 import java.util.Queue;
 
 class Parser {
     private final Queue<Token> tokens;
+    private final String sourceName;
 
-    Parser(Scanner scanner) {
+    Parser(String sourceName, Scanner scanner) {
+        this.sourceName = sourceName;
         this.tokens = new ArrayDeque<>(scanner.toTokens());
     }
 
@@ -26,15 +27,25 @@ class Parser {
             case LEFT_PAREN:
                 return getCons();
             case SYMBOL:
-                return SymbolObject.fromString((String) tok.getLiteral());
+                return SymbolObject.fromString(
+                        new LispSource(tok.getLine(), sourceName),
+                        (String) tok.getLiteral());
             case STRING:
-                return new StringObject((String) tok.getLiteral());
+                return new StringObject(
+                        new LispSource(tok.getLine(), sourceName),
+                        (String) tok.getLiteral());
             case NUMBER:
-                return new NumberObject((Double) tok.getLiteral());
+                return new NumberObject(
+                        new LispSource(tok.getLine(), sourceName),
+                        (Double) tok.getLiteral());
             case QUOTE:
                 return new ConsObject(
-                        SymbolObject.fromString("quote"),
+                        new LispSource(tok.getLine(), sourceName),
+                        SymbolObject.fromString(
+                                new LispSource(tok.getLine(), sourceName),
+                                "quote"),
                         new ConsObject(
+                                new LispSource(tok.getLine(), sourceName),
                                 nextObject(),
                                 NilObject.getNil()
                         )
@@ -69,7 +80,9 @@ class Parser {
             case EOF:
                 throw new ReaderException(tok.getLine(), "End of file.");
             default:
-                return new ConsObject(nextObject(), getCons());
+                return new ConsObject(
+                        new LispSource(tok.getLine(), sourceName),
+                        nextObject(), getCons());
         }
     }
 }

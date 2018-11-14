@@ -49,7 +49,9 @@ public final class LibLispCore {
         ConsList list = new ConsList(args);
         list.assertSizeEquals(2);
 
-        return new ConsObject(list.get(0), list.get(1));
+        return new ConsObject(
+                args.getSource(),
+                list.get(0), list.get(1));
     }
 
     /**

@@ -19,7 +19,7 @@ public final class LibMath {
             result += LispObject.cast(NumberObject.class, obj).getValue();
         }
 
-        return new NumberObject(result);
+        return new NumberObject(args.getSource(), result);
     }
 
     @BuiltinFunc(name="-", evalArgs = true, evalResult = false,
@@ -36,13 +36,13 @@ public final class LibMath {
                 ).getValue();
 
         if (size == 1)
-            return new NumberObject(-value);
+            return new NumberObject(args.getSource(), -value);
 
         for (LispObject obj : new ConsList(args.getCdr())) {
             value -= LispObject.cast(NumberObject.class, obj).getValue();
         }
 
-        return new NumberObject(value);
+        return new NumberObject(args.getSource(), value);
     }
 
     @BuiltinFunc(name="*", evalArgs = true, evalResult = false,
@@ -55,7 +55,7 @@ public final class LibMath {
             result *= LispObject.cast(NumberObject.class, obj).getValue();
         }
 
-        return new NumberObject(result);
+        return new NumberObject(args.getSource(), result);
     }
 
     @BuiltinFunc(name="/", evalArgs = true, evalResult = false,
@@ -72,13 +72,13 @@ public final class LibMath {
                 ).getValue();
 
         if (size == 1)
-            return new NumberObject(1 / quotient);
+            return new NumberObject(args.getSource(), 1 / quotient);
 
         for (LispObject obj : new ConsList(args.getCdr())) {
             quotient /= LispObject.cast(NumberObject.class, obj).getValue();
         }
 
-        return new NumberObject(quotient);
+        return new NumberObject(args.getSource(), quotient);
     }
 
     @BuiltinFunc(name="<", evalArgs = true, evalResult = false,
@@ -208,6 +208,8 @@ public final class LibMath {
                 argList.get(1)
         );
 
-        return new NumberObject(dividend.getValue() % divisor.getValue());
+        return new NumberObject(
+                args.getSource(),
+                dividend.getValue() % divisor.getValue());
     }
 }

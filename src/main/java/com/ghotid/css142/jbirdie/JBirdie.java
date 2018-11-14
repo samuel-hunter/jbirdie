@@ -2,7 +2,7 @@ package com.ghotid.css142.jbirdie;
 
 import com.ghotid.css142.jbirdie.builtin.BuiltinEnvironmentFactory;
 import com.ghotid.css142.jbirdie.environment.Environment;
-import com.ghotid.css142.jbirdie.exception.LispException;
+import com.ghotid.css142.jbirdie.exception.InterpreterException;
 import com.ghotid.css142.jbirdie.exception.LispExitException;
 import com.ghotid.css142.jbirdie.exception.ReaderException;
 import com.ghotid.css142.jbirdie.objects.LispObject;
@@ -38,12 +38,14 @@ public class JBirdie {
     }
 
     int runPrompt() throws IOException {
+        isRunning = true;
+
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 
         while (isRunning) {
             System.out.print("> ");
-            run(reader.readLine(), true, System.in, System.out);
+            run("<REPL>", reader.readLine(), true, System.in, System.out);
         }
 
         return exitCode;
@@ -53,7 +55,7 @@ public class JBirdie {
         InputStream is = new FileInputStream(file);
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         String source = s.hasNext() ? s.next() : "";
-        run(source, false, System.in, System.out);
+        run(file.getName(), source, false, System.in, System.out);
 
         return exitCode;
     }
@@ -66,18 +68,18 @@ public class JBirdie {
 
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         String source = s.hasNext() ? s.next() : "";
-        run(source, false, in, out);
+        run(path, source, false, in, out);
     }
 
     private void runResource(String path) {
         runResource(path, System.in, System.out);
     }
 
-    private void run(String source, boolean isRepl,
+    private void run(String filePath, String source, boolean isRepl,
                      InputStream in, PrintStream out) {
         try {
             Scanner scanner = new Scanner(source);
-            Parser parser = new Parser(scanner);
+            Parser parser = new Parser(filePath, scanner);
             InterpreterContext context = new InterpreterContext(
                     environment, in, out);
 
@@ -96,14 +98,14 @@ public class JBirdie {
         } catch (LispExitException e) {
             isRunning = false;
             exitCode = e.getExitCode();
-        } catch (LispException e) {
+        } catch (InterpreterException e) {
             if (!isRepl)
                 throw e;
 
-            System.err.printf("%s: %s",
-                    e.getClass().getSimpleName(), e.getMessage());
             if (debugging)
-                e.printStackTrace();
+                e.printLispStackTrace();
+            else
+                e.printError();
         }
     }
 }

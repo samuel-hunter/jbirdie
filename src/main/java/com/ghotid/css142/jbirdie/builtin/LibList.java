@@ -29,6 +29,6 @@ public final class LibList {
         for (LispObject arg : argList)
             result.addAll(new ConsList(arg));
 
-        return ConsObject.fromList(result);
+        return ConsObject.fromList(args.getSource(), result);
     }
 }
