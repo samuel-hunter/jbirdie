@@ -27,10 +27,7 @@ public final class LambdaObject extends FuncObject {
         // symbols.
         LispObject node = args.getCar();
         for (; node instanceof ConsObject; node = node.getCdr()) {
-            String param = LispObject.cast(
-                    SymbolObject.class,
-                    node.getCar()
-            ).toString();
+            String param = node.getCar().castTo(SymbolObject.class).getValue();
             paramList.add(param);
         }
 
@@ -40,7 +37,7 @@ public final class LambdaObject extends FuncObject {
             varargParam = ((SymbolObject) node).getValue();
         } else {
             // Ensure the end of the list is a nil.
-            LispObject.cast(NilObject.class, node);
+            node.castTo(NilObject.class);
 
             varargParam = null;
         }

@@ -3,10 +3,7 @@ package com.ghotid.css142.jbirdie;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 public class InterpreterTest {
     @Test

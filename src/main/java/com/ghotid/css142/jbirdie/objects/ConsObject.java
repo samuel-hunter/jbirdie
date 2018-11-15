@@ -40,10 +40,7 @@ public class ConsObject extends LispObject {
 
     @Override
     public LispResult evaluate(InterpreterContext context) {
-        FuncObject func = LispObject.cast(
-                FuncObject.class,
-                context.evaluate(car)
-        );
+        FuncObject func = context.evaluate(car).castTo(FuncObject.class);
 
         return func.call(context, cdr);
     }

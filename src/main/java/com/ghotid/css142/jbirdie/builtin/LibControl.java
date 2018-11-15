@@ -35,10 +35,8 @@ public final class LibControl {
         ConsList header = new ConsList(args.getCar());
         header.assertSizeEquals(2);
 
-        String elementName = LispObject.cast(
-                SymbolObject.class,
-                header.get(0)
-        ).getValue();
+        String elementName = header.get(0)
+                .castTo(SymbolObject.class).getValue();
 
         ConsList list = new ConsList(context.evaluate(header.get(1)));
         LispObject body = args.getCdr();

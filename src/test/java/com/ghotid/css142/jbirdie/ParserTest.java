@@ -39,7 +39,7 @@ public class ParserTest {
 
     private LispObject readString(String source) {
         Scanner scanner = new Scanner(source);
-        Parser parser = new Parser(source, scanner);
+        Parser parser = new Parser("<TEST>", scanner);
         return parser.next();
     }
 }

@@ -32,10 +32,7 @@ public final class LibLispExtra {
         ConsList argList = new ConsList(args);
         argList.assertSizeEquals(2);
 
-        FuncObject func = LispObject.cast(
-                FuncObject.class,
-                argList.get(0)
-        );
+        FuncObject func = argList.get(0).castTo(FuncObject.class);
 
         LispResult result = func.apply(context, argList.get(1));
 
@@ -57,10 +54,8 @@ public final class LibLispExtra {
             ConsList bindList = new ConsList(binding);
             bindList.assertSizeEquals(2);
 
-            String symbol = LispObject.cast(
-                    SymbolObject.class,
-                    bindList.get(0)
-            ).getValue();
+            String symbol = bindList.get(0)
+                    .castTo(SymbolObject.class).getValue();
             bodyEnv.def(symbol, context.evaluate(bindList.get(1)),
                     false);
         }

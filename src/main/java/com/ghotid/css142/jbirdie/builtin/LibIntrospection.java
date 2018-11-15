@@ -1,7 +1,6 @@
 package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.InterpreterContext;
-import com.ghotid.css142.jbirdie.environment.LispEnvironment;
 import com.ghotid.css142.jbirdie.objects.*;
 
 import java.util.ArrayList;
@@ -18,10 +17,7 @@ public final class LibIntrospection {
     public static LispObject doc(InterpreterContext context,
                                  LispObject args) {
         new ConsList(args).assertSizeEquals(1);
-        SymbolObject symbol = LispObject.cast(
-                SymbolObject.class,
-                args.getCar()
-        );
+        SymbolObject symbol = args.getCar().castTo(SymbolObject.class);
 
         return new StringObject(
                 args.getSource(),
