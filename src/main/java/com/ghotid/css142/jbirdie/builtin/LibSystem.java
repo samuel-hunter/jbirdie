@@ -36,10 +36,7 @@ public final class LibSystem {
         if (size == 0) {
             throw new LispExitException(0);
         } else {
-            NumberObject exitCode = LispObject.cast(
-                    NumberObject.class,
-                    args.getCar());
-
+            NumberObject exitCode = args.getCar().castTo(NumberObject.class);
             throw new LispExitException(exitCode.getValue().intValue());
         }
     }

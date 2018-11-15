@@ -16,7 +16,7 @@ public final class LibMath {
         Double result = 0.0;
 
         for (LispObject obj : new ConsList(args)) {
-            result += LispObject.cast(NumberObject.class, obj).getValue();
+            result += obj.castTo(NumberObject.class).getValue();
         }
 
         return new NumberObject(args.getSource(), result);
@@ -29,17 +29,13 @@ public final class LibMath {
                                       LispObject args) {
         int size = new ConsList(args).assertSizeAtLeast(1);
 
-        Double value =
-                LispObject.cast(
-                        NumberObject.class,
-                        args.getCar()
-                ).getValue();
+        Double value = args.getCar().castTo(NumberObject.class).getValue();
 
         if (size == 1)
             return new NumberObject(args.getSource(), -value);
 
         for (LispObject obj : new ConsList(args.getCdr())) {
-            value -= LispObject.cast(NumberObject.class, obj).getValue();
+            value -= obj.castTo(NumberObject.class).getValue();
         }
 
         return new NumberObject(args.getSource(), value);
@@ -52,7 +48,7 @@ public final class LibMath {
         Double result = 1.0;
 
         for (LispObject obj : new ConsList(args)) {
-            result *= LispObject.cast(NumberObject.class, obj).getValue();
+            result *= obj.castTo(NumberObject.class).getValue();
         }
 
         return new NumberObject(args.getSource(), result);
@@ -65,17 +61,13 @@ public final class LibMath {
     public static LispObject divide(InterpreterContext context, LispObject args) {
         int size = new ConsList(args).assertSizeAtLeast(1);
 
-        Double quotient =
-                LispObject.cast(
-                        NumberObject.class,
-                        args.getCar()
-                ).getValue();
+        Double quotient = args.getCar().castTo(NumberObject.class).getValue();
 
         if (size == 1)
             return new NumberObject(args.getSource(), 1 / quotient);
 
         for (LispObject obj : new ConsList(args.getCdr())) {
-            quotient /= LispObject.cast(NumberObject.class, obj).getValue();
+            quotient /= obj.castTo(NumberObject.class).getValue();
         }
 
         return new NumberObject(args.getSource(), quotient);
@@ -89,15 +81,10 @@ public final class LibMath {
         new ConsList(args).assertSizeAtLeast(1);
 
         // Get the value of the first number to compare with.
-        double smallerNum = LispObject.cast(
-                NumberObject.class,
-                args.getCar()
-        ).getValue();
+        double smallerNum = args.getCar().castTo(NumberObject.class).getValue();
 
         for (LispObject obj : new ConsList(args.getCdr())) {
-            double largerNum = LispObject.cast(
-                    NumberObject.class, obj
-            ).getValue();
+            double largerNum = obj.castTo(NumberObject.class).getValue();
 
             // If the current number is greater than the previous, the
             // condition is not satisfied.
@@ -118,14 +105,10 @@ public final class LibMath {
         new ConsList(args).assertSizeAtLeast(1);
 
         // Get the value of the first number to compare with.
-        double smallerNum = LispObject.cast(
-                NumberObject.class, args.getCar()
-        ).getValue();
+        double smallerNum = args.getCar().castTo(NumberObject.class).getValue();
 
         for (LispObject obj : new ConsList(args.getCdr())) {
-            double largerNum = LispObject.cast(
-                    NumberObject.class, obj
-            ).getValue();
+            double largerNum = obj.castTo(NumberObject.class).getValue();
 
             // If the current number is greater than the previous, the
             // condition is not satisfied.
@@ -145,14 +128,10 @@ public final class LibMath {
                                       LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);
 
-        double largerNum = LispObject.cast(
-                NumberObject.class, args.getCar()
-        ).getValue();
+        double largerNum = args.getCar().castTo(NumberObject.class).getValue();
 
         for (LispObject obj : new ConsList(args.getCdr())) {
-            double smallerNum = LispObject.cast(
-                    NumberObject.class, obj
-            ).getValue();
+            double smallerNum = obj.castTo(NumberObject.class).getValue();
 
             // Return false immediately if one of the expressions is not valid.
             if (!(largerNum >= smallerNum))
@@ -171,15 +150,10 @@ public final class LibMath {
                                       LispObject args) {
         new ConsList(args).assertSizeAtLeast(1);
 
-        double largerNum = LispObject.cast(
-                NumberObject.class,
-                args.getCar()
-        ).getValue();
+        double largerNum = args.getCar().castTo(NumberObject.class).getValue();
 
         for (LispObject obj : new ConsList(args.getCdr())) {
-            double smallerNum = LispObject.cast(
-                    NumberObject.class, obj
-            ).getValue();
+            double smallerNum = obj.castTo(NumberObject.class).getValue();
 
             // Return false immediately if one of the expressions is not valid.
             if (!(largerNum > smallerNum))
@@ -198,18 +172,10 @@ public final class LibMath {
         ConsList argList = new ConsList(args);
         argList.assertSizeEquals(2);
 
-        NumberObject dividend = LispObject.cast(
-                NumberObject.class,
-                argList.get(0)
-        );
+        double dividend = argList.get(0).castTo(NumberObject.class).getValue();
 
-        NumberObject divisor = LispObject.cast(
-                NumberObject.class,
-                argList.get(1)
-        );
+        double divisor = argList.get(1).castTo(NumberObject.class).getValue();
 
-        return new NumberObject(
-                args.getSource(),
-                dividend.getValue() % divisor.getValue());
+        return new NumberObject(args.getSource(),dividend % divisor);
     }
 }

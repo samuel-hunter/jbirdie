@@ -19,13 +19,9 @@ public final class LibState {
         // Get the documentation, or an empty string otherwise.
         String doc = "";
         if (argList.size() == 3)
-            doc = LispObject.cast(
-                    StringObject.class,
-                    argList.get(2)
-            ).getValue();
+            doc = argList.get(2).castTo(StringObject.class).getValue();
 
-        SymbolObject symbol =
-                LispObject.cast(SymbolObject.class, argList.get(0));
+        SymbolObject symbol = argList.get(0).castTo(SymbolObject.class);
         context.getEnvironment().def(
                 symbol.getValue(),
                 context.evaluate(argList.get(1)),
@@ -54,8 +50,7 @@ public final class LibState {
         ConsList argList = new ConsList(args);
         argList.assertSizeEquals(2);
 
-        SymbolObject symbol = LispObject.cast(
-                SymbolObject.class, args.getCar());
+        SymbolObject symbol = args.getCar().castTo(SymbolObject.class);
 
         LispObject value =
                 context.evaluate(argList.get(1));
@@ -74,10 +69,7 @@ public final class LibState {
         // arg 0 = name; arg 1 = paramlist; rest is body.
         argList.assertSizeAtLeast(2);
 
-        SymbolObject symbol = LispObject.cast(
-                SymbolObject.class,
-                argList.get(0)
-        );
+        SymbolObject symbol = argList.get(0).castTo(SymbolObject.class);
 
         LispObject lambdaArgs = args.getCdr();
 

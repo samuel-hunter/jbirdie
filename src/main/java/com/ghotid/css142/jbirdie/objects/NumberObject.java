@@ -8,6 +8,8 @@ public class NumberObject extends AtomObject {
     public NumberObject(LispSource source, double value) {
         super(source);
         this.value = value;
+
+
     }
 
     @Override

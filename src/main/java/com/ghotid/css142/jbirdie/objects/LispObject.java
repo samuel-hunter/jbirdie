@@ -32,12 +32,12 @@ public abstract class LispObject {
         return toString();
     }
 
-    public static <T extends LispObject> T cast(Class<? extends T> lispClass,
-                                                LispObject obj) {
-        if (lispClass.isInstance(obj))
-            return lispClass.cast(obj);
-
-        throw new InvalidTypeException(lispClass, obj);
+    public <T extends LispObject> T castTo(Class<T> lispClass) {
+        if (lispClass.isInstance(this)) {
+            return lispClass.cast(this);
+        } else {
+            throw new InvalidTypeException(lispClass, this);
+        }
     }
 
     public LispSource getSource() {

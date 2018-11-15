@@ -68,7 +68,7 @@ public class JBirdie {
         runResource(path, System.in, System.out);
     }
 
-    private void run(String filePath, InputStream source, boolean isRepl,
+    void run(String filePath, InputStream source, boolean isRepl,
                      InputStream in, PrintStream out) {
         try {
             Scanner scanner = new Scanner(source);
