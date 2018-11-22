@@ -143,20 +143,32 @@ class Scanner implements Iterator<Token> {
     }
 
     private Token scanNumber() throws IOException {
+        boolean isDouble = false;
+        
         while (!isEOF && Character.isDigit(peek()))
             advance();
 
         // Look for a fractional part.
         if (peek() == '.' && Character.isDigit(peekNext())) {
             // Consume the "."
+            isDouble = true;
             advance();
         }
 
         while (Character.isDigit(peek()))
             advance();
 
-        double value = Double.parseDouble(finalizeBuf());
-        return token(TokenType.NUMBER, value);
+        if (isDouble) {
+            return token(
+                    TokenType.DOUBLE,
+                    Double.parseDouble(finalizeBuf())
+            );
+        } else {
+            return token(
+                    TokenType.INTEGER,
+                    Integer.parseInt(finalizeBuf())
+            );
+        }
     }
 
     private boolean isSymbolic(char c) {

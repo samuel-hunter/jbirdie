@@ -35,8 +35,13 @@ class Parser implements Iterator<LispObject> {
                 return new StringObject(
                         new LispSource(tok.getLine(), sourceName),
                         (String) tok.getLiteral());
-            case NUMBER:
-                return new NumberObject(
+            case INTEGER:
+                return new IntegerObject(
+                        new LispSource(tok.getLine(), sourceName),
+                        (int) tok.getLiteral()
+                );
+            case DOUBLE:
+                return new DoubleObject(
                         new LispSource(tok.getLine(), sourceName),
                         (Double) tok.getLiteral());
             case QUOTE:

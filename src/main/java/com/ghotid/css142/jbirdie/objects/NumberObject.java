@@ -2,18 +2,20 @@ package com.ghotid.css142.jbirdie.objects;
 
 import com.ghotid.css142.jbirdie.LispSource;
 
-public class NumberObject extends AtomObject {
-    private final double value;
-
-    public NumberObject(LispSource source, double value) {
+public abstract class NumberObject extends AtomObject {
+    NumberObject(LispSource source) {
         super(source);
-        this.value = value;
-
-
     }
 
-    @Override
-    public Double getValue() {
-        return value;
+    public abstract Number getValue();
+    public abstract NumberObject add(NumberObject num);
+    public abstract NumberObject sub(NumberObject num);
+    public abstract NumberObject mul(NumberObject num);
+    public abstract NumberObject div(NumberObject num);
+    public abstract NumberObject mod(NumberObject num);
+    public abstract int cmp(NumberObject num);
+
+    public NumberObject neg() {
+        return new IntegerObject(getSource(), 0).sub(this);
     }
 }

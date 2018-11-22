@@ -3,6 +3,8 @@ package com.ghotid.css142.jbirdie.builtin;
 import com.ghotid.css142.jbirdie.InterpreterContext;
 import com.ghotid.css142.jbirdie.objects.*;
 
+import java.util.function.Predicate;
+
 /**
  * Collection of builtin functions concerning mathematical operations.
  */
@@ -13,13 +15,13 @@ public final class LibMath {
             doc="Return the sum of its arguments. With no args, return 0.")
     public static LispObject add(InterpreterContext context,
                                  LispObject args) {
-        Double result = 0.0;
+        NumberObject result = new IntegerObject(args.getSource(), 0);
 
         for (LispObject obj : new ConsList(args)) {
-            result += obj.castTo(NumberObject.class).getValue();
+            result = result.add(obj.castTo(NumberObject.class));
         }
 
-        return new NumberObject(args.getSource(), result);
+        return result;
     }
 
     @BuiltinFunc(name="-", evalArgs = true, evalResult = false,
@@ -29,29 +31,29 @@ public final class LibMath {
                                       LispObject args) {
         int size = new ConsList(args).assertSizeAtLeast(1);
 
-        Double value = args.getCar().castTo(NumberObject.class).getValue();
+        NumberObject result = args.getCar().castTo(NumberObject.class);
 
         if (size == 1)
-            return new NumberObject(args.getSource(), -value);
+            return result.neg();
 
         for (LispObject obj : new ConsList(args.getCdr())) {
-            value -= obj.castTo(NumberObject.class).getValue();
+            result = result.sub(obj.castTo(NumberObject.class));
         }
 
-        return new NumberObject(args.getSource(), value);
+        return result;
     }
 
     @BuiltinFunc(name="*", evalArgs = true, evalResult = false,
             doc="Return the product of its arguments. With no args, return 1.")
     public static LispObject multiply(InterpreterContext context,
                                       LispObject args) {
-        Double result = 1.0;
+        NumberObject result = new IntegerObject(args.getSource(), 1);
 
         for (LispObject obj : new ConsList(args)) {
-            result *= obj.castTo(NumberObject.class).getValue();
+            result = result.mul(obj.castTo(NumberObject.class));
         }
 
-        return new NumberObject(args.getSource(), result);
+        return result;
     }
 
     @BuiltinFunc(name="/", evalArgs = true, evalResult = false,
@@ -61,16 +63,33 @@ public final class LibMath {
     public static LispObject divide(InterpreterContext context, LispObject args) {
         int size = new ConsList(args).assertSizeAtLeast(1);
 
-        Double quotient = args.getCar().castTo(NumberObject.class).getValue();
+        NumberObject result = args.getCar().castTo(NumberObject.class);
 
         if (size == 1)
-            return new NumberObject(args.getSource(), 1 / quotient);
+            return new IntegerObject(args.getSource(), 1).div(result);
 
         for (LispObject obj : new ConsList(args.getCdr())) {
-            quotient /= obj.castTo(NumberObject.class).getValue();
+            result = result.div(obj.castTo(NumberObject.class));
         }
 
-        return new NumberObject(args.getSource(), quotient);
+        return result;
+    }
+
+    private static LispObject cmp(LispObject args,
+                                  Predicate<Integer> trueCase) {
+        new ConsList(args).assertSizeAtLeast(1);
+
+        NumberObject firstNum = args.getCar().castTo(NumberObject.class);
+        for (LispObject obj : new ConsList(args.getCdr())) {
+            NumberObject secondNum = obj.castTo(NumberObject.class);
+
+            if (!trueCase.test(firstNum.cmp(secondNum)))
+                return NilObject.getNil();
+
+            firstNum = secondNum;
+        }
+
+        return SymbolObject.getT();
     }
 
     @BuiltinFunc(name="<", evalArgs = true, evalResult = false,
@@ -78,23 +97,7 @@ public final class LibMath {
                     "increasing order, nil otherwise.")
     public static LispObject lessThan(InterpreterContext context,
                                       LispObject args) {
-        new ConsList(args).assertSizeAtLeast(1);
-
-        // Get the value of the first number to compare with.
-        double smallerNum = args.getCar().castTo(NumberObject.class).getValue();
-
-        for (LispObject obj : new ConsList(args.getCdr())) {
-            double largerNum = obj.castTo(NumberObject.class).getValue();
-
-            // If the current number is greater than the previous, the
-            // condition is not satisfied.
-            if (!(smallerNum < largerNum))
-                return NilObject.getNil();
-
-            smallerNum = largerNum;
-        }
-
-        return SymbolObject.getT();
+        return cmp(args, (cmp) -> cmp < 0);
     }
 
     @BuiltinFunc(name="<=", evalArgs = true, evalResult = false,
@@ -102,23 +105,7 @@ public final class LibMath {
                     "non-decreasing order, nil otherwise.")
     public static LispObject lessThanEqual(InterpreterContext context,
                                       LispObject args) {
-        new ConsList(args).assertSizeAtLeast(1);
-
-        // Get the value of the first number to compare with.
-        double smallerNum = args.getCar().castTo(NumberObject.class).getValue();
-
-        for (LispObject obj : new ConsList(args.getCdr())) {
-            double largerNum = obj.castTo(NumberObject.class).getValue();
-
-            // If the current number is greater than the previous, the
-            // condition is not satisfied.
-            if (!(smallerNum <= largerNum))
-                return NilObject.getNil();
-
-            smallerNum = largerNum;
-        }
-
-        return SymbolObject.getT();
+        return cmp(args, (cmp) -> cmp <= 0);
     }
 
     @BuiltinFunc(name=">=", evalArgs = true, evalResult = false,
@@ -126,21 +113,7 @@ public final class LibMath {
                     "non-increasing order, nil otherwise.")
     public static LispObject isGreaterEqual(InterpreterContext context,
                                       LispObject args) {
-        new ConsList(args).assertSizeAtLeast(1);
-
-        double largerNum = args.getCar().castTo(NumberObject.class).getValue();
-
-        for (LispObject obj : new ConsList(args.getCdr())) {
-            double smallerNum = obj.castTo(NumberObject.class).getValue();
-
-            // Return false immediately if one of the expressions is not valid.
-            if (!(largerNum >= smallerNum))
-                return NilObject.getNil();
-
-            largerNum = smallerNum;
-        }
-
-        return SymbolObject.getT();
+        return cmp(args, (cmp) -> cmp >= 0);
     }
 
     @BuiltinFunc(name=">", evalArgs = true, evalResult = false,
@@ -148,21 +121,7 @@ public final class LibMath {
                     "order, nil otherwise.")
     public static LispObject isGreater(InterpreterContext context,
                                       LispObject args) {
-        new ConsList(args).assertSizeAtLeast(1);
-
-        double largerNum = args.getCar().castTo(NumberObject.class).getValue();
-
-        for (LispObject obj : new ConsList(args.getCdr())) {
-            double smallerNum = obj.castTo(NumberObject.class).getValue();
-
-            // Return false immediately if one of the expressions is not valid.
-            if (!(largerNum > smallerNum))
-                return NilObject.getNil();
-
-            largerNum = smallerNum;
-        }
-
-        return SymbolObject.getT();
+        return cmp(args, (cmp) -> cmp > 0);
     }
 
     @BuiltinFunc(name="%", evalArgs = true, evalResult = false,
@@ -172,10 +131,10 @@ public final class LibMath {
         ConsList argList = new ConsList(args);
         argList.assertSizeEquals(2);
 
-        double dividend = argList.get(0).castTo(NumberObject.class).getValue();
+        NumberObject dividend = argList.get(0).castTo(NumberObject.class);
 
-        double divisor = argList.get(1).castTo(NumberObject.class).getValue();
+        NumberObject divisor = argList.get(1).castTo(NumberObject.class);
 
-        return new NumberObject(args.getSource(),dividend % divisor);
+        return dividend.mod(divisor);
     }
 }
