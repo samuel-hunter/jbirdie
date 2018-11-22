@@ -11,13 +11,13 @@ public class ParserTest {
         assertEquals(
                 new ConsObject(
                         null,
-                        new NumberObject(null, 1.0),
+                        new IntegerObject(null, 1),
                         new ConsObject(
                                 null,
-                                new NumberObject(null, 2.0),
+                                new IntegerObject(null, 2),
                                 new ConsObject(
                                         null,
-                                        new NumberObject(null, 3.0),
+                                        new IntegerObject(null, 3),
                                         NilObject.getNil()
                                 )
                         )

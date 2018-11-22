@@ -32,12 +32,14 @@ public final class LibIO {
         new ConsList(args).assertSizeEquals(0);
 
         Scanner scanner = new Scanner(context.getIn());
-        if (!scanner.hasNextDouble())
-            throw new LispIOException("Next token in stdin is not a number.");
-        double value = scanner.nextDouble();
 
-        // Do not close the scanner here; it will cause an IOException.
-        return new NumberObject(args.getSource(), value);
+        if (scanner.hasNextInt()) {
+            return new IntegerObject(args.getSource(), scanner.nextInt());
+        } else if (scanner.hasNextDouble()) {
+            return new DoubleObject(args.getSource(), scanner.nextDouble());
+        } else {
+            throw new LispIOException("Next token in stdin is not a number.");
+        }
     }
 
     @BuiltinFunc(name="print", evalArgs = true, evalResult = false,

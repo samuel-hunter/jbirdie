@@ -5,7 +5,7 @@ public enum TokenType {
     LEFT_PAREN, RIGHT_PAREN, QUOTE, CONS,
 
     // Literals
-    SYMBOL, STRING, NUMBER,
+    SYMBOL, STRING, INTEGER, DOUBLE,
 
     EOF
 }
