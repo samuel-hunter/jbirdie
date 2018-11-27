@@ -1,6 +1,5 @@
 package com.ghotid.css142.jbirdie;
 
-import com.ghotid.css142.jbirdie.environment.Environment;
 import com.ghotid.css142.jbirdie.objects.ConsList;
 import com.ghotid.css142.jbirdie.objects.ConsObject;
 import com.ghotid.css142.jbirdie.objects.LispObject;
