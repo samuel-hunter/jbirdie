@@ -24,6 +24,8 @@ public class JBirdie {
         runResource("/stdlist.bdl");
         runResource("/stdmath.bdl");
         runResource("/stdclass.bdl");
+        runResource("/stdfun.bdl");
+        runResource("/stdstring.bdl");
 
         // Add a layer of protection against stdlib
         environment = environment.pushStack();

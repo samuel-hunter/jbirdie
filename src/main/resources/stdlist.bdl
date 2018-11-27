@@ -18,7 +18,7 @@
     (cond
         ((null List) nil)
         ((eq Index 0) (first List))
-        (t (nth (-1 Index 1) (rest List)))))
+        (t (nth (-1 Index) (rest List)))))
 
 (defun size (List)
     "Return the size of the list."
@@ -77,6 +77,37 @@
             (t (filter-iter (rest List) Result))))
 
     (filter-iter List ()))
+
+(defun take (Len List)
+    "Return a list that has the first Len items from the given list."
+    (defun take-iter (Len List Result)
+        (cond
+            ((= Len 0) (reverse Result))
+            ((null List) (reverse Result))
+            (t (take-iter (-1 Len) (rest List) (cons (first List) Result)))))
+
+    (take-iter Len List ()))
+
+(defun sublist (List Offset Len)
+    "Return a sublist generated from List starting at Offset and is at max
+    Len items long."
+    (cond
+        ((= Offset 0) (take Len List))
+        ((null List) nil)
+        (t (sublist (rest List) (-1 Offset) Len))))
+
+(defun sort (List Test)
+    "Return a quick-sorted list."
+    (cond
+        ((null List) nil)
+        (t  (progn
+                (defconst pivot (first List))
+                (setq List (rest List))
+                (defconst list-a (filter (lambda (x) (Test x pivot)) List))
+                (defconst list-b
+                          (filter (lambda (x) (not (Test x pivot))) List))
+                (append (sort list-a Test) (list pivot) (sort list-b Test))))))
+
 
 ;; A-list functions
 

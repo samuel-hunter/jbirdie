@@ -1,0 +1,5 @@
+;; stdfun - standard function and lambda library.
+
+(defun inverse (predicate)
+    (lambda Args
+        (not (apply predicate Args))))
