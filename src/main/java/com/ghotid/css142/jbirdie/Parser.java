@@ -5,14 +5,21 @@ import com.ghotid.css142.jbirdie.objects.*;
 
 import java.util.Iterator;
 
-class Parser implements Iterator<LispObject> {
+public class Parser implements Iterator<LispObject> {
     private final PeekableIterator<Token> tokenIterator;
     private final String sourceName;
+
+    private static final String SOURCE_STDIN = "<stdin>";
 
     Parser(String sourceName, Iterator<Token> tokenIterator) {
         this.sourceName = sourceName;
         this.tokenIterator = new PeekableIterator<>(tokenIterator);
     }
+
+    public Parser() {
+        this(SOURCE_STDIN, new Scanner(System.in));
+    }
+
 
     @Override
     public boolean hasNext() {
