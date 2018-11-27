@@ -1,7 +1,7 @@
 package com.ghotid.css142.jbirdie.builtin;
 
 import com.ghotid.css142.jbirdie.InterpreterContext;
-import com.ghotid.css142.jbirdie.exception.LispIOException;
+import com.ghotid.css142.jbirdie.Parser;
 import com.ghotid.css142.jbirdie.objects.*;
 
 import java.util.Scanner;
@@ -25,21 +25,13 @@ public final class LibIO {
         return new StringObject(args.getSource(), line);
     }
 
-    @BuiltinFunc(name="read-number", evalArgs = true, evalResult = false,
-            doc="Read the next number from standard input, and return it.")
-    public static LispObject readNumber(InterpreterContext context,
-                                      LispObject args) {
+    @BuiltinFunc(name="read", evalArgs = true, evalResult = false,
+            doc="Read the next s-expression from standard input, "
+            + "and return it.")
+    public static LispObject read(InterpreterContext context, LispObject args) {
         new ConsList(args).assertSizeEquals(0);
 
-        Scanner scanner = new Scanner(context.getIn());
-
-        if (scanner.hasNextInt()) {
-            return new IntegerObject(args.getSource(), scanner.nextInt());
-        } else if (scanner.hasNextDouble()) {
-            return new DoubleObject(args.getSource(), scanner.nextDouble());
-        } else {
-            throw new LispIOException("Next token in stdin is not a number.");
-        }
+        return new Parser().next();
     }
 
     @BuiltinFunc(name="print", evalArgs = true, evalResult = false,
