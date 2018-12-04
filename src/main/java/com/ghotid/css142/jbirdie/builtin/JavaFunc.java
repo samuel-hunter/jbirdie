@@ -17,12 +17,14 @@ public final class JavaFunc extends FuncObject {
     private final Method method;
     private final boolean evalArgs;
     private final boolean evalResult;
+    private final String name;
 
-    JavaFunc(Method method, boolean evalArgs, boolean evalResult) {
+    JavaFunc(Method method, boolean evalArgs, boolean evalResult, String name) {
         super(LispSource.BUILTIN_SOURCE);
         this.method = method;
         this.evalArgs = evalArgs;
         this.evalResult = evalResult;
+        this.name = name;
 
         // Verify return type.
         if (!LispObject.class.isAssignableFrom(method.getReturnType()))
@@ -67,5 +69,10 @@ public final class JavaFunc extends FuncObject {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "<builtin " + name + ">";
     }
 }
