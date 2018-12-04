@@ -43,7 +43,6 @@ public class JBirdie {
         isRunning = true;
 
         while (isRunning) {
-            System.out.print("> ");
             run("<REPL>", System.in, true, System.in, System.out);
         }
 

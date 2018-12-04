@@ -19,8 +19,8 @@ public class TokenTest {
         Token[] expected = {
                 new Token(TokenType.LEFT_PAREN, "(", null, 1),
                 new Token(TokenType.SYMBOL, "+", "+", 1),
-                new Token(TokenType.INTEGER, "1", 1.0, 1),
-                new Token(TokenType.INTEGER, "2", 2.0, 1),
+                new Token(TokenType.INTEGER, "1", 1, 1),
+                new Token(TokenType.INTEGER, "2", 2, 1),
                 new Token(TokenType.RIGHT_PAREN, ")", null, 1),
                 new Token(TokenType.EOF, "", null, 1)
         };

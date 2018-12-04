@@ -17,7 +17,8 @@ public class BuiltinEnvironmentFactory {
             if (method.isAnnotationPresent(BuiltinFunc.class)) {
                 BuiltinFunc a = method.getDeclaredAnnotation(BuiltinFunc.class);
                 env.def(a.name(), new JavaFunc(method, a.evalArgs(),
-                                a.evalResult()), a.doc(), true);
+                                a.evalResult(), a.name()), a.doc(),
+                        true);
             }
         }
     }

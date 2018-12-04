@@ -1,1 +1,1 @@
-(print (* 2 (read-number)))
+(print (* 2 (read)))
