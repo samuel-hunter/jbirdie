@@ -1,7 +1,7 @@
 JBirdie
 =======
 
-Yet another useless dialect of Lisp. Done for a Computer Science assignment 
+Yet another dialect of Lisp. Done for a Computer Science assignment 
 to build an interpreter with a concept of arrays, variables, and a 
 rudimentary class-object model.
 
